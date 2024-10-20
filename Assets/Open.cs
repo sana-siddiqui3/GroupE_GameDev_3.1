@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour
 {
-    public string keyItem = "Golden Key";   // The key item the chest contains
     private bool isOpen = false;   // State of the chest
     private bool playerInRange = false;  // Check if the player is close
     private bool empty = false;
@@ -25,11 +24,11 @@ public class Chest : MonoBehaviour
         // Get the PlayerInventory component from the player
         PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
 
-        // Check if the key item has already been collected
+        // Check if the key has already been collected
         if (!empty)
         {
-            playerInventory.AddItem(keyItem);
-            Debug.Log("Player received: " + keyItem);
+            playerInventory.addKey();
+            Debug.Log("Player received: 1 Key");
             empty = true;
         }
         else
