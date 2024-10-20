@@ -1,0 +1,55 @@
+using UnityEngine;
+
+public class Chest : MonoBehaviour
+{
+    public string keyItem = "Golden Key";   // The key item the chest contains
+    private bool isOpen = false;   // State of the chest
+    private bool playerInRange = false;  // Check if the player is close
+    private bool empty = false;
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        {
+            if (!isOpen)
+            {
+                isOpen = true;
+                GiveKeyItem();
+            }
+        }
+    }
+
+    private void GiveKeyItem()
+    {
+        // Get the PlayerInventory component from the player
+        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
+
+        // Check if the key item has already been collected
+        if (!empty)
+        {
+            playerInventory.AddItem(keyItem);
+            Debug.Log("Player received: " + keyItem);
+            empty = true;
+        }
+        else
+        {
+            Debug.Log("This chest is empty.");
+        }
+        isOpen = false;
+    }
+
+    // Detect if the player is in range to interact with the chest
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        playerInRange = false;
+    }
+}
