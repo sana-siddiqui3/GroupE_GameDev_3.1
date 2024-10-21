@@ -9,8 +9,8 @@ public class PlayerInventory : MonoBehaviour
     public List<string> inventory = new List<string>();  // List to hold player's items
     private int keys = 0;
     private int keysRequired = 2;
-    public List<Card> cardInventory = new List<Card>();  // List to hold player's cards
-    public Text keyCountText;  // Reference to the HUD text element
+    public List<Card> cardInventory = new List<Card>();  
+    public Text keyCountText; 
 
     // Add an item to the inventory (for non-card items)
     public void AddItem(string item)

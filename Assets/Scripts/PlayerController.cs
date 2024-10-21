@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))  // Press 'E' to pick up
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))  // Adjust range as needed
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 3f))
             {
                 Card card = hit.collider.GetComponent<Card>();
                 if (card != null)
