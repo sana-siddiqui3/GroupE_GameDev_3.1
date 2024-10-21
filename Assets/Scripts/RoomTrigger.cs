@@ -1,51 +1,70 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomTrigger : MonoBehaviour
+namespace Assets.Scripts
 {
-    public GameObject roomEnterPromptUI;
-    public GameObject player;
-    public GameObject RoomChangeUI;
-
-    private bool playerInRange = false;
-
-    void Start()
+    public class RoomTrigger : MonoBehaviour
     {
-        roomEnterPromptUI.SetActive(false);
-    }
+        public GameObject roomEnterPromptUI;
+        public GameObject RoomChangeUI;
+        public GameObject player;
+        public GameObject NotEnoughKeysUI;
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        private PlayerInventory inventory;
+        private bool playerInRange = false;
+
+        void Start()
         {
-            playerInRange = true;
-            roomEnterPromptUI.SetActive(true);
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
             roomEnterPromptUI.SetActive(false);
+            NotEnoughKeysUI.SetActive(false);
         }
-    }
 
-    void Update()
-    {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        void OnTriggerEnter(Collider other)
         {
-            enterRoom();
+            if (other.CompareTag("Player"))
+            {
+                playerInRange = true;
+                inventory = player.GetComponent < PlayerInventory > ();
+
+                int keys = inventory.getKeys();
+
+                if (keys == 2)
+                {
+                    roomEnterPromptUI.SetActive(true);
+                }
+                else
+                {
+                    NotEnoughKeysUI.SetActive(true);
+                }
+            }
         }
-    }
 
-    void enterRoom()
-    {
-        Debug.Log("entered new room");
+        void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                playerInRange = false;
+                roomEnterPromptUI.SetActive(false);
+                NotEnoughKeysUI.SetActive(false);
+            }
+        }
 
-        roomEnterPromptUI.SetActive(false);
+        void Update()
+        {
+            if (playerInRange && Input.GetKeyDown(KeyCode.E))
+            {
+                enterRoom();
+            }
+        }
 
-        RoomChangeUI.SetActive(true);
+        void enterRoom()
+        {
+            Debug.Log("entered new room");
+
+            roomEnterPromptUI.SetActive(false);
+
+            RoomChangeUI.SetActive(true);
+        }
     }
 }
