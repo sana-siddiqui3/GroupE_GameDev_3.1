@@ -5,11 +5,12 @@ using UnityEngine.UI;
 public class PlayerInventory : MonoBehaviour
 {
     public List<string> inventory = new List<string>();  // List to hold player's items
-    int keys = 0;
-    int keysRequired = 2;
+    private int keys = 0;
+    private int keysRequired = 2;
+    public List<Card> cardInventory = new List<Card>();  // List to hold player's cards
     public Text keyCountText;  // Reference to the HUD text element
 
-    // Add an item to the inventory
+    // Add an item to the inventory (for non-card items)
     public void AddItem(string item)
     {
         inventory.Add(item);
@@ -17,43 +18,66 @@ public class PlayerInventory : MonoBehaviour
     }
 
     // Add a key to the inventory
-    public void addKey() { 
+    public void addKey() 
+    { 
         keys++;
         UpdateKeyCountHUD();
+        Debug.Log("Added 1 Key. Current keys: " + keys);
     }
 
     // Remove n keys from inventory
-    public void removeKeys(int n) { keys -= n; }
-
-    // Return number of keys
-    public int getKeys() { return keys; }
-
-    // Check if an item is in the inventory
-    public bool HasItem(string item)
-    {
-        return inventory.Contains(item);
+    public void removeKeys(int n) 
+    { 
+        keys -= n; 
+        Debug.Log("Removed " + n + " keys.");
     }
 
-    // Print all items in the inventory
+    // Return number of keys
+    public int getKeys() 
+    { 
+        return keys; 
+    }
+
+    // Add a card to the inventory
+    public void AddCard(Card card)
+    {
+        cardInventory.Add(card);
+        Debug.Log("Picked up card: " + card.cardName);
+    }
+
+    // Print all items (keys and cards) in the inventory
     public void PrintInventory()
     {
-        if (keys > 0)
-            Debug.Log("Keys: " + keys);
         Debug.Log("Inventory contains:");
-        foreach (var i in inventory)
+
+        // Display cards
+        if (cardInventory.Count > 0)
         {
-            Debug.Log(i);
+            Debug.Log("Cards:");
+            foreach (Card card in cardInventory)
+            {
+                Debug.Log(" - " + card.cardName);
+            }
         }
+        else
+        {
+            Debug.Log("No cards in the inventory.");
+        }
+
+        // Display keys
+        Debug.Log("Keys: " + keys + "/" + keysRequired);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))  // Press 'I' to view inventory
+        // Press 'I' to view the inventory
+        if (Input.GetKeyDown(KeyCode.I))  
         {
             PrintInventory();
         }
     }
 
+    // Update key count in the HUD (optional UI)
     private void UpdateKeyCountHUD()
     {
         if (keyCountText != null)
@@ -61,5 +85,4 @@ public class PlayerInventory : MonoBehaviour
             keyCountText.text = "Keys: " + keys + "/" + keysRequired;
         }
     }
-
 }
