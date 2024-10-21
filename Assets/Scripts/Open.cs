@@ -2,9 +2,16 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour
 {
+    public GameObject KeyPromptUI;
+
     private bool isOpen = false;   // State of the chest
     private bool playerInRange = false;  // Check if the player is close
     private bool empty = false;
+
+    void Start()
+    {
+        KeyPromptUI.SetActive(false);
+    }
 
     // Update is called once per frame
     void Update()
@@ -44,11 +51,13 @@ public class Chest : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+            KeyPromptUI.SetActive(true);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
         playerInRange = false;
+        KeyPromptUI.SetActive(false);
     }
 }
