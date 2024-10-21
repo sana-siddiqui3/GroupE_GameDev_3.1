@@ -7,7 +7,7 @@ using TMPro;
 public class PlayerInventory : MonoBehaviour
 {
     public List<string> inventory = new List<string>();  // List to hold player's items
-    [SerializeField] private int keys = 0;
+    private int keys = 0;
     private int keysRequired = 2;
     public List<Card> cardInventory = new List<Card>();  // List to hold player's cards
     public Text keyCountText;  // Reference to the HUD text element
