@@ -51,8 +51,7 @@ public class EnemyTrigger : MonoBehaviour
         // Show the fight UI
         fightUI.SetActive(true);
 
-        // Trigger the fight logic (which you already have implemented)
         Debug.Log("Fight Started!");
-        // Example: FightManager.StartFight();
+        
     }
 }
