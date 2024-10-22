@@ -19,8 +19,8 @@ public class Card : MonoBehaviour
     // When the player picks up the card
     public void PickUp()
     {
-        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
-        playerInventory.AddCard(this);  // Add card to player's inventory
+        //PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
+        PlayerData.instance.AddCard(cardName);  // Add card to player's inventory
         Destroy(gameObject);  // Destroy the card in the scene
     }
 

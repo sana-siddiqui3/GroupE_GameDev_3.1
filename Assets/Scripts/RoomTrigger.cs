@@ -27,7 +27,7 @@ namespace Assets.Scripts
                 playerInRange = true;
                 inventory = player.GetComponent < PlayerInventory > ();
 
-                int keys = inventory.getKeys();
+                int keys = inventory.GetKeys();
 
                 if (keys == 2)
                 {
