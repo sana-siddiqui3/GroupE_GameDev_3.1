@@ -6,7 +6,10 @@ public class PlayerMotor : MonoBehaviour
 {
     private CharacterController controller;
     private Vector3 playerVelocity;
-    public float speed = 5f;
+    public float rotationSpeed = 180f;
+
+    private Vector3 rotation;
+    public float speed = 10f;
     private bool isGrounded;
     private float gravity = -9.8f;
     private float jumpHeight = 3f;
@@ -28,6 +31,10 @@ public class PlayerMotor : MonoBehaviour
         moveDirection.x = input.x;
         moveDirection.z = input.y;
         controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
+
+        this.rotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
+        this.transform.Rotate(this.rotation);
+
         playerVelocity.y += gravity * Time.deltaTime;
         if (isGrounded && playerVelocity.y < 0)
         {

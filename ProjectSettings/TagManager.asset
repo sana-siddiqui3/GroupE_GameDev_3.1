@@ -7,6 +7,7 @@ TagManager:
   - Chest
   - Room1
   - Room2
+  - Inventory
   layers:
   - Default
   - TransparentFX
