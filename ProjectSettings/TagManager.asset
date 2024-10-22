@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Chest
+  - Room1
+  - Room2
   layers:
   - Default
   - TransparentFX
