@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CheckpointTrigger : MonoBehaviour
 {
     private Vector3 checkpointPosition;
     private bool checkpointActivated = false;
+
+    [SerializeField] private Button loadCheckPointBtn = null;
 
     // Detect when the player enters the trigger
     private void OnTriggerEnter(Collider other)
