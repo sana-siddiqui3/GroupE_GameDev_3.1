@@ -1,16 +1,20 @@
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyTrigger : MonoBehaviour
 {
     public GameObject fightPromptUI;  // The fight prompt message
-    public GameObject fightUI; // The UI elements for the actual fight (health bars, attack buttons, etc.)
+    public GameObject fightUI; 
     public Camera playerView;
     public Camera fightView;
     public GameObject player;
 
     private Vector3 fightingPosition;
     private bool playerInRange = false;
+    public bool isEnemyDefeated = false; // Flag to check if the enemy is defeated
+
+    private GameController gameController; 
 
     void Awake()
     {
@@ -20,14 +24,15 @@ public class EnemyTrigger : MonoBehaviour
 
     void Start()
     {
-        // Hide both the fight prompt and the fight UI at the start
         fightPromptUI.SetActive(false);
         fightUI.SetActive(false);
+
+        // Get the GameController script to manage the fight
+        gameController = FindFirstObjectByType<GameController>();
     }
 
     void OnTriggerEnter(Collider other)
     {
-        // When the player enters the trigger, show the fight prompt
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
@@ -37,7 +42,6 @@ public class EnemyTrigger : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        // Hide the fight prompt if the player leaves the trigger area
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
@@ -47,8 +51,7 @@ public class EnemyTrigger : MonoBehaviour
 
     void Update()
     {
-        // If the player is in range and presses the "Enter" key, start the fight
-        if (playerInRange && Input.GetKeyDown(KeyCode.Return))
+        if (playerInRange && Input.GetKeyDown(KeyCode.Return) && !isEnemyDefeated)
         {
             StartFight();
         }
@@ -56,15 +59,17 @@ public class EnemyTrigger : MonoBehaviour
 
     void StartFight()
     {
-        // Hide the fight prompt
         fightPromptUI.SetActive(false);
-
-        // Show the fight UI
         fightUI.SetActive(true);
 
         playerView.enabled = false;
         fightView.enabled = true;
 
         Debug.Log("Fight Started!");
+
+        if (gameController != null)
+        {
+            gameController.FightUI.SetActive(true); // Show the fight UI
+        }
     }
 }
