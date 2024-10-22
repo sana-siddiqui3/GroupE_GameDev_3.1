@@ -606,7 +606,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ff66886632e47728fbd34bc70db13d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
+  playerView: {fileID: 1211717768}
+  fightView: {fileID: 0}
+  FightUI: {fileID: 649737509}
+  Player: {fileID: 1220535685}
   Enemy: {fileID: 0}
   PlayerHealth: {fileID: 0}
   EnemyHelath: {fileID: 0}
@@ -2611,6 +2614,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 180
   speed: 5
+  player: {fileID: 1220535685}
+  fightStarted: {fileID: 649737509}
 --- !u!114 &1220535689
 MonoBehaviour:
   m_ObjectHideFlags: 0
