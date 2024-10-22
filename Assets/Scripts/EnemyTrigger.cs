@@ -4,8 +4,19 @@ using UnityEngine.UI;
 public class EnemyTrigger : MonoBehaviour
 {
     public GameObject fightPromptUI;  // The fight prompt message
-    public GameObject fightUI;        // The UI elements for the actual fight (health bars, attack buttons, etc.)
+    public GameObject fightUI; // The UI elements for the actual fight (health bars, attack buttons, etc.)
+    public Camera playerView;
+    public Camera fightView;
+    public GameObject player;
+
+    private Vector3 fightingPosition;
     private bool playerInRange = false;
+
+    void Awake()
+    {
+        fightingPosition = player.transform.position;
+        Debug.Log(fightingPosition);
+    }
 
     void Start()
     {
@@ -51,7 +62,9 @@ public class EnemyTrigger : MonoBehaviour
         // Show the fight UI
         fightUI.SetActive(true);
 
+        playerView.enabled = false;
+        fightView.enabled = true;
+
         Debug.Log("Fight Started!");
-        
     }
 }
