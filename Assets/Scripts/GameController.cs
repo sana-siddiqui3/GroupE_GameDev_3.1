@@ -7,6 +7,10 @@ namespace Assets.Scripts
 {
     public class GameController : MonoBehaviour
     {
+        public Camera playerView;
+        public Camera fightView;
+        public GameObject FightUI;
+
         [SerializeField] private GameObject Player = null;
         [SerializeField] private GameObject Enemy = null;
 
@@ -125,6 +129,10 @@ namespace Assets.Scripts
             if (target == Enemy)
             {
                 resultText.text = "You Win!";
+                fightView.enabled = false;
+                playerView.enabled = true;
+
+                FightUI.SetActive(false);
             }
             else if (target == Player)
             {

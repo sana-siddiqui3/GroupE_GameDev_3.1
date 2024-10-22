@@ -11,7 +11,8 @@ namespace Assets.Scripts
         public GameObject player;
         public GameObject NotEnoughKeysUI;
 
-        private PlayerInventory inventory;
+        private int keys;
+        private PlayerData inventory;
         private bool playerInRange = false;
 
         void Start()
@@ -25,9 +26,9 @@ namespace Assets.Scripts
             if (other.CompareTag("Player"))
             {
                 playerInRange = true;
-                inventory = player.GetComponent < PlayerInventory > ();
+                inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent < PlayerData > ();
 
-                int keys = inventory.GetKeys();
+                keys = inventory.GetKeys();
 
                 if (keys == 2)
                 {
@@ -52,7 +53,7 @@ namespace Assets.Scripts
 
         void Update()
         {
-            if (playerInRange && Input.GetKeyDown(KeyCode.E))
+            if (playerInRange && Input.GetKeyDown(KeyCode.E) && keys == 2)
             {
                 enterRoom();
             }
