@@ -3,6 +3,7 @@ using UnityEngine;
 public class Chest : MonoBehaviour
 {
     public GameObject KeyPromptUI;
+    public EnemyTrigger enemyTrigger; 
 
     private bool isOpen = false;   // State of the chest
     private bool playerInRange = false;  // Check if the player is close
@@ -18,10 +19,14 @@ public class Chest : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            if (!isOpen)
+            if (!isOpen && enemyTrigger.isEnemyDefeated) // Ensure the player can only open the chest after defeating the enemy
             {
                 isOpen = true;
                 GiveKeyItem();
+            }
+            else if (!enemyTrigger.isEnemyDefeated)
+            {
+                Debug.Log("Defeat the enemy first before opening the chest.");
             }
         }
     }
