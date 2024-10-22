@@ -67,6 +67,13 @@ public class EnemyTrigger : MonoBehaviour
 
         Debug.Log("Fight Started!");
 
+        // Show the player's cards in the battle scene
+        BattleCardDisplay battleCardDisplay = FindFirstObjectByType<BattleCardDisplay>();
+        if (battleCardDisplay != null)
+        {
+            battleCardDisplay.UpdateCardDisplay();
+        }
+
         if (gameController != null)
         {
             gameController.FightUI.SetActive(true); // Show the fight UI
