@@ -7,6 +7,10 @@ public class Card : MonoBehaviour
 
     private bool playerInRange = false;  // To track if the player is near the card
 
+    // Reference to the Card UI prefab and Card Panel
+    public GameObject cardUIPrefab; 
+    public GameObject cardPanel; 
+
     void Update()
     {
         // Check if the player is in range and presses the "E" key
@@ -19,9 +23,16 @@ public class Card : MonoBehaviour
     // When the player picks up the card
     public void PickUp()
     {
-        //PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
         PlayerData.instance.AddCard(cardName);  // Add card to player's inventory
-        Destroy(gameObject);  // Destroy the card in the scene
+
+        // Instantiate a new card UI in the Card Panel
+        GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
+        
+        // Set the card name on the instantiated card UI
+        CardUI cardUIScript = cardUI.GetComponent<CardUI>();
+        cardUIScript.SetCardName(cardName); 
+        
+        Destroy(gameObject);  
     }
 
     // Trigger when the player enters the card's pickup area
