@@ -464,8 +464,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ff66886632e47728fbd34bc70db13d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerView: {fileID: 0}
-  fightView: {fileID: 0}
+  playerView: {fileID: 1184787668}
+  fightView: {fileID: 81594481}
   FightUI: {fileID: 2011660155}
   Player: {fileID: 1272181455}
   Enemy: {fileID: 1670075416}
