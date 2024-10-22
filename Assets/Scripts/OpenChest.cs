@@ -29,12 +29,12 @@ public class Chest : MonoBehaviour
     private void GiveKeyItem()
     {
         // Get the PlayerInventory component from the player
-        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
+        //PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
 
         // Check if the key has already been collected
         if (!empty)
         {
-            playerInventory.addKey();
+            PlayerData.instance.AddKey();
             Debug.Log("Player received: 1 Key");
             empty = true;
         }
