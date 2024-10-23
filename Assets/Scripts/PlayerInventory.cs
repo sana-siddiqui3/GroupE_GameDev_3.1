@@ -5,22 +5,21 @@ using UnityEngine.UI;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public List<string> inventory = new List<string>();  // List to hold player's items
+    public List<string> inventory = new List<string>();  
     private int keys = 0;
     private int keysRequired = 2;
     public List<string> cardInventory = new List<string>();  
     public Text keyCountText;
     public Text inventoryDisplay;
-
-    private RectTransform inventoryDisplayRectTransform;  // Reference to the RectTransform of the inventory display
-    public float lineHeight = 24f;  // The height to increase per item, adjust based on font size
+    private RectTransform inventoryDisplayRectTransform;  
+    public float lineHeight = 24f; 
 
     private void Start()
     {
         // Get the RectTransform of the inventoryDisplay
         inventoryDisplayRectTransform = inventoryDisplay.GetComponent<RectTransform>();
 
-        UpdateInventoryDisplay();  // Manually trigger the inventory display update at the start
+        UpdateInventoryDisplay(); 
     }
 
     // Add an item to the inventory (for non-card items)
@@ -28,7 +27,7 @@ public class PlayerInventory : MonoBehaviour
     {
         inventory.Add(item);
         Debug.Log("Added " + item + " to inventory.");
-        AdjustInventoryDisplayHeight(); // Adjust the height of the RectTransform to accommodate the new item
+        AdjustInventoryDisplayHeight(); 
         UpdateInventoryDisplay();
     }
 
@@ -58,7 +57,7 @@ public class PlayerInventory : MonoBehaviour
     {
         cardInventory.Add(card);
         Debug.Log("Picked up card: " + card);
-        AdjustInventoryDisplayHeight(); // Adjust the height of the RectTransform to accommodate the new item
+        AdjustInventoryDisplayHeight();
         UpdateInventoryDisplay();
     }
 
@@ -94,15 +93,6 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    // Update key count in the HUD (optional UI)
-    /*private void UpdateKeyCountHUD()
-    {
-        if (keyCountText != null && PlayerData.instance != null)
-        {
-            
-        }
-    }*/
-
     // Update Inventory display for HUD
     public void UpdateInventoryDisplay()
     {
@@ -110,12 +100,6 @@ public class PlayerInventory : MonoBehaviour
         {
             keyCountText.text = "Keys: " + PlayerData.instance.keysCollected + "/" + PlayerData.instance.totalKeysRequired;
             inventoryDisplay.text = "Inventory:\n";
-
-            // Loop through each item in the inventory and add it to the display
-            //foreach (string item in inventory)
-            //{
-            //    inventoryDisplay.text += item + "\n";
-            //}
 
             foreach (string card in PlayerData.instance.cardInventory)
             {
@@ -127,10 +111,8 @@ public class PlayerInventory : MonoBehaviour
     // Adjust the height of the RectTransform to accommodate more text
     private void AdjustInventoryDisplayHeight()
     {
-        // Calculate the new height based on the number of cards in the inventory
         float newHeight = PlayerData.instance.cardInventory.Count * lineHeight;
 
-        // Set the new height to the RectTransform
         inventoryDisplayRectTransform.sizeDelta = new Vector2(inventoryDisplayRectTransform.sizeDelta.x, newHeight);
     }
 }

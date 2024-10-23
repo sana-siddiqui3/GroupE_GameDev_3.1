@@ -1,51 +1,49 @@
 using UnityEngine;
+using TMPro;  
 
 public class Chest : MonoBehaviour
 {
-    public GameObject KeyPromptUI;
     public EnemyTrigger enemyTrigger; 
 
-    private bool isOpen = false;   // State of the chest
-    private bool playerInRange = false;  // Check if the player is close
+    private bool isOpen = false;   
+    private bool playerInRange = false;  
     private bool empty = false;
+    public TextMeshProUGUI chestMessageText;
 
     void Start()
     {
-        KeyPromptUI.SetActive(false);
+        chestMessageText.text = "";  // Initialize the message text to be empty
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        if (playerInRange && Input.GetKeyDown(KeyCode.E)) 
         {
-            if (!isOpen && enemyTrigger.isEnemyDefeated) // Ensure the player can only open the chest after defeating the enemy
+            if (!isOpen && enemyTrigger.isEnemyDefeated)  // Chest can be opened if the enemy is defeated
             {
                 isOpen = true;
-                GiveKeyItem();
+                GiveKeyItem();  
             }
-            else if (!enemyTrigger.isEnemyDefeated)
+            else if (!enemyTrigger.isEnemyDefeated)  
             {
-                Debug.Log("Defeat the enemy first before opening the chest.");
+                chestMessageText.text = "Defeat the enemy first.";  
             }
         }
     }
 
     private void GiveKeyItem()
     {
-        // Get the PlayerInventory component from the player
-        //PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
-
         // Check if the key has already been collected
         if (!empty)
         {
-            PlayerData.instance.AddKey();
-            Debug.Log("Player received: 1 Key");
+            PlayerData.instance.AddKey();  
+            chestMessageText.text = "Added key.";  
             empty = true;
         }
         else
         {
-            Debug.Log("This chest is empty.");
+            chestMessageText.text = "This chest is empty.";  
         }
         isOpen = false;
     }
@@ -53,16 +51,20 @@ public class Chest : MonoBehaviour
     // Detect if the player is in range to interact with the chest
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player"))  
         {
             playerInRange = true;
-            KeyPromptUI.SetActive(true);
+            chestMessageText.text = "Press 'E' to open chest";  
         }
     }
 
+    // Detect if the player exits the chest's range
     private void OnTriggerExit(Collider other)
     {
-        playerInRange = false;
-        KeyPromptUI.SetActive(false);
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = false;
+            chestMessageText.text = "";  
+        }
     }
 }

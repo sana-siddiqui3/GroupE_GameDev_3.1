@@ -3,11 +3,11 @@ using System.Collections;
 
 public class CompanionTrigger : MonoBehaviour
 {
-    public GameObject dialoguePromptUI;  // UI to show when player is in range (e.g., "Press Enter to talk")
-    public GameObject dialogueUI;        // The actual dialogue UI (where the conversation is shown)
+    public GameObject dialoguePromptUI;  
+    public GameObject dialogueUI;       
     public GameObject player;
 
-    private bool playerInRange = false;  // Check if player is in range to interact
+    private bool playerInRange = false; 
 
     void Start()
     {
@@ -22,7 +22,7 @@ public class CompanionTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            dialoguePromptUI.SetActive(true);  // Show prompt to press Enter
+            dialoguePromptUI.SetActive(true); // Show the prompt
         }
     }
 
@@ -36,7 +36,7 @@ public class CompanionTrigger : MonoBehaviour
         }
     }
 
-    // Check if the player presses the interaction key (Enter) while in range
+    // Check if the player presses the Enter while in range
     void Update()
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.Return))
@@ -48,19 +48,18 @@ public class CompanionTrigger : MonoBehaviour
     // Show the dialogue when the player interacts
     void TriggerDialogue()
     {
-        dialoguePromptUI.SetActive(false);  // Hide the prompt
-        dialogueUI.SetActive(true);         // Show the dialogue UI
+        dialoguePromptUI.SetActive(false);  
+        dialogueUI.SetActive(true);         
         Debug.Log("Dialogue triggered with the companion.");
 
-        // Start coroutine to hide the dialogue after 3 seconds
         StartCoroutine(HideDialogueAfterDelay());
     }
 
     // Coroutine to hide the dialogue UI after 3 seconds
     IEnumerator HideDialogueAfterDelay()
     {
-        yield return new WaitForSeconds(3);  // Wait for 3 seconds
-        dialogueUI.SetActive(false);         // Hide the dialogue UI
+        yield return new WaitForSeconds(3);  
+        dialogueUI.SetActive(false);        
         Debug.Log("Dialogue hidden.");
     }
 }

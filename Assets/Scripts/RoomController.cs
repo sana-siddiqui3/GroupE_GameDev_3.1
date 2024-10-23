@@ -13,22 +13,22 @@ namespace Assets.Scripts
 
         void Start()
         {
-            enterRoomUI.SetActive(false);
+            enterRoomUI.SetActive(false); // Hide the enter room UI
         }
 
         public void BtnYes()
         {
-            StartCoroutine(enterRoom());
+            StartCoroutine(enterRoom()); // Load the room when 'Yes' pressed
         }
 
         public void BtnNo()
         {
-            enterRoomUI.SetActive(false);
+            enterRoomUI.SetActive(false); // Hide the enter room UI when 'No' pressed
         }
 
         IEnumerator enterRoom()
         {
-            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(Door.tag);
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(Door.tag); // Load the new scene asynchronously
 
             while (!asyncLoad.isDone)
             {

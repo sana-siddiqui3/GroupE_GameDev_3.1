@@ -20,7 +20,7 @@ public class PlayerMotor : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        fightingPosition = player.transform.position;
+        fightingPosition = player.transform.position; // Save the position of the player before the fight starts
     }
 
     void Start()
@@ -31,35 +31,38 @@ public class PlayerMotor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isGrounded = controller.isGrounded;
+        isGrounded = controller.isGrounded; // Check if the player is on the ground
     }
 
     public void ProcessMove(Vector2 input)
     {
         if (!fightStarted.activeSelf)
         {
+            // Move the player
             Vector3 moveDirection = Vector3.zero;
             moveDirection.x = input.x;
             moveDirection.z = input.y;
             controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
 
+            // Rotate the player
             this.rotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
             this.transform.Rotate(this.rotation);
 
+            // Apply gravity to the player
             playerVelocity.y += gravity * Time.deltaTime;
             if (isGrounded && playerVelocity.y < 0)
             {
                 playerVelocity.y = -2f;
             }
             controller.Move(playerVelocity * Time.deltaTime);
-            //Debug.Log(playerVelocity.y);
         }
-        else
+        else // If the fight has started, move the player to the fighting position
         {
             player.transform.position = fightingPosition;
         }
     }
 
+    // Make the player jump
     public void Jump()
     {
         if (isGrounded)
