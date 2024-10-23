@@ -29,10 +29,10 @@ public class PlayerData : MonoBehaviour
     public void AddCard(string card)
     {
         cardInventory.Add(card);
-        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();  // Find PlayerInventory in the scene
+        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();  
         if (playerInventory != null)
         {
-            playerInventory.UpdateInventoryDisplay();  // Trigger UI update
+            playerInventory.UpdateInventoryDisplay(); 
         }
     }
 
@@ -40,10 +40,10 @@ public class PlayerData : MonoBehaviour
     public void AddKey()
     {
         keysCollected++;
-        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();  // Find PlayerInventory in the scene
+        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>(); 
         if (playerInventory != null)
         {
-            playerInventory.UpdateInventoryDisplay();  // Trigger UI update
+            playerInventory.UpdateInventoryDisplay();  
         }
     }
 

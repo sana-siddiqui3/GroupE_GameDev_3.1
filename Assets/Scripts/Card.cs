@@ -1,56 +1,56 @@
 using UnityEngine;
+using TMPro;
 
 public class Card : MonoBehaviour
 {
-    public string cardName; 
-    public Sprite cardImage;  // Image or icon for UI purposes
+    public string cardName;
+    
+    private bool playerInRange = false;  // Tracks if the player is near the card
 
-    private bool playerInRange = false;  // To track if the player is near the card
-
-    // Reference to the Card UI prefab and Card Panel
     public GameObject cardUIPrefab; 
     public GameObject cardPanel; 
 
+    public TextMeshProUGUI pickupMessageText;
+
     void Update()
     {
-        // Check if the player is in range and presses the "E" key
+        // Check if the player is in range and presses "E" to pick up the card
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
             PickUp();
         }
     }
 
-    // When the player picks up the card
+    // Adds the card to the player's inventory and updates the UI
     public void PickUp()
     {
-        PlayerData.instance.AddCard(cardName);  // Add card to player's inventory
+        PlayerData.instance.AddCard(cardName);
 
-        // Instantiate a new card UI in the Card Panel
         GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
-        
-        // Set the card name on the instantiated card UI
+
         CardUI cardUIScript = cardUI.GetComponent<CardUI>();
         cardUIScript.SetCardName(cardName); 
-        
-        Destroy(gameObject);  
+
+        pickupMessageText.text = "";  // Clears the pickup message
+
+        Destroy(gameObject);  // Removes the card from the scene
     }
 
-    // Trigger when the player enters the card's pickup area
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            playerInRange = true;  // Player is in range to pick up the card
-            Debug.Log("Press 'E' to pick up " + cardName);
+            playerInRange = true;
+            pickupMessageText.text = "Press 'E' to pick up " + cardName;  // Displays the pickup prompt
         }
     }
 
-    // Trigger when the player exits the card's pickup area
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            playerInRange = false; 
+            playerInRange = false;
+            pickupMessageText.text = "";  // Clears the message when the player leaves
         }
     }
 }

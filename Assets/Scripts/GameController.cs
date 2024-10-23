@@ -16,19 +16,19 @@ public class GameController : MonoBehaviour
     [SerializeField] private Slider EnemyHealth = null;
     [SerializeField] private Button attackBtn = null;
     [SerializeField] private Button healBtn = null;
-    [SerializeField] private TextMeshProUGUI resultText = null;  // UI text to display result
+    [SerializeField] private TextMeshProUGUI resultText = null;  
 
     private bool isPlayerTurn = true;
-    private bool isGameOver = false;  // Flag to stop the game after win/loss
-    private EnemyTrigger enemyTrigger; // Reference to the EnemyTrigger
+    private bool isGameOver = false;  
+    private EnemyTrigger enemyTrigger; 
 
     void Start()
     {
-        // Ensure FightUI is hidden at the start
-        FightUI.SetActive(false);
-        enemyTrigger = FindFirstObjectByType<EnemyTrigger>(); // Get the reference to EnemyTrigger
+        FightUI.SetActive(false);  // Ensure FightUI is hidden at the start
+        enemyTrigger = FindFirstObjectByType<EnemyTrigger>(); 
     }
 
+    // Applies damage to the target and checks for defeat
     private void Attack(GameObject target, float damage)
     {
         if (target == Enemy)
@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
             EnemyHealth.value -= damage;
             if (EnemyHealth.value <= 0)
             {
-                EnemyHealth.value = 0;  // Clamp to zero
+                EnemyHealth.value = 0; 
                 FallOver(target);
             }
         }
@@ -45,14 +45,15 @@ public class GameController : MonoBehaviour
             PlayerHealth.value -= damage;
             if (PlayerHealth.value <= 0)
             {
-                PlayerHealth.value = 0;  // Clamp to zero
+                PlayerHealth.value = 0;  
                 FallOver(target);
             }
         }
 
-        changeTurn();
+        changeTurn();  
     }
 
+    // Heals the target by a specified amount
     private void Heal(GameObject target, float amount)
     {
         if (target == Enemy)
@@ -64,19 +65,22 @@ public class GameController : MonoBehaviour
             PlayerHealth.value += amount;
         }
 
-        changeTurn();
+        changeTurn();  
     }
 
+    // Called when the player clicks the attack button
     public void BtnAttack()
     {
         Attack(Enemy, 10);
     }
 
+    // Called when the player clicks the heal button
     public void BtnHeal()
     {
         Heal(Player, 5);
     }
 
+    // Switches between player and enemy turns
     private void changeTurn()
     {
         if (isGameOver)
@@ -89,7 +93,7 @@ public class GameController : MonoBehaviour
             attackBtn.interactable = false;
             healBtn.interactable = false;
 
-            StartCoroutine(EnemyTurn());
+            StartCoroutine(EnemyTurn());  
         }
         else
         {
@@ -98,6 +102,7 @@ public class GameController : MonoBehaviour
         }
     }
 
+    // Handles the enemy's turn actions
     private IEnumerator EnemyTurn()
     {
         if (isGameOver)
@@ -105,31 +110,29 @@ public class GameController : MonoBehaviour
             yield break;  // Stop enemy turn if the game is over
         }
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(3); 
 
         int random = Random.Range(1, 3);
 
         if (random == 1)
         {
-            Attack(Player, 12);
+            Attack(Player, 12);  
         }
         else
         {
-            Heal(Enemy, 3);
+            Heal(Enemy, 3);  
         }
     }
 
+    // Handles the outcome when a character is defeated
     private void FallOver(GameObject target)
     {
-        
-        target.transform.Rotate(new Vector3(90f, 0f, 0f));
+        target.transform.Rotate(new Vector3(90f, 0f, 0f));  // Rotate the defeated character
 
-        
         attackBtn.interactable = false;
         healBtn.interactable = false;
 
-        
-        isGameOver = true;
+        isGameOver = true; 
 
         // Display win/lose message
         if (target == Enemy)
