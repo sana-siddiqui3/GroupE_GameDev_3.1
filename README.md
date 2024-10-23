@@ -22,7 +22,7 @@ Welcome to the prototype walkthrough for **Dungeon Quest Adventure**! This guide
 
 ### 4. Check the Companion
 - After collecting the cards, look for a companion character in the dungeon. 
-- Approach the companion and press **Enter** to interact with them. This action will recruit the companion to your team.
+- Approach the companion and press **Enter** to interact with them. This action will recruit the companion to your team who can give you tips to progress through the game.
 
 ### 5. Engage the Enemy
 - Continue exploring until you encounter an enemy. 
