@@ -22,6 +22,8 @@ public class Card : MonoBehaviour
     }
 
     // Adds the card to the player's inventory and updates the UI
+    private bool isPickedUp = false;
+
     public void PickUp()
     {
         PlayerData.instance.AddCard(cardName);
@@ -29,11 +31,11 @@ public class Card : MonoBehaviour
         GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
 
         CardUI cardUIScript = cardUI.GetComponent<CardUI>();
-        cardUIScript.SetCardName(cardName); 
+        cardUIScript.SetCardName(cardName);
 
-        pickupMessageText.text = "";  // Clears the pickup message
+        pickupMessageText.text = ""; // Clears the pickup message
 
-        Destroy(gameObject);  // Removes the card from the scene
+        Destroy(gameObject); // Removes the card from the scene
     }
 
     private void OnTriggerEnter(Collider other)
