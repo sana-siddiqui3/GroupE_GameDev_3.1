@@ -44,10 +44,6 @@ public class PlayerMotor : MonoBehaviour
             moveDirection.z = input.y;
             controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
 
-            // Rotate the player
-            this.rotation = new Vector3(0, Input.GetAxisRaw("Horizontal") * rotationSpeed * Time.deltaTime, 0);
-            this.transform.Rotate(this.rotation);
-
             // Apply gravity to the player
             playerVelocity.y += gravity * Time.deltaTime;
             if (isGrounded && playerVelocity.y < 0)
