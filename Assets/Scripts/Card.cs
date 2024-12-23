@@ -7,9 +7,6 @@ public class Card : MonoBehaviour
     
     private bool playerInRange = false;  // Tracks if the player is near the card
 
-    public GameObject cardUIPrefab; 
-    public GameObject cardPanel; 
-
     public TextMeshProUGUI pickupMessageText;
 
     void Update()
@@ -25,11 +22,6 @@ public class Card : MonoBehaviour
     public void PickUp()
     {
         PlayerData.instance.AddCard(cardName);
-
-        GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
-
-        CardUI cardUIScript = cardUI.GetComponent<CardUI>();
-        cardUIScript.SetCardName(cardName);
 
         pickupMessageText.text = ""; // Clears the pickup message
 

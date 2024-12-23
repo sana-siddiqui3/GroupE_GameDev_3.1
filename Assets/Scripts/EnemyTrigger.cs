@@ -81,6 +81,7 @@ public class EnemyTrigger : MonoBehaviour
     if (gameController != null)
     {
         gameController.FightUI.SetActive(true); // Activate the fight UI in the GameController
+        gameController.DisplayCardsInFightUI();
     }
 }
 
