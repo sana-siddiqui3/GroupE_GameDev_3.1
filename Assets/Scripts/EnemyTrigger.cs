@@ -1,79 +1,87 @@
-using Assets.Scripts;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class EnemyTrigger : MonoBehaviour
 {
-    public GameObject fightPromptUI;  
-    public GameObject fightUI; 
-    public Camera playerView;
-    public Camera fightView;
-    public GameObject player;
-    private Vector3 fightingPosition;
-    private bool playerInRange = false;
-    public bool isEnemyDefeated = false; 
-    private GameController gameController; 
-
-    void Awake()
-    {
-        fightingPosition = player.transform.position;
-        Debug.Log(fightingPosition);
-    }
+    public GameObject fightPromptUI; // UI element that shows when the player can fight
+    public GameObject fightUI;      // UI element for the fight screen
+    public Camera playerView;       // Camera for the player's view
+    public Camera fightView;        // Camera for the battle view
+    public GameObject player;       // Reference to the player object
+    public GameObject enemy;        // Reference to the enemy object
+    public Transform playerFightPosition; // Predefined player position for the fight
+    public Transform enemyFightPosition;  // Predefined enemy position for the fight
+    private bool isChasingPlayer = false; // Flag to check if the enemy is chasing the player
+    private float chaseDistance = 2f;    // Distance at which the enemy catches the player
+    public bool isEnemyDefeated = false; // Flag to indicate if the enemy is defeated
+    private GameController gameController; // Reference to the GameController script
+    private EnemyController enemyController; // Reference to the EnemyController script
 
     void Start()
     {
-        // Hide the fight UI initially
-        fightPromptUI.SetActive(false);
-        fightUI.SetActive(false);  
-
-        // Get the GameController script to manage the fight
-        gameController = FindFirstObjectByType<GameController>();
+        fightPromptUI.SetActive(false); // Hide fight prompt initially
+        fightUI.SetActive(false);      // Hide the battle UI initially
+        gameController = FindFirstObjectByType<GameController>(); // Get reference to GameController
     }
 
-    // Triggered when the player enters the collider
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            playerInRange = true;  
-            fightPromptUI.SetActive(true); 
+            isChasingPlayer = true; // Enemy starts chasing the player
         }
     }
 
-    // Triggered when the player exits the collider
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            playerInRange = false; 
-            fightPromptUI.SetActive(false); 
+            isChasingPlayer = false; // Stop chasing the player if they leave the area
         }
     }
 
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.Return) && !isEnemyDefeated)
+        if (isChasingPlayer)
         {
-            StartFight();  // Start the fight if the player is in range and hasn't defeated the enemy
+            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+
+            if (distanceToPlayer <= chaseDistance && !isEnemyDefeated)
+            {
+                StartFight(); // Start the fight when the enemy catches the player
+            }
         }
     }
 
-    // Initiates the fight sequence and transitions to the fight UI
     void StartFight()
+{
+    // Hide the fight prompt and show the fight UI
+    fightPromptUI.SetActive(false);
+    fightUI.SetActive(true);
+
+    // Reset the player's and enemy's positions to predefined fight positions
+    player.transform.position = playerFightPosition.position;
+    player.transform.rotation = playerFightPosition.rotation;
+
+    enemy.transform.position = enemyFightPosition.position;
+    enemy.transform.rotation = enemyFightPosition.rotation;
+
+    // Switch cameras to the fight view
+    playerView.enabled = false;
+    fightView.enabled = true;
+
+    Debug.Log("Fight Started!");
+
+    // Stop enemy movement
+    enemyController = enemy.GetComponent<EnemyController>(); // Get the EnemyController component
+    if (enemyController != null)
     {
-        fightPromptUI.SetActive(false); 
-        fightUI.SetActive(true);  
-
-        playerView.enabled = false;  
-        fightView.enabled = true; 
-
-        Debug.Log("Fight Started!");
-
-        if (gameController != null)
-        {
-            gameController.FightUI.SetActive(true);
-        }
+        enemyController.StopEnemy(); // Stop the enemy's movement
     }
 
-    
+    if (gameController != null)
+    {
+        gameController.FightUI.SetActive(true); // Activate the fight UI in the GameController
+    }
+}
+
 }

@@ -22,8 +22,6 @@ public class Card : MonoBehaviour
     }
 
     // Adds the card to the player's inventory and updates the UI
-    private bool isPickedUp = false;
-
     public void PickUp()
     {
         PlayerData.instance.AddCard(cardName);
