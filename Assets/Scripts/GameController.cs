@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour
     }
 
     // Applies damage to the target and checks for defeat
-    private void Attack(GameObject target, float damage)
+    public void Attack(GameObject target, float damage)
     {
         if (target == Enemy)
         {
@@ -54,7 +54,7 @@ public class GameController : MonoBehaviour
     }
 
     // Heals the target by a specified amount
-    private void Heal(GameObject target, float amount)
+    public void Heal(GameObject target, float amount)
     {
         if (target == Enemy)
         {
@@ -152,6 +152,7 @@ public class GameController : MonoBehaviour
         else if (target == Player)
         {
             resultText.text = "You Lose!";
+            
         }
     }
 }
