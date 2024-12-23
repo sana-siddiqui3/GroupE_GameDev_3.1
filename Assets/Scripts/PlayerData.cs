@@ -36,6 +36,22 @@ public class PlayerData : MonoBehaviour
         }
     }
 
+    // Method to remove a card from the inventory
+    public void RemoveCard(string card)
+    {
+        if (cardInventory.Contains(card))
+        {
+            cardInventory.Remove(card);
+            // Optionally update the inventory display if you have one
+            PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
+            if (playerInventory != null)
+            {
+                playerInventory.UpdateInventoryDisplay();
+            }
+        }
+    }
+
+
     // Method to add a key
     public void AddKey()
     {

@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private Button attackBtn = null;
     [SerializeField] private Button healBtn = null;
     [SerializeField] private TextMeshProUGUI resultText = null;  
+    public GameObject cardUIPrefab; 
+    public GameObject cardPanel; 
 
     private bool isPlayerTurn = true;
     private bool isGameOver = false;  
@@ -26,6 +28,44 @@ public class GameController : MonoBehaviour
     {
         FightUI.SetActive(false);  // Ensure FightUI is hidden at the start
         enemyTrigger = FindFirstObjectByType<EnemyTrigger>(); 
+    }
+
+    // Display cards in the fight UI
+    public void DisplayCardsInFightUI()
+    {
+        foreach (Transform child in cardPanel.transform)
+        {
+            Destroy(child.gameObject); // Clear existing cards
+        }
+
+        foreach (string card in PlayerData.instance.cardInventory)
+        {
+            GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
+            CardUI cardUIScript = cardUI.GetComponent<CardUI>();
+            cardUIScript.SetCardName(card);
+
+            // Attach functionality to card click
+            cardUI.GetComponent<Button>().onClick.AddListener(() => UseCard(card));
+        }
+    }
+
+    // Use a card during the fight
+    private void UseCard(string card)
+    {
+        if (card == "Attack")
+        {
+            Attack(Enemy, 20); // Use card for attack
+        }
+        else if (card == "Heal")
+        {
+            Heal(Player, 10); // Use card for heal
+        }
+
+        // Remove card after use
+        PlayerData.instance.RemoveCard(card);
+
+        // Refresh fight UI after card usage
+        DisplayCardsInFightUI();
     }
 
     // Applies damage to the target and checks for defeat

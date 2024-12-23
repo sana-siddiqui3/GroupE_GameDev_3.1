@@ -936,6 +936,8 @@ MonoBehaviour:
   attackBtn: {fileID: 1852276812}
   healBtn: {fileID: 520760837}
   resultText: {fileID: 1512278837}
+  cardUIPrefab: {fileID: 6629284132857209187, guid: ea9241a056490452d98dd1895619d004, type: 3}
+  cardPanel: {fileID: 1411807236}
 --- !u!4 &324871235
 Transform:
   m_ObjectHideFlags: 0
@@ -4225,9 +4227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53cd01b59aa234cb38c46d80c7bbc776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardName: Card1
-  cardUIPrefab: {fileID: 6629284132857209187, guid: ea9241a056490452d98dd1895619d004, type: 3}
-  cardPanel: {fileID: 1411807236}
+  cardName: Attack
   pickupMessageText: {fileID: 1990180797}
 --- !u!65 &1362163307
 BoxCollider:
@@ -5293,9 +5293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53cd01b59aa234cb38c46d80c7bbc776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardName: Card2
-  cardUIPrefab: {fileID: 6629284132857209187, guid: ea9241a056490452d98dd1895619d004, type: 3}
-  cardPanel: {fileID: 1411807236}
+  cardName: Heal
   pickupMessageText: {fileID: 1990180797}
 --- !u!65 &1645663667
 BoxCollider:

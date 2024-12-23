@@ -61,6 +61,18 @@ public class PlayerInventory : MonoBehaviour
         UpdateInventoryDisplay();
     }
 
+    // Remove a card from the inventory
+    public void RemoveCard(string card)
+    {
+        if (cardInventory.Contains(card))
+        {
+            cardInventory.Remove(card);
+            Debug.Log("Removed card: " + card);
+            AdjustInventoryDisplayHeight();
+            UpdateInventoryDisplay();
+        }
+    }
+
     // Print all items (keys and cards) in the inventory
     public void PrintInventory()
     {
