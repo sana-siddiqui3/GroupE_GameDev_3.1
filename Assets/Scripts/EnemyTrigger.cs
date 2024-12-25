@@ -43,10 +43,12 @@ public class EnemyTrigger : MonoBehaviour
     {
         if (isChasingPlayer)
         {
+            Debug.Log("Chasing Player!");
             float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
             if (distanceToPlayer <= chaseDistance && !isEnemyDefeated)
             {
+                Debug.Log("Player Caught!");
                 StartFight(); // Start the fight when the enemy catches the player
             }
         }
