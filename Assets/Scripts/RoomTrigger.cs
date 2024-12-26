@@ -1,6 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 namespace Assets.Scripts
 {
@@ -15,13 +14,32 @@ namespace Assets.Scripts
         private PlayerData inventory;
         private bool playerInRange = false;
 
-        void Start()
+        // Reference to the input action for interaction
+        private PlayerInput controls;
+        private InputAction interactAction;
+
+        void Awake()
         {
-            roomEnterPromptUI.SetActive(false);  // Hide the room enter prompt at start
-            NotEnoughKeysUI.SetActive(false);  // Hide the "not enough keys" UI at start
+            controls = new PlayerInput();
+            interactAction = controls.Player.Interact; // Assuming the action is named Interact
         }
 
-        // Detect when the player enters the trigger area
+        void OnEnable()
+        {
+            controls.Enable(); // Enable the action map
+        }
+
+        void OnDisable()
+        {
+            controls.Disable(); // Disable the action map
+        }
+
+        void Start()
+        {
+            roomEnterPromptUI.SetActive(false);
+            NotEnoughKeysUI.SetActive(false);
+        }
+
         void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
@@ -31,7 +49,6 @@ namespace Assets.Scripts
 
                 keys = inventory.GetKeys();
 
-                // Show appropriate UI based on key count
                 if (keys == 2)
                 {
                     roomEnterPromptUI.SetActive(true);
@@ -43,33 +60,30 @@ namespace Assets.Scripts
             }
         }
 
-        // Detect when the player exits the trigger area
         void OnTriggerExit(Collider other)
         {
             if (other.CompareTag("Player"))
             {
                 playerInRange = false;
-                roomEnterPromptUI.SetActive(false); 
-                NotEnoughKeysUI.SetActive(false); 
+                roomEnterPromptUI.SetActive(false);
+                NotEnoughKeysUI.SetActive(false);
             }
         }
 
-        // Check for player input to enter the room
         void Update()
         {
-            if (playerInRange && Input.GetKeyDown(KeyCode.E) && keys == 2)
+            if (playerInRange && interactAction.triggered && keys == 2)
             {
-                enterRoom(); 
+                EnterRoom();
             }
         }
 
-        // Handles the logic for entering the room
-        void enterRoom()
+        void EnterRoom()
         {
-            Debug.Log("entered new room");  
+            Debug.Log("Entered new room");
 
-            roomEnterPromptUI.SetActive(false);  
-            RoomChangeUI.SetActive(true);  
+            roomEnterPromptUI.SetActive(false);
+            RoomChangeUI.SetActive(true);
         }
     }
 }
