@@ -1,12 +1,32 @@
 using UnityEngine;
 using TMPro;
 
-public class CardUI : MonoBehaviour
-{
-    public TextMeshProUGUI cardNameText; 
 
-    public void SetCardName(string name)
+public class CardUI : MonoBehaviour
+
+{
+
+    public TextMeshProUGUI cardNameText;
+
+
+
+    public void SetCardName(string cardName)
+
     {
-        cardNameText.text = name; // Set the name of the card in the UI
+
+        cardNameText.text = cardName;
+
     }
+
+
+
+    public string GetCardName()
+
+    {
+
+        return cardNameText.text;
+
+    }
+
 }
+
