@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerLook : MonoBehaviour
 {
@@ -9,26 +8,50 @@ public class PlayerLook : MonoBehaviour
 
     public float xSensitivity = 100f;
     public float ySensitivity = 100f;
-    private bool isMouseClicked = false; // Flag to check if the mouse button is clicked
+    private bool isMouseClicked = false;
+
+    private PlayerInput controls;
+    private InputAction mouseLookAction;
+
+    void Awake()
+    {
+        // Get the Input Actions
+        controls = new PlayerInput();
+        mouseLookAction = controls.Player.MouseLook; // Assuming the action is named MouseLook under Player action map
+    }
+
+    void OnEnable()
+    {
+        controls.Enable(); // Enable the action map
+    }
+
+    void OnDisable()
+    {
+        controls.Disable(); // Disable the action map
+    }
 
     void Update()
     {
-        // Check for mouse click
-        if (Input.GetMouseButtonDown(0)) // Left mouse button clicked
+        if (isMouseClicked)
+        {
+            Vector2 input = mouseLookAction.ReadValue<Vector2>(); // Get the mouse delta for movement
+            ProcessLook(input);
+        }
+
+        // Mouse click handling
+        if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             isMouseClicked = true;
         }
 
-        if (Input.GetMouseButtonUp(0)) // Left mouse button released
+        if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
             isMouseClicked = false;
         }
     }
 
-    public void ProcessLook(Vector2 input)
+    private void ProcessLook(Vector2 input)
     {
-        if (!isMouseClicked) return; // Only process look if mouse button is clicked
-
         float mouseX = input.x * xSensitivity * Time.deltaTime;
         float mouseY = input.y * ySensitivity * Time.deltaTime;
 
