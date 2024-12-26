@@ -43,12 +43,10 @@ public class EnemyTrigger : MonoBehaviour
     {
         if (isChasingPlayer)
         {
-            Debug.Log("Chasing Player!");
             float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
             if (distanceToPlayer <= chaseDistance && !isEnemyDefeated)
             {
-                Debug.Log("Player Caught!");
                 StartFight(); // Start the fight when the enemy catches the player
             }
         }
@@ -71,8 +69,6 @@ public class EnemyTrigger : MonoBehaviour
     playerView.enabled = false;
     fightView.enabled = true;
 
-    Debug.Log("Fight Started!");
-
     // Stop enemy movement
     enemyController = enemy.GetComponent<EnemyController>(); // Get the EnemyController component
     if (enemyController != null)
@@ -83,7 +79,8 @@ public class EnemyTrigger : MonoBehaviour
     if (gameController != null)
     {
         gameController.FightUI.SetActive(true); // Activate the fight UI in the GameController
-        gameController.DisplayCardsInFightUI();
+        gameController.InitializeDeck();
+        gameController.DrawCards(5);
     }
 }
 

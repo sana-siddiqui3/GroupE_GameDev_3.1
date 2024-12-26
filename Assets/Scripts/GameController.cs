@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -14,61 +15,202 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private Slider PlayerHealth = null;
     [SerializeField] private Slider EnemyHealth = null;
-    [SerializeField] private Button attackBtn = null;
-    [SerializeField] private Button healBtn = null;
-    [SerializeField] private TextMeshProUGUI resultText = null;  
-    public GameObject cardUIPrefab; 
-    public GameObject cardPanel; 
+    public GameObject cardUIPrefab;
+    public GameObject cardPanel;
+
+    [SerializeField] private TextMeshProUGUI resultText = null;
+    [SerializeField] private TextMeshProUGUI energyText = null;
 
     private bool isPlayerTurn = true;
-    private bool isGameOver = false;  
-    private EnemyTrigger enemyTrigger; 
+    private bool isGameOver = false;
 
-    void Start()
+    private int currentEnergy = 3;
+    private const int maxEnergy = 3;
+
+    private List<string> deck = new List<string>();
+    private List<string> discardPile = new List<string>();
+    private List<string> drawnCards = new List<string>();
+
+    private int cardsSelected = 0;
+    private List<string> selectedCards = new List<string>();
+    private List<Button> cardButtons = new List<Button>();
+    [SerializeField] private Button endTurnButton = null;
+
+    public void Start()
     {
-        FightUI.SetActive(false);  // Ensure FightUI is hidden at the start
-        enemyTrigger = FindFirstObjectByType<EnemyTrigger>(); 
+        FightUI.SetActive(false);
+        UpdateEnergyUI();
+        InitializeDeck();
     }
 
-    // Display cards in the fight UI
+    public void InitializeDeck()
+    {
+        if (PlayerData.instance != null)
+        {
+            deck.AddRange(PlayerData.instance.cardInventory);
+        }
+        else
+        {
+            Debug.LogError("PlayerData.instance is null. Unable to initialize deck.");
+        }
+        ShuffleDeck();
+    }
+
+    private void ShuffleDeck()
+    {
+        for (int i = 0; i < deck.Count; i++)
+        {
+            string temp = deck[i];
+            int randomIndex = Random.Range(0, deck.Count);
+            deck[i] = deck[randomIndex];
+            deck[randomIndex] = temp;
+        }
+    }
+
+    public void DrawCards(int count)
+    {
+        drawnCards.Clear();
+
+        for (int i = 0; i < count; i++)
+        {
+            if (deck.Count == 0)
+            {
+                deck.AddRange(discardPile);
+                discardPile.Clear();
+                ShuffleDeck();
+            }
+
+            if (deck.Count > 0)
+            {
+                string drawnCard = deck[0];
+                drawnCards.Add(drawnCard);
+                deck.RemoveAt(0);
+            }
+        }
+
+        DisplayCardsInFightUI();
+    }
+
     public void DisplayCardsInFightUI()
     {
         foreach (Transform child in cardPanel.transform)
         {
-            Destroy(child.gameObject); // Clear existing cards
+            Destroy(child.gameObject);
         }
 
-        foreach (string card in PlayerData.instance.cardInventory)
+        cardButtons.Clear();
+
+        foreach (string card in drawnCards)
         {
             GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
             CardUI cardUIScript = cardUI.GetComponent<CardUI>();
             cardUIScript.SetCardName(card);
 
-            // Attach functionality to card click
-            cardUI.GetComponent<Button>().onClick.AddListener(() => UseCard(card));
+            Button cardButton = cardUI.GetComponent<Button>();
+            cardButtons.Add(cardButton);
+
+            cardButton.onClick.AddListener(() => SelectCard(card));
         }
     }
 
-    // Use a card during the fight
-    private void UseCard(string card)
+    private void SelectCard(string card)
+    {
+        if (cardsSelected < 3 && currentEnergy > 0)
+        {
+            selectedCards.Add(card);
+            cardsSelected++;
+            currentEnergy--;
+            UpdateEnergyUI();
+            discardPile.Add(card);
+            drawnCards.Remove(card);
+
+            ApplyCardEffect(card);
+        }
+    }
+
+    public void PlayerEndTurn()
+    {
+        if (isPlayerTurn && !isGameOver)
+        {
+            EndTurn();
+        }
+    }
+
+
+    private void ApplyCardEffect(string card)
     {
         if (card == "Attack")
         {
-            Attack(Enemy, 20); // Use card for attack
+            Attack(Enemy, 10);
         }
         else if (card == "Heal")
         {
-            Heal(Player, 10); // Use card for heal
+            Heal(Player, 10);
         }
 
-        // Remove card after use
-        PlayerData.instance.RemoveCard(card);
-
-        // Refresh fight UI after card usage
-        DisplayCardsInFightUI();
+        DisplayCardsInFightUI();  // Refresh the UI
     }
 
-    // Applies damage to the target and checks for defeat
+
+    private void ResetTurn()
+    {
+        selectedCards.Clear();
+        cardsSelected = 0;
+    }
+
+    private void EndTurn()
+    {
+        ResetTurn();
+        // Add all drawn cards to the discard pile at the end of the turn
+        discardPile.AddRange(drawnCards);  
+        LogDeckAndDiscardState(); // Log the state of the deck and discard pile
+        changeTurn();
+    }
+
+    private void changeTurn()
+    {
+        if (isGameOver) return;
+
+        isPlayerTurn = !isPlayerTurn;
+
+        endTurnButton.interactable = isPlayerTurn;
+
+        if (!isPlayerTurn)
+        {
+            StartCoroutine(EnemyTurn());
+        }
+        else
+        {
+            currentEnergy = maxEnergy;
+            UpdateEnergyUI();
+            DrawCards(5);
+        }
+    }
+
+    private IEnumerator EnemyTurn()
+    {
+        if (isGameOver) yield break;
+
+        yield return new WaitForSeconds(3);
+
+        int random = Random.Range(1, 3);
+
+        if (random == 1)
+        {
+            Attack(Player, 20);
+            Heal(Enemy, 5);
+        }
+        else
+        {
+            Attack(Player, 10);
+            Heal(Enemy, 10);
+        }
+
+        currentEnergy = maxEnergy;
+        UpdateEnergyUI();
+        changeTurn();
+    }
+
     public void Attack(GameObject target, float damage)
     {
         if (target == Enemy)
@@ -76,7 +218,7 @@ public class GameController : MonoBehaviour
             EnemyHealth.value -= damage;
             if (EnemyHealth.value <= 0)
             {
-                EnemyHealth.value = 0; 
+                EnemyHealth.value = 0;
                 FallOver(target);
             }
         }
@@ -85,15 +227,12 @@ public class GameController : MonoBehaviour
             PlayerHealth.value -= damage;
             if (PlayerHealth.value <= 0)
             {
-                PlayerHealth.value = 0;  
+                PlayerHealth.value = 0;
                 FallOver(target);
             }
         }
-
-        changeTurn();  
     }
 
-    // Heals the target by a specified amount
     public void Heal(GameObject target, float amount)
     {
         if (target == Enemy)
@@ -104,95 +243,36 @@ public class GameController : MonoBehaviour
         {
             PlayerHealth.value += amount;
         }
-
-        changeTurn();  
     }
 
-    // Called when the player clicks the attack button
-    public void BtnAttack()
-    {
-        Attack(Enemy, 10);
-    }
-
-    // Called when the player clicks the heal button
-    public void BtnHeal()
-    {
-        Heal(Player, 5);
-    }
-
-    // Switches between player and enemy turns
-    private void changeTurn()
-    {
-        if (isGameOver)
-            return;
-
-        isPlayerTurn = !isPlayerTurn;
-
-        if (!isPlayerTurn)
-        {
-            attackBtn.interactable = false;
-            healBtn.interactable = false;
-
-            StartCoroutine(EnemyTurn());  
-        }
-        else
-        {
-            attackBtn.interactable = true;
-            healBtn.interactable = true;
-        }
-    }
-
-    // Handles the enemy's turn actions
-    private IEnumerator EnemyTurn()
-    {
-        if (isGameOver)
-        {
-            yield break;  // Stop enemy turn if the game is over
-        }
-
-        yield return new WaitForSeconds(3); 
-
-        int random = Random.Range(1, 3);
-
-        if (random == 1)
-        {
-            Attack(Player, 12);  
-        }
-        else
-        {
-            Heal(Enemy, 3);  
-        }
-    }
-
-    // Handles the outcome when a character is defeated
     private void FallOver(GameObject target)
     {
-        target.transform.Rotate(new Vector3(90f, 0f, 0f));  // Rotate the defeated character
+        target.transform.Rotate(new Vector3(90f, 0f, 0f));
+        isGameOver = true;
 
-        attackBtn.interactable = false;
-        healBtn.interactable = false;
-
-        isGameOver = true; 
-
-        // Display win/lose message
         if (target == Enemy)
         {
             resultText.text = "You Win!";
             fightView.enabled = false;
             playerView.enabled = true;
-
             FightUI.SetActive(false);
-
-            // Let EnemyTrigger know the enemy is defeated
-            if (enemyTrigger != null)
-            {
-                enemyTrigger.isEnemyDefeated = true;
-            }
+            Enemy.GetComponent<EnemyTrigger>().isEnemyDefeated = true;
         }
         else if (target == Player)
         {
             resultText.text = "You Lose!";
-            
         }
+    }
+
+    private void UpdateEnergyUI()
+    {
+        energyText.text = $"Energy: {currentEnergy}/{maxEnergy}";
+    }
+
+    // Debugging: Log deck and discard pile state at the end of each turn
+    private void LogDeckAndDiscardState()
+    {
+        Debug.Log($"Deck: {string.Join(", ", deck)}");
+        Debug.Log($"Discard Pile: {string.Join(", ", discardPile)}");
     }
 }

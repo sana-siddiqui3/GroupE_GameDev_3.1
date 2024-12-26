@@ -106,13 +106,11 @@ public class EnemyController : MonoBehaviour
     {
         if (roomCollider == null)
         {
-            Debug.LogError("Room collider is not assigned.");
             return false;
         }
 
         if (player == null)
         {
-            Debug.LogError("Player transform is not assigned.");
             return false;
         }
 
