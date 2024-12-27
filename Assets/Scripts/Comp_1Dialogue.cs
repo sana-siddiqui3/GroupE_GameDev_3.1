@@ -1,65 +1,81 @@
 using UnityEngine;
+using UnityEngine.InputSystem; // Add this line for the new input system
 using System.Collections;
 
 public class CompanionTrigger : MonoBehaviour
 {
-    public GameObject dialoguePromptUI;  
-    public GameObject dialogueUI;       
+    public GameObject dialoguePromptUI;
+    public GameObject dialogueUI;
     public GameObject player;
 
-    private bool playerInRange = false; 
+    private bool playerInRange = false;
+
+    // Reference to Input Actions
+    private PlayerInput controls;
+    private InputAction interactAction;
+
+    void Awake()
+    {
+        // Get the input actions from the PlayerControls asset
+        controls = new PlayerInput();
+        interactAction = controls.Player.Interact;  // Interact action
+    }
+
+    void OnEnable()
+    {
+        controls.Enable(); // Enable the input actions
+    }
+
+    void OnDisable()
+    {
+        controls.Disable(); // Disable the input actions
+    }
 
     void Start()
     {
-        // Ensure UIs are hidden initially
         dialoguePromptUI.SetActive(false);
         dialogueUI.SetActive(false);
     }
 
-    // Detect when the player enters the interaction zone
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            dialoguePromptUI.SetActive(true); // Show the prompt
+            dialoguePromptUI.SetActive(true);
         }
     }
 
-    // Detect when the player leaves the interaction zone
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            dialoguePromptUI.SetActive(false);  // Hide the prompt
+            dialoguePromptUI.SetActive(false);
         }
     }
 
-    // Check if the player presses the Enter while in range
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.Return))
+        // Check for interaction input when the player is in range
+        if (playerInRange && interactAction.triggered)
         {
             TriggerDialogue();
         }
     }
 
-    // Show the dialogue when the player interacts
     void TriggerDialogue()
     {
-        dialoguePromptUI.SetActive(false);  
-        dialogueUI.SetActive(true);         
+        dialoguePromptUI.SetActive(false);
+        dialogueUI.SetActive(true);
         Debug.Log("Dialogue triggered with the companion.");
-
         StartCoroutine(HideDialogueAfterDelay());
     }
 
-    // Coroutine to hide the dialogue UI after 3 seconds
     IEnumerator HideDialogueAfterDelay()
     {
-        yield return new WaitForSeconds(3);  
-        dialogueUI.SetActive(false);        
+        yield return new WaitForSeconds(3);
+        dialogueUI.SetActive(false);
         Debug.Log("Dialogue hidden.");
     }
 }

@@ -104,11 +104,19 @@ public class EnemyController : MonoBehaviour
     // Checks if the player is inside the room area
     bool IsPlayerInsideRoom()
     {
-        // Get the closest point on the room collider's bounds to the player
-        Vector3 closestPoint = roomCollider.ClosestPoint(player.position);
+        if (roomCollider == null)
+        {
+            return false;
+        }
 
-        // Check if the closest point is inside the room collider's bounds
-        bool isInside = roomCollider.bounds.Contains(closestPoint);
+        if (player == null)
+        {
+            return false;
+        }
+
+        // Check if the player's position is inside the room collider's bounds
+        bool isInside = roomCollider.bounds.Contains(player.position);
+
         return isInside;
     }
 
@@ -133,5 +141,17 @@ public class EnemyController : MonoBehaviour
     public void ResumeEnemy()
     {
         isStopped = false;
+    }
+
+    void OnDrawGizmos()
+    {
+        if (roomCollider != null)
+        {
+            // Set Gizmo color
+            Gizmos.color = Color.green;
+
+            // Draw a wireframe box around the collider bounds
+            Gizmos.DrawWireCube(roomCollider.bounds.center, roomCollider.bounds.size);
+        }
     }
 }
