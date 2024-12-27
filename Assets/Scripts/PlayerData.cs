@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerData : MonoBehaviour
@@ -25,6 +25,30 @@ public class PlayerData : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        // Initialize the player's card inventory with 10 starting cards
+        InitializeStartingCards();
+    }
+
+    // Method to initialize the starting cards (10 cards)
+    private void InitializeStartingCards()
+    {
+        // Add 10 predefined cards to the cardInventory
+        cardInventory.Add("Attack");
+        cardInventory.Add("Attack");
+        cardInventory.Add("Attack");
+        cardInventory.Add("Heal");
+        cardInventory.Add("Heal");
+        cardInventory.Add("Attack");
+        cardInventory.Add("Attack");
+        cardInventory.Add("Attack");
+        cardInventory.Add("Heal");
+        cardInventory.Add("Heal");
+
+        // You can adjust these cards as needed
+    }
+
     // Method to add a card to the inventory
     public void AddCard(string card)
     {
@@ -42,7 +66,6 @@ public class PlayerData : MonoBehaviour
         if (cardInventory.Contains(card))
         {
             cardInventory.Remove(card);
-            // Optionally update the inventory display if you have one
             PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
             if (playerInventory != null)
             {
@@ -50,7 +73,6 @@ public class PlayerData : MonoBehaviour
             }
         }
     }
-
 
     // Method to add a key
     public void AddKey()

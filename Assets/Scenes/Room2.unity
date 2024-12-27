@@ -2505,9 +2505,11 @@ MonoBehaviour:
   Enemy: {fileID: 0}
   PlayerHealth: {fileID: 0}
   EnemyHealth: {fileID: 0}
-  attackBtn: {fileID: 0}
-  healBtn: {fileID: 0}
+  cardUIPrefab: {fileID: 0}
+  cardPanel: {fileID: 0}
   resultText: {fileID: 0}
+  energyText: {fileID: 1838125753}
+  endTurnButton: {fileID: 1068375159}
 --- !u!4 &390375351
 Transform:
   m_ObjectHideFlags: 0
@@ -3677,7 +3679,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &570439355
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4166,7 +4168,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &649737510
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4184,6 +4186,8 @@ RectTransform:
   - {fileID: 36359191}
   - {fileID: 1762211324}
   - {fileID: 449048851}
+  - {fileID: 1838125752}
+  - {fileID: 1068375158}
   m_Father: {fileID: 1062691747}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5198,7 +5202,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &812520801
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6027,7 +6031,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1062691744
 MonoBehaviour:
   m_ObjectHideFlags: 0
