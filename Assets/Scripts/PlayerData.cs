@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerData : MonoBehaviour
 {
     public static PlayerData instance;
+    public float playerHealth = 100f;
 
     // Player's inventory and key count
     public List<string> cardInventory = new List<string>();
@@ -34,6 +35,11 @@ public class PlayerData : MonoBehaviour
     // Method to initialize the starting cards (10 cards)
     private void InitializeStartingCards()
     {
+        if (cardInventory == null)
+        {
+            cardInventory = new List<string>();
+        }
+
         // Add 10 predefined cards to the cardInventory
         cardInventory.Add("Attack");
         cardInventory.Add("Attack");
@@ -46,17 +52,26 @@ public class PlayerData : MonoBehaviour
         cardInventory.Add("Heal");
         cardInventory.Add("Heal");
 
-        // You can adjust these cards as needed
+        Debug.Log("Starting cards initialized: " + string.Join(", ", cardInventory));
+    }
+
+    public void SavePlayerHealth(float health)
+    {
+        playerHealth = Mathf.Clamp(health, 0, 100); // Ensure health stays between 0 and 100
     }
 
     // Method to add a card to the inventory
     public void AddCard(string card)
     {
         cardInventory.Add(card);
-        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();  
+        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerInventory>();  
         if (playerInventory != null)
         {
             playerInventory.UpdateInventoryDisplay(); 
+        }
+        else
+        {
+            Debug.LogError("PlayerInventory not found!");
         }
     }
 
@@ -66,10 +81,14 @@ public class PlayerData : MonoBehaviour
         if (cardInventory.Contains(card))
         {
             cardInventory.Remove(card);
-            PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
+            PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerInventory>();
             if (playerInventory != null)
             {
                 playerInventory.UpdateInventoryDisplay();
+            }
+            else
+            {
+                Debug.LogError("PlayerInventory not found!");
             }
         }
     }
@@ -78,10 +97,14 @@ public class PlayerData : MonoBehaviour
     public void AddKey()
     {
         keysCollected++;
-        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>(); 
+        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerInventory>(); 
         if (playerInventory != null)
         {
             playerInventory.UpdateInventoryDisplay();  
+        }
+        else
+        {
+            Debug.LogError("PlayerInventory not found!");
         }
     }
 

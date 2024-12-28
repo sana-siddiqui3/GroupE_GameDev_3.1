@@ -36,7 +36,6 @@ public class GameController : MonoBehaviour
     private List<Button> cardButtons = new List<Button>();
     [SerializeField] private Button endTurnButton = null;
 
-
     public GameObject fightPromptUI; // UI element that shows when the player can fight
     public GameObject fightUI;      // UI element for the fight screen
     public GameObject player;       // Reference to the player object
@@ -50,9 +49,17 @@ public class GameController : MonoBehaviour
         FightUI.SetActive(false);
         UpdateEnergyUI();
         InitializeDeck();
+
+        // Load player health from PlayerData
+        if (PlayerData.instance != null)
+        {
+            PlayerHealth.maxValue = 100; // Set max health
+            PlayerHealth.value = PlayerData.instance.playerHealth; // Set current health
+        }
     }
 
-    public void StartFight(){
+    public void StartFight()
+    {
         // Hide the fight prompt and show the fight UI
         fightPromptUI.SetActive(false);
         fightUI.SetActive(true);
@@ -75,11 +82,9 @@ public class GameController : MonoBehaviour
             enemyController.StopEnemy(); // Stop the enemy's movement
         }
 
-        
         FightUI.SetActive(true); // Activate the fight UI in the GameController
         InitializeDeck();
         DrawCards(5);
-        
     }
 
     public void InitializeDeck()
@@ -88,10 +93,7 @@ public class GameController : MonoBehaviour
         {
             deck.AddRange(PlayerData.instance.cardInventory);
         }
-        else
-        {
-            Debug.LogError("PlayerData.instance is null. Unable to initialize deck.");
-        }
+
         ShuffleDeck();
     }
 
@@ -175,7 +177,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-
     private void ApplyCardEffect(string card)
     {
         if (card == "Attack")
@@ -190,7 +191,6 @@ public class GameController : MonoBehaviour
         DisplayCardsInFightUI();  // Refresh the UI
     }
 
-
     private void ResetTurn()
     {
         selectedCards.Clear();
@@ -200,9 +200,8 @@ public class GameController : MonoBehaviour
     private void EndTurn()
     {
         ResetTurn();
-        // Add all drawn cards to the discard pile at the end of the turn
-        discardPile.AddRange(drawnCards);  
-        LogDeckAndDiscardState(); // Log the state of the deck and discard pile
+        discardPile.AddRange(drawnCards);  // Add all drawn cards to the discard pile
+        LogDeckAndDiscardState();
         changeTurn();
     }
 
@@ -264,6 +263,12 @@ public class GameController : MonoBehaviour
         else
         {
             PlayerHealth.value -= damage;
+
+            if (PlayerData.instance != null)
+            {
+                PlayerData.instance.SavePlayerHealth(PlayerHealth.value); // Save updated health
+            }
+
             if (PlayerHealth.value <= 0)
             {
                 PlayerHealth.value = 0;
@@ -281,6 +286,11 @@ public class GameController : MonoBehaviour
         else
         {
             PlayerHealth.value += amount;
+
+            if (PlayerData.instance != null)
+            {
+                PlayerData.instance.SavePlayerHealth(PlayerHealth.value); // Save updated health
+            }
         }
     }
 
