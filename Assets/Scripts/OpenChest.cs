@@ -4,7 +4,7 @@ using UnityEngine.InputSystem; // Add this line for the new input system
 
 public class Chest : MonoBehaviour
 {
-    public EnemyTrigger enemyTrigger;
+    public EnemyController enemyTrigger;
 
     private bool isOpen = false;
     private bool playerInRange = false;

@@ -36,11 +36,50 @@ public class GameController : MonoBehaviour
     private List<Button> cardButtons = new List<Button>();
     [SerializeField] private Button endTurnButton = null;
 
+
+    public GameObject fightPromptUI; // UI element that shows when the player can fight
+    public GameObject fightUI;      // UI element for the fight screen
+    public GameObject player;       // Reference to the player object
+    public GameObject enemy;        // Reference to the enemy object
+    public Transform playerFightPosition; // Predefined player position for the fight
+    public Transform enemyFightPosition;  // Predefined enemy position for the fight
+    private EnemyController enemyController; // Reference to the EnemyController script
+
     public void Start()
     {
         FightUI.SetActive(false);
         UpdateEnergyUI();
         InitializeDeck();
+    }
+
+    public void StartFight(){
+        // Hide the fight prompt and show the fight UI
+        fightPromptUI.SetActive(false);
+        fightUI.SetActive(true);
+
+        // Reset the player's and enemy's positions to predefined fight positions
+        player.transform.position = playerFightPosition.position;
+        player.transform.rotation = playerFightPosition.rotation;
+
+        enemy.transform.position = enemyFightPosition.position;
+        enemy.transform.rotation = enemyFightPosition.rotation;
+
+        // Switch cameras to the fight view
+        playerView.enabled = false;
+        fightView.enabled = true;
+
+        // Stop enemy movement
+        enemyController = enemy.GetComponent<EnemyController>(); // Get the EnemyController component
+        if (enemyController != null)
+        {
+            enemyController.StopEnemy(); // Stop the enemy's movement
+        }
+
+        
+        FightUI.SetActive(true); // Activate the fight UI in the GameController
+        InitializeDeck();
+        DrawCards(5);
+        
     }
 
     public void InitializeDeck()
@@ -256,7 +295,7 @@ public class GameController : MonoBehaviour
             fightView.enabled = false;
             playerView.enabled = true;
             FightUI.SetActive(false);
-            Enemy.GetComponent<EnemyTrigger>().isEnemyDefeated = true;
+            Enemy.GetComponent<EnemyController>().isEnemyDefeated = true;
         }
         else if (target == Player)
         {

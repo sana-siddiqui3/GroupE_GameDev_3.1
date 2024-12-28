@@ -12,9 +12,13 @@ public class EnemyController : MonoBehaviour
 
     private bool isStopped = false;  // Flag to stop the enemy's movement
     private Animator animator;  // Reference to Animator
+    private float chaseDistance = 2f;    // Distance at which the enemy catches the player
+    public bool isEnemyDefeated = false; // Flag to indicate if the enemy is defeated
+    private GameController gameController;
 
     void Start()
     {
+        gameController = FindFirstObjectByType<GameController>();
         animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;  // Get the player
         roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>();  // Get the room area collider
@@ -65,6 +69,15 @@ public class EnemyController : MonoBehaviour
 
         // Rotate to face the target position
         RotateTowards(targetPosition);
+
+        
+        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+
+        if (distanceToPlayer <= chaseDistance && !isEnemyDefeated)
+        {
+            gameController.StartFight();// Start the fight when the enemy catches the player
+        }
+        
     }
 
     void RotateTowards(Vector3 targetPosition)
