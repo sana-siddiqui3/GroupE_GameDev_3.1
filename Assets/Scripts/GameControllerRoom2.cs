@@ -12,6 +12,7 @@ public class GameControllerRoom2 : MonoBehaviour
 
     [SerializeField] private GameObject Player = null;
     [SerializeField] private GameObject Enemy = null;
+    [SerializeField] private GameObject Enemy2 = null;
 
     [SerializeField] private Slider PlayerHealth = null;
     [SerializeField] private Slider EnemyHealth = null;
@@ -35,14 +36,9 @@ public class GameControllerRoom2 : MonoBehaviour
     private List<string> selectedCards = new List<string>();
     private List<Button> cardButtons = new List<Button>();
     [SerializeField] private Button endTurnButton = null;
-
-    public GameObject fightPromptUI; // UI element that shows when the player can fight
-    public GameObject fightUI;      // UI element for the fight screen
-    public GameObject player;       // Reference to the player object
-    public GameObject enemy;        // Reference to the enemy object
     public Transform playerFightPosition; // Predefined player position for the fight
     public Transform enemyFightPosition;  // Predefined enemy position for the fight
-    private EnemyController enemyController; // Reference to the EnemyController script
+    public Transform enemyFightPosition2;
 
     public void Start()
     {
@@ -61,26 +57,21 @@ public class GameControllerRoom2 : MonoBehaviour
     public void StartFight()
     {
         // Hide the fight prompt and show the fight UI
-        fightPromptUI.SetActive(false);
-        fightUI.SetActive(true);
+        FightUI.SetActive(true);
 
         // Reset the player's and enemy's positions to predefined fight positions
-        player.transform.position = playerFightPosition.position;
-        player.transform.rotation = playerFightPosition.rotation;
+        Player.transform.position = playerFightPosition.position;
+        Player.transform.rotation = playerFightPosition.rotation;
 
-        enemy.transform.position = enemyFightPosition.position;
-        enemy.transform.rotation = enemyFightPosition.rotation;
+        Enemy.transform.position = enemyFightPosition.position;
+        Enemy.transform.rotation = enemyFightPosition.rotation;
+
+        Enemy2.transform.position = enemyFightPosition2.position;
+        Enemy2.transform.rotation = enemyFightPosition2.rotation;
 
         // Switch cameras to the fight view
         playerView.enabled = false;
         fightView.enabled = true;
-
-        // Stop enemy movement
-        enemyController = enemy.GetComponent<EnemyController>(); // Get the EnemyController component
-        if (enemyController != null)
-        {
-            enemyController.StopEnemy(); // Stop the enemy's movement
-        }
 
         FightUI.SetActive(true); // Activate the fight UI in the GameController
         InitializeDeck();
@@ -190,6 +181,7 @@ public class GameControllerRoom2 : MonoBehaviour
 
         DisplayCardsInFightUI();  // Refresh the UI
     }
+
 
     private void ResetTurn()
     {
@@ -305,7 +297,7 @@ public class GameControllerRoom2 : MonoBehaviour
             fightView.enabled = false;
             playerView.enabled = true;
             FightUI.SetActive(false);
-            Enemy.GetComponent<EnemyController>().isEnemyDefeated = true;
+            Enemy.GetComponent<GhostEnemyController>().isEnemyDefeated = true;
         }
         else if (target == Player)
         {
