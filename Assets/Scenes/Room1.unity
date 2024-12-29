@@ -6577,6 +6577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd16c686edf4e594eb65d89460c6d726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHealth: 100
   cardInventory: []
   keysCollected: 0
   totalKeysRequired: 2

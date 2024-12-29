@@ -12,13 +12,17 @@ public class GhostEnemyController : MonoBehaviour
 
     private float chaseDistance = 0.1f; // Distance at which the ghost catches the player
     public bool isEnemyDefeated = false; // Flag to indicate if the ghost is defeated
-    private GameController gameController;
+    private GameControllerRoom2 gameController;
 
     private bool hasStartedFight = false; // Flag to ensure the fight only starts once
+    public Camera playerView;
+    public Camera fightView;
 
     void Start()
     {
-        gameController = FindFirstObjectByType<GameController>();
+        playerView.enabled = true;
+        fightView.enabled = false;
+        gameController = FindFirstObjectByType<GameControllerRoom2>();
         player = GameObject.FindGameObjectWithTag("Player").transform; // Get the player
         roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>(); // Get the room area collider
     }
