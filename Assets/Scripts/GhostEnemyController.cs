@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GhostEnemyController : MonoBehaviour
@@ -10,15 +12,22 @@ public class GhostEnemyController : MonoBehaviour
     private Transform player; // Reference to the player's transform
     private Collider roomCollider; // The room area collider
 
-    private float chaseDistance = 0.1f; // Distance at which the ghost catches the player
+    private float chaseDistance = 2.5f; // Distance at which the ghost catches the player
     public bool isEnemyDefeated = false; // Flag to indicate if the ghost is defeated
-    private GameController gameController;
+    private GameControllerRoom2 gameController;
 
-    private bool hasStartedFight = false; // Flag to ensure the fight only starts once
+    public bool hasStartedFight = false; // Flag to ensure the fight only starts once
+    public Camera playerView;
+    public Camera fightView;
+
+    public Transform enemyFightPosition; // The position where the ghost should go for the fight
+    public Transform playerFightPosition; // The position where the player should go for the fight
 
     void Start()
     {
-        gameController = FindFirstObjectByType<GameController>();
+        playerView.enabled = true;
+        fightView.enabled = false;
+        gameController = FindFirstObjectByType<GameControllerRoom2>();
         player = GameObject.FindGameObjectWithTag("Player").transform; // Get the player
         roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>(); // Get the room area collider
     }
@@ -26,13 +35,18 @@ public class GhostEnemyController : MonoBehaviour
     void Update()
     {
         // Check if the ghost is defeated
-        if (isEnemyDefeated) return;
+        if (isEnemyDefeated)
+        {
+            // Make the ghost disappear
+            gameObject.SetActive(false); // Disables the ghost GameObject
+            return; // Exit the update method, no need to process movement or behavior
+        }
 
         bool playerInsideRoom = IsPlayerInsideRoom();
 
         // Determine the target position and handle movement
         Vector3 targetPosition;
-        if (playerInsideRoom)
+        if (playerInsideRoom && !hasStartedFight)
         {
             if (!isFollowingPlayer)
             {
@@ -57,11 +71,14 @@ public class GhostEnemyController : MonoBehaviour
             }
         }
 
-        // Move towards the target position
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        // Move towards the target position if the fight hasn't started
+        if (!hasStartedFight)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
-        // Rotate to face the target position
-        RotateTowards(targetPosition);
+            // Rotate to face the target position
+            RotateTowards(targetPosition);
+        }
 
         // Check distance to player
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
@@ -70,9 +87,23 @@ public class GhostEnemyController : MonoBehaviour
         if (distanceToPlayer <= chaseDistance && !isEnemyDefeated && !hasStartedFight)
         {
             Debug.Log("Ghost caught the player!");
-            gameController.StartFight(); // Start the fight when the ghost catches the player
-            hasStartedFight = true; // Set the flag to prevent calling StartFight again
+            StartBattle();
         }
+    }
+
+    void StartBattle()
+    {
+        hasStartedFight = true; // Prevent multiple triggers
+
+        // Move the ghost and player to their fight positions
+        transform.position = enemyFightPosition.position;
+        transform.rotation = enemyFightPosition.rotation;
+
+        player.transform.position = playerFightPosition.position;
+        player.transform.rotation = playerFightPosition.rotation;
+
+        // Trigger the fight in the GameController
+        gameController.StartFight();
     }
 
     void RotateTowards(Vector3 targetPosition)
@@ -86,8 +117,11 @@ public class GhostEnemyController : MonoBehaviour
         // If there is a significant direction change, apply rotation
         if (direction.magnitude > 0.1f)
         {
+            // Create a rotation that points towards the target
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * moveSpeed);
+
+            // Preserve the X rotation from the current rotation while applying the Y rotation
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, lookRotation.eulerAngles.y, transform.rotation.eulerAngles.z);
         }
     }
 
