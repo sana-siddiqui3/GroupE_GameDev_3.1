@@ -15,7 +15,9 @@ public class MainMenuController : MonoBehaviour
     // This method will be called when the Options button is pressed
     public void OpenOptions()
     {
-        Debug.Log("Options menu opened."); // Placeholder
+        // Load the options menu scene
+        SceneManager.LoadScene("OptionsMenu");
+        Debug.Log("Options menu opened.");
     }
 
     // This method will be called when the Quit button is pressed
