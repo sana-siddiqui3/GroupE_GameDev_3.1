@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
     public Transform[] patrolPoints;  // Array to hold the patrol points
-    public int targetPointIndex = 0;  // Index of the current target point
+    public int targetPointIndex = 0;  // Index of the current patrol point
 
     public float moveSpeed = 5f;  // Speed at which the enemy moves
     public bool isFollowingPlayer = false;  // Flag to indicate if the enemy should follow the player
@@ -12,9 +13,10 @@ public class EnemyController : MonoBehaviour
 
     private bool isStopped = false;  // Flag to stop the enemy's movement
     private Animator animator;  // Reference to Animator
-    private float chaseDistance = 2f;    // Distance at which the enemy catches the player
     public bool isEnemyDefeated = false; // Flag to indicate if the enemy is defeated
     private GameController gameController;
+
+    private NavMeshAgent navMeshAgent;  // Reference to the NavMeshAgent
 
     void Start()
     {
@@ -22,115 +24,93 @@ public class EnemyController : MonoBehaviour
         animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;  // Get the player
         roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>();  // Get the room area collider
+        navMeshAgent = GetComponent<NavMeshAgent>();  // Get the NavMeshAgent component
+
+        // Set up NavMeshAgent
+        navMeshAgent.speed = moveSpeed;  // Set the speed
+        navMeshAgent.updateRotation = false;  // Disable automatic rotation (we'll handle rotation manually)
     }
 
     void Update()
     {
+        if (isEnemyDefeated)
+        {
+            // If the enemy is defeated, make it disappear
+            Disappear();
+            return;  // Exit the update method to stop further behavior
+        }
+
         animator.SetBool("isWalking", true); // Start walking animation
 
         // Check if the enemy is stopped
         if (isStopped)
         {
             animator.SetBool("isWalking", false);
+            navMeshAgent.isStopped = true;  // Stop the NavMeshAgent's movement
             return;  // Exit the update method if the enemy is stopped
-        }
-
-        bool playerInsideRoom = IsPlayerInsideRoom();
-
-        // Determine the target position and handle movement
-        Vector3 targetPosition;
-        if (playerInsideRoom)
-        {
-            if (!isFollowingPlayer)
-            {
-                isFollowingPlayer = true;  // Start following the player if inside room
-            }
-
-            // Target is the player's position (constrained to X and Z axes)
-            targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
         }
         else
         {
-            isFollowingPlayer = false;  // Stop following the player
+            navMeshAgent.isStopped = false;  // Ensure the NavMeshAgent is active
+        }
 
+        Vector3 targetPosition;
+
+        if (isFollowingPlayer || IsPlayerInsideRoom())  // Continue following if already chasing or inside room
+        {
+            isFollowingPlayer = true;  // Always chase after detecting the player
+
+            // Target is the player's position (constrained to X and Z axes)
+            targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
+            navMeshAgent.SetDestination(targetPosition);  // Set the NavMeshAgent's destination
+        }
+        else
+        {
             // Target is the current patrol point (constrained to X and Z axes)
             targetPosition = new Vector3(patrolPoints[targetPointIndex].position.x, transform.position.y, patrolPoints[targetPointIndex].position.z);
+            navMeshAgent.SetDestination(targetPosition);  // Set the NavMeshAgent's destination
 
             // Check if the enemy reached the patrol point
             if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
             {
                 IncreaseTargetIndex();
-                targetPosition = new Vector3(patrolPoints[targetPointIndex].position.x, transform.position.y, patrolPoints[targetPointIndex].position.z);
             }
         }
 
-        // Move towards the target position
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-
-        // Rotate to face the target position
-        RotateTowards(targetPosition);
-
-        
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-
-        if (distanceToPlayer <= chaseDistance && !isEnemyDefeated)
-        {
-            gameController.StartFight();// Start the fight when the enemy catches the player
-        }
-        
+        // Rotate towards the target using the NavMeshAgent's velocity
+        RotateTowards(navMeshAgent.velocity);
     }
 
-    void RotateTowards(Vector3 targetPosition)
+    void RotateTowards(Vector3 velocity)
     {
-        // Calculate the direction to the target
-        Vector3 direction = (targetPosition - transform.position).normalized;
-
-        // Ignore changes in the Y-axis to prevent tilting
-        direction.y = 0;
-
-        // If there is a significant direction change, apply rotation
-        if (direction.magnitude > 0.1f)
+        // If there's velocity, rotate the enemy to face the direction of movement
+        if (velocity.magnitude > 0.1f)
         {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            Quaternion lookRotation = Quaternion.LookRotation(velocity);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * moveSpeed);
         }
     }
 
-    // When the player enters the room area, start following the player
+    // When the player and enemy collide, start the fight
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isEnemyDefeated)
         {
-            isFollowingPlayer = true;  // Start chasing the player
-        }
-    }
-
-    // When the player exits the room area, stop following the player
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isFollowingPlayer = false;  // Stop chasing the player
+            isFollowingPlayer = true;  // Ensure the enemy is chasing
+            gameController.StartFight();  // Trigger the fight
         }
     }
 
     // Checks if the player is inside the room area
     bool IsPlayerInsideRoom()
     {
-        if (roomCollider == null)
-        {
-            return false;
-        }
-
-        if (player == null)
+        if (roomCollider == null || player == null)
         {
             return false;
         }
 
         // Check if the player's position is inside the room collider's bounds
-        bool isInside = roomCollider.bounds.Contains(player.position);
-
-        return isInside;
+        return roomCollider.bounds.Contains(player.position);
     }
 
     void IncreaseTargetIndex()
@@ -154,6 +134,16 @@ public class EnemyController : MonoBehaviour
     public void ResumeEnemy()
     {
         isStopped = false;
+    }
+
+    // Method to handle the disappearance of the enemy when defeated
+    void Disappear()
+    {
+        // You can either disable the enemy's GameObject or destroy it
+        Destroy(gameObject);  // Destroy the enemy GameObject (completely removes it from the scene)
+
+        // Alternatively, to just disable it:
+        // gameObject.SetActive(false);  // This disables the enemy but keeps it in the scene for later reactivation
     }
 
     void OnDrawGizmos()

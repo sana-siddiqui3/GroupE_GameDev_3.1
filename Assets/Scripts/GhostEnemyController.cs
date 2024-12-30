@@ -12,11 +12,11 @@ public class GhostEnemyController : MonoBehaviour
     private Transform player; // Reference to the player's transform
     private Collider roomCollider; // The room area collider
 
-    private float chaseDistance = 0.1f; // Distance at which the ghost catches the player
+    private float chaseDistance = 2.5f; // Distance at which the ghost catches the player
     public bool isEnemyDefeated = false; // Flag to indicate if the ghost is defeated
     private GameControllerRoom2 gameController;
 
-    private bool hasStartedFight = false; // Flag to ensure the fight only starts once
+    public bool hasStartedFight = false; // Flag to ensure the fight only starts once
     public Camera playerView;
     public Camera fightView;
 
@@ -35,7 +35,12 @@ public class GhostEnemyController : MonoBehaviour
     void Update()
     {
         // Check if the ghost is defeated
-        if (isEnemyDefeated) return;
+        if (isEnemyDefeated)
+        {
+            // Make the ghost disappear
+            gameObject.SetActive(false); // Disables the ghost GameObject
+            return; // Exit the update method, no need to process movement or behavior
+        }
 
         bool playerInsideRoom = IsPlayerInsideRoom();
 
@@ -119,7 +124,6 @@ public class GhostEnemyController : MonoBehaviour
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, lookRotation.eulerAngles.y, transform.rotation.eulerAngles.z);
         }
     }
-
 
     // When the player enters the room area, start following the player
     void OnTriggerEnter(Collider other)
