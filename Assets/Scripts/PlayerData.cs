@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class PlayerData : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class PlayerData : MonoBehaviour
     public List<string> cardInventory = new List<string>();
     public int keysCollected = 0;
     public int totalKeysRequired = 2;
+    public string objective = "";
+
+    public TextMeshProUGUI objectiveText;
 
     private void Awake()
     {
@@ -30,6 +34,7 @@ public class PlayerData : MonoBehaviour
     {
         // Initialize the player's card inventory with 10 starting cards
         InitializeStartingCards();
+        setObjective("Get the keys to unlock the door");
     }
 
     // Method to initialize the starting cards (10 cards)
@@ -112,5 +117,24 @@ public class PlayerData : MonoBehaviour
     public int GetKeys()
     {
         return keysCollected;
+    }
+
+    // Method to set the objective
+    public void setObjective(string obj)
+    {
+        objective = obj;
+        setObjectiveText(objective);
+    }
+
+    // Method to retrieve the objective
+    public string getObjective()
+    {
+        return objective;
+    }
+
+    // Method to set the objective text
+    public void setObjectiveText(string text)
+    {
+        objectiveText.text = text;
     }
 }
