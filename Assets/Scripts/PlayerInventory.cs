@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem; // Add this line for the new input system
+using TMPro;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public Text keyCountText;
-    public Text inventoryDisplay;
+    public TextMeshProUGUI keyCountText;
+    public TextMeshProUGUI inventoryDisplay;
 
     private void Start()
     {
