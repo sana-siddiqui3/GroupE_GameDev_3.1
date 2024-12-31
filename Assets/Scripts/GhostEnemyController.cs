@@ -11,8 +11,6 @@ public class GhostEnemyController : MonoBehaviour
     public bool isFollowingPlayer = false;
     private Transform player;
     private Collider roomCollider;
-
-    private float chaseDistance = 2.5f;
     public bool isEnemyDefeated = false;
     private GameControllerRoom2 gameController;
 
@@ -52,6 +50,12 @@ public class GhostEnemyController : MonoBehaviour
 
             targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
         }
+
+        else if (isFollowingPlayer)
+        {
+            targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
+        }
+
         else
         {
             isFollowingPlayer = false;
