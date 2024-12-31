@@ -15,16 +15,20 @@ public class PlayerMotor : MonoBehaviour
     private float gravity = -9.8f;
     private float jumpHeight = 3f;
 
-    public GameObject fightStarted;
+    public GameObject fightStarted; // Reference to fightStarted object
 
     // Reference to Input Actions
     private PlayerInput controls;
     private InputAction moveAction;
     private InputAction jumpAction;
 
+    // Reference to the Animator for walking animation
+    private Animator animator;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>(); // Get the Animator component
         
         // Get the input actions from the PlayerControls asset
         controls = new PlayerInput();
@@ -62,6 +66,11 @@ public class PlayerMotor : MonoBehaviour
             }
             controller.Move(playerVelocity * Time.deltaTime);
         }
+        else
+        {
+            // Stop walking animation during fight
+            animator.SetBool("isWalking", false);  // Ensure walking animation is not active during fight
+        }
 
         // Check if the player presses the jump button
         if (jumpAction.triggered && isGrounded)
@@ -76,6 +85,10 @@ public class PlayerMotor : MonoBehaviour
         // Convert input to world space movement
         moveDirection.x = input.x;
         moveDirection.z = input.y;
+
+        // If the player is moving, set isWalking to true
+        bool isMoving = moveDirection.x != 0f || moveDirection.z != 0f;
+        animator.SetBool("isWalking", isMoving);  // Set the walking animation state
 
         // Move the player
         controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
