@@ -4,66 +4,60 @@ using UnityEngine;
 
 public class GhostEnemyController : MonoBehaviour
 {
-    public Transform[] patrolPoints; // Array to hold the patrol points
-    public int targetPointIndex = 0; // Index of the current target point
+    public Transform[] patrolPoints;
+    public int targetPointIndex = 0;
 
-    public float moveSpeed = 5f; // Speed at which the ghost moves
-    public bool isFollowingPlayer = false; // Flag to indicate if the ghost should follow the player
-    private Transform player; // Reference to the player's transform
-    private Collider roomCollider; // The room area collider
+    public float moveSpeed = 5f;
+    public bool isFollowingPlayer = false;
+    private Transform player;
+    private Collider roomCollider;
 
-    private float chaseDistance = 2.5f; // Distance at which the ghost catches the player
-    public bool isEnemyDefeated = false; // Flag to indicate if the ghost is defeated
+    private float chaseDistance = 2.5f;
+    public bool isEnemyDefeated = false;
     private GameControllerRoom2 gameController;
 
-    public bool hasStartedFight = false; // Flag to ensure the fight only starts once
+    public bool hasStartedFight = false;
     public Camera playerView;
     public Camera fightView;
 
-    public Transform enemyFightPosition; // The position where the ghost should go for the fight
-    public Transform playerFightPosition; // The position where the player should go for the fight
+    public Transform enemyFightPosition;
+    public Transform playerFightPosition;
 
     void Start()
     {
         playerView.enabled = true;
         fightView.enabled = false;
         gameController = FindFirstObjectByType<GameControllerRoom2>();
-        player = GameObject.FindGameObjectWithTag("Player").transform; // Get the player
-        roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>(); // Get the room area collider
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>();
     }
 
     void Update()
     {
-        // Check if the ghost is defeated
         if (isEnemyDefeated)
         {
-            // Make the ghost disappear
-            gameObject.SetActive(false); // Disables the ghost GameObject
-            return; // Exit the update method, no need to process movement or behavior
+            gameObject.SetActive(false);
+            return;
         }
 
         bool playerInsideRoom = IsPlayerInsideRoom();
 
-        // Determine the target position and handle movement
         Vector3 targetPosition;
         if (playerInsideRoom && !hasStartedFight)
         {
             if (!isFollowingPlayer)
             {
-                isFollowingPlayer = true; // Start following the player if inside the room
+                isFollowingPlayer = true;
             }
 
-            // Target is the player's position (constrained to X and Z axes)
             targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
         }
         else
         {
-            isFollowingPlayer = false; // Stop following the player
+            isFollowingPlayer = false;
 
-            // Target is the current patrol point (constrained to X and Z axes)
             targetPosition = new Vector3(patrolPoints[targetPointIndex].position.x, transform.position.y, patrolPoints[targetPointIndex].position.z);
 
-            // Check if the ghost reached the patrol point
             if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
             {
                 IncreaseTargetIndex();
@@ -71,84 +65,52 @@ public class GhostEnemyController : MonoBehaviour
             }
         }
 
-        // Move towards the target position if the fight hasn't started
         if (!hasStartedFight)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-
-            // Rotate to face the target position
             RotateTowards(targetPosition);
-        }
-
-        // Check distance to player
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-
-        // If the distance is within chase range and the fight has not started
-        if (distanceToPlayer <= chaseDistance && !isEnemyDefeated && !hasStartedFight)
-        {
-            Debug.Log("Ghost caught the player!");
-            StartBattle();
         }
     }
 
     void StartBattle()
     {
-        hasStartedFight = true; // Prevent multiple triggers
+        if (hasStartedFight) return;
 
-        // Move the ghost and player to their fight positions
+        hasStartedFight = true;
+
         transform.position = enemyFightPosition.position;
         transform.rotation = enemyFightPosition.rotation;
 
         player.transform.position = playerFightPosition.position;
         player.transform.rotation = playerFightPosition.rotation;
 
-        // Trigger the fight in the GameController
         gameController.StartFight();
     }
 
     void RotateTowards(Vector3 targetPosition)
     {
-        // Calculate the direction to the target
         Vector3 direction = (targetPosition - transform.position).normalized;
-
-        // Ignore changes in the Y-axis to prevent tilting
         direction.y = 0;
 
-        // If there is a significant direction change, apply rotation
         if (direction.magnitude > 0.1f)
         {
-            // Create a rotation that points towards the target
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-
-            // Preserve the X rotation from the current rotation while applying the Y rotation
             transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, lookRotation.eulerAngles.y, transform.rotation.eulerAngles.z);
         }
     }
 
-    // When the player enters the room area, start following the player
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isEnemyDefeated && !hasStartedFight)
         {
-            isFollowingPlayer = true; // Start chasing the player
+            StartBattle();
         }
     }
 
-    // When the player exits the room area, stop following the player
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            isFollowingPlayer = false; // Stop chasing the player
-        }
-    }
-
-    // Checks if the player is inside the room area
     bool IsPlayerInsideRoom()
     {
         if (roomCollider == null || player == null) return false;
 
-        // Check if the player's position is inside the room collider's bounds
         return roomCollider.bounds.Contains(player.position);
     }
 
