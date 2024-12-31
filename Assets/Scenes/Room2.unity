@@ -2241,6 +2241,8 @@ MonoBehaviour:
   - {fileID: 931459449}
   targetPointIndex: 0
   moveSpeed: 5
+  separationDistance: 1.5
+  separationStrength: 2
   isFollowingPlayer: 0
   isEnemyDefeated: 0
   hasStartedFight: 0
@@ -3322,6 +3324,8 @@ MonoBehaviour:
   - {fileID: 694146414}
   targetPointIndex: 0
   moveSpeed: 5
+  separationDistance: 1.5
+  separationStrength: 2
   isFollowingPlayer: 0
   isEnemyDefeated: 0
   hasStartedFight: 0
@@ -14015,6 +14019,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 253860873}
   - {fileID: 871860056}
+  - {fileID: 1031655676}
   - {fileID: 1973105649}
   - {fileID: 1419663347}
   - {fileID: 1919087103}
@@ -14033,4 +14038,3 @@ SceneRoots:
   - {fileID: 1572603018}
   - {fileID: 763574909}
   - {fileID: 2094790807}
-  - {fileID: 1031655676}

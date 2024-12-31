@@ -8,6 +8,8 @@ public class GhostEnemyController : MonoBehaviour
     public int targetPointIndex = 0;
 
     public float moveSpeed = 5f;
+    public float separationDistance = 1.5f; // Minimum distance between ghosts
+    public float separationStrength = 2f; // Strength of the separation force
     public bool isFollowingPlayer = false;
     private Transform player;
     private Collider roomCollider;
@@ -21,6 +23,8 @@ public class GhostEnemyController : MonoBehaviour
     public Transform enemyFightPosition;
     public Transform playerFightPosition;
 
+    private GhostEnemyController[] allGhosts;
+
     void Start()
     {
         playerView.enabled = true;
@@ -28,6 +32,9 @@ public class GhostEnemyController : MonoBehaviour
         gameController = FindFirstObjectByType<GameControllerRoom2>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>();
+
+        // Get all ghosts in the scene for separation behavior
+        allGhosts = FindObjectsByType<GhostEnemyController>(FindObjectsSortMode.None);
     }
 
     void Update()
@@ -50,12 +57,10 @@ public class GhostEnemyController : MonoBehaviour
 
             targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
         }
-
         else if (isFollowingPlayer)
         {
             targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
         }
-
         else
         {
             isFollowingPlayer = false;
@@ -71,7 +76,10 @@ public class GhostEnemyController : MonoBehaviour
 
         if (!hasStartedFight)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            Vector3 separationOffset = CalculateSeparationOffset();
+            Vector3 finalTarget = targetPosition + separationOffset;
+
+            transform.position = Vector3.MoveTowards(transform.position, finalTarget, moveSpeed * Time.deltaTime);
             RotateTowards(targetPosition);
         }
     }
@@ -125,5 +133,26 @@ public class GhostEnemyController : MonoBehaviour
         {
             targetPointIndex = 0;
         }
+    }
+
+    Vector3 CalculateSeparationOffset()
+    {
+        Vector3 separation = Vector3.zero;
+
+        foreach (GhostEnemyController ghost in allGhosts)
+        {
+            if (ghost != this && !ghost.isEnemyDefeated)
+            {
+                float distance = Vector3.Distance(transform.position, ghost.transform.position);
+                if (distance < separationDistance)
+                {
+                    // Push away from nearby ghosts
+                    Vector3 awayFromGhost = (transform.position - ghost.transform.position).normalized;
+                    separation += awayFromGhost * (separationDistance - distance) * separationStrength;
+                }
+            }
+        }
+
+        return separation;
     }
 }
