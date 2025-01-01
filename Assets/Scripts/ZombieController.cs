@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;  // Import NavMeshAgent
 
 public class ZombieController : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class ZombieController : MonoBehaviour
 
     private Animator animator; // Reference to the Animator
 
+    private NavMeshAgent navAgent; // NavMeshAgent component reference
+
     void Start()
     {
         playerView.enabled = true;
@@ -31,19 +34,29 @@ public class ZombieController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>();
         animator = GetComponent<Animator>(); // Initialize the Animator
+
+        navAgent = GetComponent<NavMeshAgent>(); // Initialize the NavMeshAgent
+        navAgent.speed = moveSpeed; // Set the speed for the NavMeshAgent
     }
 
     void Update()
+{
+    if (isEnemyDefeated)
     {
-        if (isEnemyDefeated)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
+        gameObject.SetActive(false);
+        return;
+    }
 
-        bool playerInsideRoom = IsPlayerInsideRoom();
+    bool playerInsideRoom = IsPlayerInsideRoom();
 
-        Vector3 targetPosition;
+    if (hasStartedFight)
+    {
+        // Stop following the player when the fight starts
+        isFollowingPlayer = false;
+        navAgent.ResetPath();  // Stop the NavMeshAgent from moving
+    }
+    else
+    {
         if (playerInsideRoom && !hasStartedFight)
         {
             if (!isFollowingPlayer)
@@ -51,42 +64,32 @@ public class ZombieController : MonoBehaviour
                 isFollowingPlayer = true;
             }
 
-            targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
+            navAgent.SetDestination(new Vector3(player.position.x, transform.position.y, player.position.z));
         }
         else if (isFollowingPlayer)
         {
-            targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
+            navAgent.SetDestination(new Vector3(player.position.x, transform.position.y, player.position.z));
         }
         else
         {
             isFollowingPlayer = false;
 
-            targetPosition = new Vector3(patrolPoints[targetPointIndex].position.x, transform.position.y, patrolPoints[targetPointIndex].position.z);
+            Vector3 targetPosition = new Vector3(patrolPoints[targetPointIndex].position.x, transform.position.y, patrolPoints[targetPointIndex].position.z);
+            navAgent.SetDestination(targetPosition);
 
             if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
             {
                 IncreaseTargetIndex();
-                targetPosition = new Vector3(patrolPoints[targetPointIndex].position.x, transform.position.y, patrolPoints[targetPointIndex].position.z);
-            }
-        }
-
-        if (!hasStartedFight)
-        {
-            float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
-            animator.SetBool("isWalking", true); // Play walking animation
-
-            if (distanceToTarget > 0.1f)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-                RotateTowards(targetPosition);
-                
-            }
-            else
-            {
-                animator.SetBool("isWalking", false); // Stop walking animation
             }
         }
     }
+
+    if (!hasStartedFight)
+    {
+        animator.SetBool("isWalking", navAgent.velocity.sqrMagnitude > 0.1f); // Play walking animation when moving
+    }
+}
+
 
     void StartBattle()
     {
@@ -102,18 +105,6 @@ public class ZombieController : MonoBehaviour
 
         animator.SetBool("isWalking", false); // Stop walking animation for battle
         gameController.StartFight();
-    }
-
-    void RotateTowards(Vector3 targetPosition)
-    {
-        Vector3 direction = (targetPosition - transform.position).normalized;
-        direction.y = 0;
-
-        if (direction.magnitude > 0.1f)
-        {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, lookRotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-        }
     }
 
     void OnTriggerEnter(Collider other)

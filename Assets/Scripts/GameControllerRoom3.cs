@@ -13,13 +13,16 @@ public class GameControllerRoom3 : MonoBehaviour
     [SerializeField] private GameObject Player = null;
     [SerializeField] private GameObject Enemy = null;
     [SerializeField] private GameObject Enemy2 = null;
+    [SerializeField] private GameObject Enemy3 = null; // Third enemy
 
     [SerializeField] private Slider PlayerHealth = null;
     [SerializeField] private Slider EnemyHealth = null;
     [SerializeField] private Slider Enemy2Health = null;
+    [SerializeField] private Slider Enemy3Health = null; // Health slider for third enemy
 
     [SerializeField] private Button enemy1Button = null;
     [SerializeField] private Button enemy2Button = null;
+    [SerializeField] private Button enemy3Button = null; // Button for third enemy
 
     public GameObject cardUIPrefab;
     public GameObject cardPanel;
@@ -44,9 +47,11 @@ public class GameControllerRoom3 : MonoBehaviour
     public Transform playerFightPosition;
     public Transform enemyFightPosition;
     public Transform enemyFightPosition2;
+    public Transform enemyFightPosition3; // Position for third enemy
 
     [SerializeField] private ZombieController zombie1Controller;
     [SerializeField] private ZombieController zombie2Controller;
+    [SerializeField] private ZombieController zombie3Controller; // Controller for third zombie
 
     private GameObject currentTarget = null;
 
@@ -65,6 +70,7 @@ public class GameControllerRoom3 : MonoBehaviour
         // Assign enemy buttons
         enemy1Button.onClick.AddListener(() => SetTarget(Enemy, EnemyHealth));
         enemy2Button.onClick.AddListener(() => SetTarget(Enemy2, Enemy2Health));
+        enemy3Button.onClick.AddListener(() => SetTarget(Enemy3, Enemy3Health)); // Button for third enemy
     }
 
     public void StartFight()
@@ -80,9 +86,12 @@ public class GameControllerRoom3 : MonoBehaviour
         Enemy2.transform.position = enemyFightPosition2.position;
         Enemy2.transform.rotation = enemyFightPosition2.rotation;
 
+        Enemy3.transform.position = enemyFightPosition3.position; // Position for third enemy
+        Enemy3.transform.rotation = enemyFightPosition3.rotation; // Rotation for third enemy
+
         zombie1Controller.hasStartedFight = true;
         zombie2Controller.hasStartedFight = true;
-        
+        zombie3Controller.hasStartedFight = true; // Ensure third zombie starts fight
 
         playerView.enabled = false;
         fightView.enabled = true;
@@ -90,7 +99,6 @@ public class GameControllerRoom3 : MonoBehaviour
         InitializeDeck();
         DrawCards(5);
     }
-
 
     public void InitializeDeck()
     {
@@ -183,26 +191,29 @@ public class GameControllerRoom3 : MonoBehaviour
         }
     }
 
-
-
     private void SetTarget(GameObject target, Slider targetHealth)
     {
         if (target == Enemy && zombie1Controller.isEnemyDefeated)
         {
             Debug.Log("Enemy 1 is already defeated and cannot be targeted.");
-            return;  // Do nothing if the enemy is defeated
+            return;
         }
 
         if (target == Enemy2 && zombie2Controller.isEnemyDefeated)
         {
             Debug.Log("Enemy 2 is already defeated and cannot be targeted.");
-            return;  // Do nothing if the enemy is defeated
+            return;
+        }
+
+        if (target == Enemy3 && zombie3Controller.isEnemyDefeated)
+        {
+            Debug.Log("Enemy 3 is already defeated and cannot be targeted.");
+            return;
         }
 
         currentTarget = target;
         Debug.Log($"{target.name} selected!");
     }
-
 
     public void PlayerEndTurn()
     {
@@ -234,7 +245,6 @@ public class GameControllerRoom3 : MonoBehaviour
 
         DisplayCardsInFightUI(); // Refresh the card UI after the action
     }
-
 
     private void EndTurn()
     {
@@ -298,6 +308,17 @@ public class GameControllerRoom3 : MonoBehaviour
             Debug.Log("Enemy 2 is defeated and will not act.");
         }
 
+        // Check if Enemy 3 is alive, and then perform its actions
+        if (Enemy3Health.value > 0)
+        {
+            Debug.Log("Enemy 3's Turn - Attacking/Healing Player");
+            EnemyAction(Enemy3); // Add third enemy action
+        }
+        else
+        {
+            Debug.Log("Enemy 3 is defeated and will not act.");
+        }
+
         // Wait for a short duration before ending the turn
         yield return new WaitForSeconds(1); // Adjust the wait time if needed
 
@@ -324,8 +345,6 @@ public class GameControllerRoom3 : MonoBehaviour
         }
     }
 
-
-
     public void Attack(GameObject target, float damage)
     {
         if (target == Enemy && !zombie1Controller.isEnemyDefeated)
@@ -333,10 +352,10 @@ public class GameControllerRoom3 : MonoBehaviour
             EnemyHealth.value -= damage;
             if (EnemyHealth.value <= 0)
             {
-                zombie1Controller.isEnemyDefeated = true;  // Mark enemy 1 as defeated
+                zombie1Controller.isEnemyDefeated = true;
                 FallOver(target);
-                enemy1Button.interactable = false;  // Disable the attack button for this enemy
-                currentTarget = null;  // Deselect the current target
+                enemy1Button.interactable = false;
+                currentTarget = null;
                 Debug.Log("Enemy 1 defeated and deselected!");
             }
         }
@@ -345,95 +364,101 @@ public class GameControllerRoom3 : MonoBehaviour
             Enemy2Health.value -= damage;
             if (Enemy2Health.value <= 0)
             {
-                zombie2Controller.isEnemyDefeated = true;  // Mark enemy 2 as defeated
+                zombie2Controller.isEnemyDefeated = true;
                 FallOver(target);
-                enemy2Button.interactable = false;  // Disable the attack button for this enemy
-                currentTarget = null;  // Deselect the current target
+                enemy2Button.interactable = false;
+                currentTarget = null;
                 Debug.Log("Enemy 2 defeated and deselected!");
+            }
+        }
+        else if (target == Enemy3 && !zombie3Controller.isEnemyDefeated)
+        {
+            Enemy3Health.value -= damage;
+            if (Enemy3Health.value <= 0)
+            {
+                zombie3Controller.isEnemyDefeated = true;
+                FallOver(target);
+                enemy3Button.interactable = false;
+                currentTarget = null;
+                Debug.Log("Enemy 3 defeated and deselected!");
             }
         }
         else
         {
             PlayerHealth.value -= damage;
-
-            if (PlayerData.instance != null)
-                PlayerData.instance.SavePlayerHealth(PlayerHealth.value);
-
             if (PlayerHealth.value <= 0)
             {
                 FallOver(target);
-                GameOver(); // Trigger the game over when player health is zero or less
+                GameOver();
             }
         }
     }
 
-    public void Heal(GameObject target, float amount)
+    public void Heal(GameObject target, float healingAmount)
     {
-        if (target == Enemy)
+        if (target == Player)
         {
-            EnemyHealth.value += amount;
+            PlayerHealth.value += healingAmount;
+            if (PlayerHealth.value > 100)
+                PlayerHealth.value = 100;
+        }
+        else if (target == Enemy)
+        {
+            EnemyHealth.value += healingAmount;
+            if (EnemyHealth.value > 100)
+                EnemyHealth.value = 100;
         }
         else if (target == Enemy2)
         {
-            Enemy2Health.value += amount;
+            Enemy2Health.value += healingAmount;
+            if (Enemy2Health.value > 100)
+                Enemy2Health.value = 100;
         }
-        else
+        else if (target == Enemy3)
         {
-            PlayerHealth.value += amount;
-
-            if (PlayerData.instance != null)
-                PlayerData.instance.SavePlayerHealth(PlayerHealth.value);
+            Enemy3Health.value += healingAmount;
+            if (Enemy3Health.value > 100)
+                Enemy3Health.value = 100;
         }
     }
 
-    private void FallOver(GameObject target)
+    public void FallOver(GameObject target)
     {
-        target.transform.Rotate(new Vector3(90f, 0f, 0f)); // Simulate falling over
-
-        if (target == Enemy)
-        {
-            Debug.Log("Enemy 1 defeated!");
-        }
-        else if (target == Enemy2)
-        {
-            Debug.Log("Enemy 2 defeated!");
-        }
-
-        CheckForVictory();
-    }
-
-    private void CheckForVictory()
-{
-    if (EnemyHealth.value <= 0 && Enemy2Health.value <= 0)
-    {
-        isGameOver = true;
-        resultText.text = "You Win!";
-
-        // Switch back to player view and end the fight
-        fightView.enabled = false;
-        playerView.enabled = true;
-        FightUI.SetActive(false);
-
-        Debug.Log("Both enemies are defeated. Game Over!");
-    }
-}
-
-    private void GameOver()
-    {
-        isGameOver = true;
-        resultText.text = "Game Over! You Lose.";
-
-        Debug.Log("Player defeated. Game Over!");
+        Debug.Log($"{target.name} has fallen over.");
     }
 
     private void UpdateEnergyUI()
     {
-        energyText.text = $"Energy: {currentEnergy}/{maxEnergy}";
+        energyText.text = "Energy: " + currentEnergy;
     }
 
     private void LogDeckAndDiscardState()
     {
-        Debug.Log($"Deck: {string.Join(", ", deck)}");
-        Debug.Log($"Discard Pile: {string.Join(", ", discardPile)}");
+        Debug.Log("Deck: " + string.Join(", ", deck));
+        Debug.Log("Discard Pile: " + string.Join(", ", discardPile));
+    }
+
+    private void GameOver()
+    {
+        isGameOver = true;
+        resultText.text = "Game Over!";
+        fightView.enabled = false;
+        playerView.enabled = true;
+        FightUI.SetActive(false);
+    }
+
+    private void CheckForVictory()
+    {
+        if (EnemyHealth.value <= 0 && Enemy2Health.value <= 0 && Enemy3Health.value <= 0)
+        {
+            isGameOver = true;
+            resultText.text = "You Win!";
+
+            fightView.enabled = false;
+            playerView.enabled = true;
+            FightUI.SetActive(false);
+
+            Debug.Log("All enemies are defeated. Game Over!");
+        }
     }
 }
