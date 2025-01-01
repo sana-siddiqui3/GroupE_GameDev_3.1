@@ -287,7 +287,7 @@ RectTransform:
   m_Father: {fileID: 2004236742}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -853,11 +853,14 @@ MonoBehaviour:
   Player: {fileID: 817443792}
   Enemy: {fileID: 1884945799}
   Enemy2: {fileID: 815368775}
+  Enemy3: {fileID: 2029648457}
   PlayerHealth: {fileID: 1106102415}
   EnemyHealth: {fileID: 496536715}
   Enemy2Health: {fileID: 1663084276}
+  Enemy3Health: {fileID: 1339224614}
   enemy1Button: {fileID: 2008876675}
   enemy2Button: {fileID: 335316058}
+  enemy3Button: {fileID: 347871918}
   cardUIPrefab: {fileID: 6629284132857209187, guid: ea9241a056490452d98dd1895619d004, type: 3}
   cardPanel: {fileID: 620887727}
   resultText: {fileID: 1219756335}
@@ -866,8 +869,10 @@ MonoBehaviour:
   playerFightPosition: {fileID: 14693722}
   enemyFightPosition: {fileID: 1025936587}
   enemyFightPosition2: {fileID: 902788025}
+  enemyFightPosition3: {fileID: 1135769391}
   zombie1Controller: {fileID: 1884945800}
   zombie2Controller: {fileID: 815368776}
+  zombie3Controller: {fileID: 2029648458}
 --- !u!1001 &143110596
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2607,7 +2612,7 @@ RectTransform:
   m_Father: {fileID: 1533206895}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9195,7 +9200,7 @@ RectTransform:
   m_Father: {fileID: 772156556}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9482,7 +9487,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1683369592
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13111,7 +13116,7 @@ RectTransform:
   m_Father: {fileID: 1974539674}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

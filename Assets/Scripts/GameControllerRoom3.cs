@@ -392,7 +392,10 @@ public class GameControllerRoom3 : MonoBehaviour
                 GameOver();
             }
         }
+
+        CheckForVictory(); // Check for victory after every attack
     }
+
 
     public void Heal(GameObject target, float healingAmount)
     {

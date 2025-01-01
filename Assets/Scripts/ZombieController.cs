@@ -53,7 +53,17 @@ public class ZombieController : MonoBehaviour
     {
         // Stop following the player when the fight starts
         isFollowingPlayer = false;
-        navAgent.ResetPath();  // Stop the NavMeshAgent from moving
+
+        // Ensure the zombie goes to idle animation and stops walking
+        animator.SetBool("isWalking", false); // Stop walking animation
+
+        // Position the zombies in their designated positions for the fight
+        if (!isEnemyDefeated) 
+        {
+            navAgent.enabled = false; // Disable NavMeshAgent for fight
+            transform.position = enemyFightPosition.position;
+            transform.rotation = enemyFightPosition.rotation;
+        }
     }
     else
     {
@@ -84,28 +94,30 @@ public class ZombieController : MonoBehaviour
         }
     }
 
+    // If not in battle, play walking animation when moving
     if (!hasStartedFight)
     {
         animator.SetBool("isWalking", navAgent.velocity.sqrMagnitude > 0.1f); // Play walking animation when moving
     }
 }
 
+void StartBattle()
+{
+    if (hasStartedFight) return;
 
-    void StartBattle()
-    {
-        if (hasStartedFight) return;
+    hasStartedFight = true;
 
-        hasStartedFight = true;
+    transform.position = enemyFightPosition.position;
+    transform.rotation = enemyFightPosition.rotation;
 
-        transform.position = enemyFightPosition.position;
-        transform.rotation = enemyFightPosition.rotation;
+    player.transform.position = playerFightPosition.position;
+    player.transform.rotation = playerFightPosition.rotation;
 
-        player.transform.position = playerFightPosition.position;
-        player.transform.rotation = playerFightPosition.rotation;
+    // Stop walking animation for battle
+    animator.SetBool("isWalking", false);
+    gameController.StartFight();
+}
 
-        animator.SetBool("isWalking", false); // Stop walking animation for battle
-        gameController.StartFight();
-    }
 
     void OnTriggerEnter(Collider other)
     {
