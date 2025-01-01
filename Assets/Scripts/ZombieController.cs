@@ -21,6 +21,8 @@ public class ZombieController : MonoBehaviour
     public Transform enemyFightPosition;
     public Transform playerFightPosition;
 
+    private Animator animator; // Reference to the Animator
+
     void Start()
     {
         playerView.enabled = true;
@@ -28,6 +30,7 @@ public class ZombieController : MonoBehaviour
         gameController = FindFirstObjectByType<GameControllerRoom3>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>();
+        animator = GetComponent<Animator>(); // Initialize the Animator
     }
 
     void Update()
@@ -69,8 +72,19 @@ public class ZombieController : MonoBehaviour
 
         if (!hasStartedFight)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            RotateTowards(targetPosition);
+            float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+            animator.SetBool("isWalking", true); // Play walking animation
+
+            if (distanceToTarget > 0.1f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+                RotateTowards(targetPosition);
+                
+            }
+            else
+            {
+                animator.SetBool("isWalking", false); // Stop walking animation
+            }
         }
     }
 
@@ -86,6 +100,7 @@ public class ZombieController : MonoBehaviour
         player.transform.position = playerFightPosition.position;
         player.transform.rotation = playerFightPosition.rotation;
 
+        animator.SetBool("isWalking", false); // Stop walking animation for battle
         gameController.StartFight();
     }
 
