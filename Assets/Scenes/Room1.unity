@@ -9406,6 +9406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enterRoomUI: {fileID: 1195321570}
   Door: {fileID: 1325444957}
+  sceneToLoad: Room2
 --- !u!1 &1651355805
 GameObject:
   m_ObjectHideFlags: 0

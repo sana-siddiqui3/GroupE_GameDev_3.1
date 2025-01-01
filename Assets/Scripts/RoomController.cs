@@ -10,6 +10,9 @@ namespace Assets.Scripts
     {
         [SerializeField] private GameObject enterRoomUI = null;
         [SerializeField] private GameObject Door = null;
+        
+        // Add a field to specify which scene to load
+        [SerializeField] private string sceneToLoad = "";
 
         void Start()
         {
@@ -28,11 +31,19 @@ namespace Assets.Scripts
 
         IEnumerator enterRoom()
         {
-            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(Door.tag); // Load the new scene asynchronously
-
-            while (!asyncLoad.isDone)
+            // Load the scene directly by name (no need for tag)
+            if (!string.IsNullOrEmpty(sceneToLoad))
             {
-                yield return null;
+                AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneToLoad);
+
+                while (!asyncLoad.isDone)
+                {
+                    yield return null;
+                }
+            }
+            else
+            {
+                Debug.LogError("Scene name is not assigned!");
             }
         }
     }
