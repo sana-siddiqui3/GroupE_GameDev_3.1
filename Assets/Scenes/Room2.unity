@@ -2771,7 +2771,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1973105650}
         m_TargetAssemblyTypeName: Assets.Scripts.RoomController, Assembly-CSharp
         m_MethodName: BtnNo
         m_Mode: 1
@@ -4513,7 +4513,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1973105650}
         m_TargetAssemblyTypeName: Assets.Scripts.RoomController, Assembly-CSharp
         m_MethodName: BtnYes
         m_Mode: 1
@@ -11186,7 +11186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: 100
   cardInventory: []
-  keysCollected: 0
+  keysCollected: 2
   totalKeysRequired: 2
   objective: 
   objectiveText: {fileID: 1882452475}
@@ -12959,6 +12959,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enterRoomUI: {fileID: 1883235155}
   Door: {fileID: 642505731}
+  sceneToLoad: Room3
 --- !u!1 &1978270130
 GameObject:
   m_ObjectHideFlags: 0
