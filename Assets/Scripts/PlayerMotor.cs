@@ -13,7 +13,7 @@ public class PlayerMotor : MonoBehaviour
     private bool isGrounded;
 
     private float gravity = -9.8f;
-    private float jumpHeight = 3f;
+    private float jumpHeight = 2f;
 
     public GameObject fightStarted; // Reference to fightStarted object
 
