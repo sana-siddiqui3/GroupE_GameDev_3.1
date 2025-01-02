@@ -64,7 +64,7 @@ public class GameController : MonoBehaviour
         fightPromptUI.SetActive(false);
         fightUI.SetActive(true);
 
-        // Reset the player's and enemy's positions to predefined fight positions
+        // Set the player to the fight position
         player.transform.position = playerFightPosition.position;
         player.transform.rotation = playerFightPosition.rotation;
 
@@ -89,6 +89,7 @@ public class GameController : MonoBehaviour
 
     public void InitializeDeck()
     {
+        
         if (PlayerData.instance != null)
         {
             deck.AddRange(PlayerData.instance.cardInventory);
