@@ -273,7 +273,7 @@ public class GameController : MonoBehaviour
 
             if (PlayerData.instance != null)
             {
-                PlayerData.instance.SavePlayerHealth(PlayerHealth.value); // Save updated health
+                PlayerData.instance.DamagePlayer(damage); // Save updated health
             }
 
             if (PlayerHealth.value <= 0)
@@ -296,7 +296,7 @@ public class GameController : MonoBehaviour
 
             if (PlayerData.instance != null)
             {
-                PlayerData.instance.SavePlayerHealth(PlayerHealth.value); // Save updated health
+                PlayerData.instance.HealPlayer(amount); // Save updated health
             }
         }
     }
