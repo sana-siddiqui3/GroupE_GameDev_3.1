@@ -393,6 +393,9 @@ public class GameControllerRoom3 : MonoBehaviour
         else
         {
             PlayerHealth.value -= damage;
+
+            PlayerData.instance.DamagePlayer(damage); // Update player health in PlayerData
+
             if (PlayerHealth.value <= 0)
             {
                 FallOver(target);
@@ -409,6 +412,9 @@ public class GameControllerRoom3 : MonoBehaviour
         if (target == Player)
         {
             PlayerHealth.value += healingAmount;
+
+            PlayerData.instance.HealPlayer(healingAmount); // Update player health in PlayerData
+
             if (PlayerHealth.value > 100)
                 PlayerHealth.value = 100;
         }
