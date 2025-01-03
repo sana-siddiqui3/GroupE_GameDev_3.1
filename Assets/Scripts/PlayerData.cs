@@ -8,8 +8,8 @@ public class PlayerData : MonoBehaviour
     public static PlayerData instance;
     public float playerHealth = 100f;
 
-    // Player's inventory and key count
-    public List<string> cardInventory = new List<string>();
+        // Player's inventory and key count
+    public List<InventoryItem> inventory = new List<InventoryItem>();
     public int keysCollected = 0;
     public int totalKeysRequired = 2;
     public string objective = "";
@@ -22,57 +22,55 @@ public class PlayerData : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);  // Prevent this object from being destroyed when loading new scenes
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject);  // Destroy duplicate instances
+            Destroy(gameObject);
         }
     }
 
     private void Start()
     {
-        // Initialize the player's card inventory with 10 starting cards
-        InitializeStartingCards();
+        // Initialize the player's inventory
+        InitializeStartingItems();
         setObjective("Get the keys to unlock the door");
     }
 
-    // Method to initialize the starting cards (10 cards)
-    private void InitializeStartingCards()
+    // Method to initialize starting inventory items
+    private void InitializeStartingItems()
     {
-        if (cardInventory == null)
+        // Example: Add predefined items
+        AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
+        AddItem("Heal Card", Resources.Load<Sprite>("Heal"), "A basic healing card.");
+    }
+
+    // Method to add an item to the inventory
+    public void AddItem(string name, Sprite sprite, string description = "")
+    {
+        InventoryItem newItem = new InventoryItem
         {
-            cardInventory = new List<string>();
+            itemName = name,
+            itemSprite = sprite,
+            itemDescription = description
+        };
+
+        inventory.Add(newItem);
+        if(name == "Key")
+        {
+            keysCollected++;
+            if(keysCollected == totalKeysRequired)
+            {
+                setObjective("Unlock the door to escape!");
+            }
         }
+        Debug.Log($"Added {name} to inventory!");
 
-        // Add 10 predefined cards to the cardInventory
-        cardInventory.Add("Attack");
-        cardInventory.Add("Attack");
-        cardInventory.Add("Attack");
-        cardInventory.Add("Heal");
-        cardInventory.Add("Heal");
-        cardInventory.Add("Attack");
-        cardInventory.Add("Attack");
-        cardInventory.Add("Attack");
-        cardInventory.Add("Heal");
-        cardInventory.Add("Heal");
-
-        Debug.Log("Starting cards initialized: " + string.Join(", ", cardInventory));
-    }
-
-    public void SavePlayerHealth(float health)
-    {
-        playerHealth = Mathf.Clamp(health, 0, 100); // Ensure health stays between 0 and 100
-    }
-
-    // Method to add a card to the inventory
-    public void AddCard(string card)
-    {
-        cardInventory.Add(card);
-        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerInventory>();  
+        // Update the inventory display if needed
+        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerInventory>();
         if (playerInventory != null)
         {
-            playerInventory.UpdateInventoryDisplay(); 
+            playerInventory.UpdateInventoryDisplay();
         }
         else
         {
@@ -80,12 +78,16 @@ public class PlayerData : MonoBehaviour
         }
     }
 
-    // Method to remove a card from the inventory
-    public void RemoveCard(string card)
+    // Method to remove an item from the inventory
+    public void RemoveItem(string name)
     {
-        if (cardInventory.Contains(card))
+        InventoryItem itemToRemove = inventory.Find(item => item.itemName == name);
+        if (itemToRemove != null)
         {
-            cardInventory.Remove(card);
+            inventory.Remove(itemToRemove);
+            Debug.Log($"Removed {name} from inventory!");
+
+            // Update the inventory display if needed
             PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerInventory>();
             if (playerInventory != null)
             {
@@ -98,19 +100,9 @@ public class PlayerData : MonoBehaviour
         }
     }
 
-    // Method to add a key
-    public void AddKey()
+    public void SavePlayerHealth(float health)
     {
-        keysCollected++;
-        PlayerInventory playerInventory = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerInventory>(); 
-        if (playerInventory != null)
-        {
-            playerInventory.UpdateInventoryDisplay();  
-        }
-        else
-        {
-            Debug.LogError("PlayerInventory not found!");
-        }
+        playerHealth = Mathf.Clamp(health, 0, 100); // Ensure health stays between 0 and 100
     }
 
     // Method to retrieve the number of keys
