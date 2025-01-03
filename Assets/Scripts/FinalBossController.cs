@@ -4,12 +4,10 @@ public class FinalBossController : MonoBehaviour
 {
     public Transform[] patrolPoints;  // Array to hold the patrol points
     public int targetPointIndex = 0;  // Index of the current patrol point
-
     public float moveSpeed = 5f;  // Speed at which the enemy moves
     public bool isFollowingPlayer = false;  // Flag to indicate if the enemy should follow the player
     private Transform player;  // Reference to the player's transform
     private Collider roomCollider;  // The room area collider
-
     private bool isStopped = false;  // Flag to stop the enemy's movement
     private Animator animator;  // Reference to Animator
     public bool isEnemyDefeated = false; // Flag to indicate if the enemy is defeated
@@ -120,14 +118,5 @@ public class FinalBossController : MonoBehaviour
     void Disappear()
     {
         Destroy(gameObject);
-    }
-
-    void OnDrawGizmos()
-    {
-        if (roomCollider != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireCube(roomCollider.bounds.center, roomCollider.bounds.size);
-        }
     }
 }
