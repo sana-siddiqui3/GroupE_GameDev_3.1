@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class EnemyController : MonoBehaviour
 {
@@ -38,11 +39,19 @@ public class EnemyController : MonoBehaviour
         {
             // If the enemy is defeated, make it disappear
             Disappear();
-            if(dropHealthPotion)
+            if(dropHealthPotion) 
             {
                 // Drop a health potion
                 PlayerData.instance.AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "A Health Potion. Restores 20 health.");
             }
+
+            if(SceneManager.GetActiveScene().name == "Room1") 
+            {
+                // Update the objective text
+                PlayerData.instance.setObjective("Find the chest to get the key.");
+            }
+
+
             return;  // Exit the update method to stop further behavior
         }
 
