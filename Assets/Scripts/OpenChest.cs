@@ -36,7 +36,7 @@ public class Chest : MonoBehaviour
     {
         if (!empty)
         {
-            PlayerData.instance.AddKey();
+            PlayerData.instance.AddItem("Key", Resources.Load<Sprite>("Key"), "A key to unlock doors.");
             chestMessageText.text = "Added key.";
             empty = true;
         }

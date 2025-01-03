@@ -96,7 +96,14 @@ public class GameControllerRoom2 : MonoBehaviour
     {
         if (PlayerData.instance != null)
         {
-            deck.AddRange(PlayerData.instance.cardInventory);
+            foreach(InventoryItem item in PlayerData.instance.inventory)
+            {
+                if(item.itemName.Contains("Card"))
+                {
+                    Debug.Log("Adding card to deck: " + item.itemName);
+                    deck.Add(item.itemName);
+                }
+            }
         }
 
         ShuffleDeck();
@@ -164,7 +171,7 @@ public class GameControllerRoom2 : MonoBehaviour
         // Only allow selection if there's a target and enough energy, unless it's a "Heal" card
         if (cardsSelected < 3 && currentEnergy > 0)
         {
-            if (card == "Heal" || currentTarget != null) // Allow healing even if no target is selected
+            if (card == "Heal Card" || currentTarget != null) // Allow healing even if no target is selected
             {
                 selectedCards.Add(card);
                 cardsSelected++;
@@ -214,7 +221,7 @@ public class GameControllerRoom2 : MonoBehaviour
 
     private void ApplyCardEffect(string card)
     {
-        if (card == "Attack")
+        if (card == "Attack Card")
         {
             // Only attack if a valid target is selected
             if (currentTarget != null)
@@ -226,7 +233,7 @@ public class GameControllerRoom2 : MonoBehaviour
                 Debug.Log("No target selected. Cannot attack.");
             }
         }
-        else if (card == "Heal")
+        else if (card == "Heal Card")
         {
             // Always heal the player
             Heal(Player, 10);
