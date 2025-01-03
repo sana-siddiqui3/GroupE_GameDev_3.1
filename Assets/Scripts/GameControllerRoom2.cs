@@ -364,7 +364,7 @@ public class GameControllerRoom2 : MonoBehaviour
             PlayerHealth.value -= damage;
 
             if (PlayerData.instance != null)
-                PlayerData.instance.SavePlayerHealth(PlayerHealth.value);
+                PlayerData.instance.DamagePlayer(damage);
 
             if (PlayerHealth.value <= 0)
             {
@@ -392,7 +392,7 @@ public class GameControllerRoom2 : MonoBehaviour
             PlayerHealth.value += amount;
 
             if (PlayerData.instance != null)
-                PlayerData.instance.SavePlayerHealth(PlayerHealth.value);
+                PlayerData.instance.HealPlayer(amount);
         }
     }
 
