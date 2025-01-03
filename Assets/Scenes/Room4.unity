@@ -1379,7 +1379,7 @@ GameObject:
   - component: {fileID: 218865393}
   - component: {fileID: 218865392}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: StairRamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
