@@ -1,19 +1,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem; // Add this line for the new input system
-using TMPro;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public TextMeshProUGUI keyCountText;
-    public TextMeshProUGUI inventoryDisplay;
+    public GameObject inventoryMenu;          // The inventory menu UI
+    public Transform inventoryGrid;           // The grid layout container
+    public GameObject inventorySlotPrefab;    // Prefab for an inventory slot
+    public Sprite defaultItemSprite;          // Default sprite for empty slots
+    public int totalSlotCount = 36;           // Total number of slots in the inventory grid
+
+    private bool isInventoryOpen = false;
 
     private void Start()
     {
-  
-        UpdateInventoryDisplay();
-        
+        inventoryMenu.SetActive(false); // Ensure the inventory menu is initially hidden
+    }
+
+    private void Update()
+    {
+        // Toggle inventory menu visibility with Tab
+        if (UnityEngine.InputSystem.Keyboard.current.tabKey.wasPressedThisFrame)
+        {
+            isInventoryOpen = !isInventoryOpen;
+            inventoryMenu.SetActive(isInventoryOpen);
+
+            if (isInventoryOpen)
+            {
+                UpdateInventoryDisplay();
+            }
+        }
     }
 
     public void UpdateInventoryDisplay()
@@ -24,20 +40,55 @@ public class PlayerInventory : MonoBehaviour
             return;
         }
 
-        // Update the UI elements with the player's current inventory and keys
-        keyCountText.text = "Keys: " + PlayerData.instance.keysCollected + "/" + PlayerData.instance.totalKeysRequired;
-        inventoryDisplay.text = "Inventory:\n";
-
-        // Check if card inventory is initialized
-        if (PlayerData.instance.cardInventory == null)
+        // Clear existing slots
+        foreach (Transform child in inventoryGrid)
         {
-            Debug.LogError("PlayerData.instance.cardInventory is null!");
-            return;
+            Destroy(child.gameObject);
         }
 
-        foreach (string card in PlayerData.instance.cardInventory)
+        // Populate the grid with items and empty slots
+        for (int i = 0; i < totalSlotCount; i++)
         {
-            inventoryDisplay.text += card + "\n";
+            GameObject slot = Instantiate(inventorySlotPrefab, inventoryGrid);
+
+            // Update the ItemIcon child
+            Transform itemIconTransform = slot.transform.Find("ItemIcon");
+            if (itemIconTransform != null)
+            {
+                Image itemIconImage = itemIconTransform.GetComponent<Image>();
+                if (itemIconImage != null)
+                {
+                    if (i < PlayerData.instance.inventory.Count)
+                    {
+                        // Slot has an item: Assign its sprite
+                        InventoryItem item = PlayerData.instance.inventory[i];
+                        itemIconImage.sprite = item.itemSprite != null ? item.itemSprite : defaultItemSprite;
+                        itemIconImage.enabled = true; // Ensure the icon is visible
+                    }
+                    else
+                    {
+                        // Slot is empty: Hide the item icon
+                        itemIconImage.sprite = null;
+                        itemIconImage.enabled = false; // Disable the icon renderer
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("ItemIcon is missing an Image component!");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("ItemIcon child not found in InventorySlot prefab!");
+            }
         }
+    }
+
+    private Sprite GetItemSprite(string itemName)
+    {
+        // Logic to retrieve item-specific sprites
+        // Replace this with your actual sprite-mapping logic
+        // Example: Using a dictionary to map item names to sprites
+        return Resources.Load<Sprite>($"{itemName}");
     }
 }
