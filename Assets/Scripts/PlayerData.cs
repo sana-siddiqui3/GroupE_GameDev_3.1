@@ -46,7 +46,6 @@ public class PlayerData : MonoBehaviour
         // Example: Add predefined items
         AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
         AddItem("Heal Card", Resources.Load<Sprite>("Heal"), "A basic healing card.");
-        AddItem("Key", Resources.Load<Sprite>("Key"), "A shiny key to unlock doors.");
     }
 
     // Method to add an item to the inventory
@@ -67,6 +66,8 @@ public class PlayerData : MonoBehaviour
             if(keysCollected == totalKeysRequired)
             {
                 setObjective("Unlock the door to escape!");
+            } else {
+                setObjective("Find the other key to unlock the door.");
             }
         }
         Debug.Log($"Added {name} to inventory!");
