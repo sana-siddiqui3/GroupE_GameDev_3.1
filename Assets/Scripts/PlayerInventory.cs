@@ -28,6 +28,9 @@ public class PlayerInventory : MonoBehaviour
             if (isInventoryOpen)
             {
                 UpdateInventoryDisplay();
+            } else {
+                // Disable the tooltip when the inventory is closed
+                InventoryTooltip.instance.gameObject.SetActive(false);
             }
         }
     }
@@ -50,6 +53,7 @@ public class PlayerInventory : MonoBehaviour
         for (int i = 0; i < totalSlotCount; i++)
         {
             GameObject slot = Instantiate(inventorySlotPrefab, inventoryGrid);
+            InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
 
             // Update the ItemIcon child
             Transform itemIconTransform = slot.transform.Find("ItemIcon");
@@ -60,16 +64,20 @@ public class PlayerInventory : MonoBehaviour
                 {
                     if (i < PlayerData.instance.inventory.Count)
                     {
-                        // Slot has an item: Assign its sprite
+                        // Assign the item to the slot
                         InventoryItem item = PlayerData.instance.inventory[i];
+                        inventorySlot.item = item;
+
+                        // Update the icon
                         itemIconImage.sprite = item.itemSprite != null ? item.itemSprite : defaultItemSprite;
-                        itemIconImage.enabled = true; // Ensure the icon is visible
+                        itemIconImage.enabled = true;
                     }
                     else
                     {
-                        // Slot is empty: Hide the item icon
+                        // Slot is empty
+                        inventorySlot.item = null;
                         itemIconImage.sprite = null;
-                        itemIconImage.enabled = false; // Disable the icon renderer
+                        itemIconImage.enabled = false;
                     }
                 }
                 else
