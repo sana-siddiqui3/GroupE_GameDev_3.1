@@ -41,7 +41,7 @@ public class EnemyController : MonoBehaviour
             if(dropHealthPotion)
             {
                 // Drop a health potion
-                PlayerData.instance.AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "Restores 20 health.");
+                PlayerData.instance.AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "A Health Potion. Restores 20 health.");
             }
             return;  // Exit the update method to stop further behavior
         }
