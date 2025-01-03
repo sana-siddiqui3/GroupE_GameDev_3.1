@@ -5,18 +5,15 @@ public class EnemyController : MonoBehaviour
 {
     public Transform[] patrolPoints;  // Array to hold the patrol points
     public int targetPointIndex = 0;  // Index of the current patrol point
-
     public float moveSpeed = 5f;  // Speed at which the enemy moves
     public bool isFollowingPlayer = false;  // Flag to indicate if the enemy should follow the player
     private Transform player;  // Reference to the player's transform
     private Collider roomCollider;  // The room area collider
-
     private bool isStopped = false;  // Flag to stop the enemy's movement
     private Animator animator;  // Reference to Animator
     public bool isEnemyDefeated = false; // Flag to indicate if the enemy is defeated
     private GameController gameController;
     public bool dropHealthPotion;  // Flag to indicate if the enemy should drop a Health potion
-
     private NavMeshAgent navMeshAgent;  // Reference to the NavMeshAgent
 
     void Start()
@@ -28,8 +25,8 @@ public class EnemyController : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();  // Get the NavMeshAgent component
 
         // Set up NavMeshAgent
-        navMeshAgent.speed = moveSpeed;  // Set the speed
-        navMeshAgent.updateRotation = false;  // Disable automatic rotation (we'll handle rotation manually)
+        navMeshAgent.speed = moveSpeed; 
+        navMeshAgent.updateRotation = false;
     }
 
     void Update()
@@ -145,22 +142,7 @@ public class EnemyController : MonoBehaviour
     // Method to handle the disappearance of the enemy when defeated
     void Disappear()
     {
-        // You can either disable the enemy's GameObject or destroy it
-        Destroy(gameObject);  // Destroy the enemy GameObject (completely removes it from the scene)
+        Destroy(gameObject);  // Destroy the enemy GameObject 
 
-        // Alternatively, to just disable it:
-        // gameObject.SetActive(false);  // This disables the enemy but keeps it in the scene for later reactivation
-    }
-
-    void OnDrawGizmos()
-    {
-        if (roomCollider != null)
-        {
-            // Set Gizmo color
-            Gizmos.color = Color.green;
-
-            // Draw a wireframe box around the collider bounds
-            Gizmos.DrawWireCube(roomCollider.bounds.center, roomCollider.bounds.size);
-        }
     }
 }
