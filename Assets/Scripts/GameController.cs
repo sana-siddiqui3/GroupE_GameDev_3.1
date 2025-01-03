@@ -89,10 +89,16 @@ public class GameController : MonoBehaviour
 
     public void InitializeDeck()
     {
-        
         if (PlayerData.instance != null)
         {
-            deck.AddRange(PlayerData.instance.cardInventory);
+            foreach(InventoryItem item in PlayerData.instance.inventory)
+            {
+                if(item.itemName.Contains("Card"))
+                {
+                    Debug.Log("Adding card to deck: " + item.itemName);
+                    deck.Add(item.itemName);
+                }
+            }
         }
 
         ShuffleDeck();
@@ -180,11 +186,11 @@ public class GameController : MonoBehaviour
 
     private void ApplyCardEffect(string card)
     {
-        if (card == "Attack")
+        if (card == "Attack Card")
         {
             Attack(Enemy, 10);
         }
-        else if (card == "Heal")
+        else if (card == "Heal Card")
         {
             Heal(Player, 10);
         }
