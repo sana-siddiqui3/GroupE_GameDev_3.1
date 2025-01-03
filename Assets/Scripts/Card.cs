@@ -5,6 +5,7 @@ using UnityEngine.InputSystem; // Add this line for the new input system
 public class Card : MonoBehaviour
 {
     public string cardName;
+    public string cardDescription;
 
     private bool playerInRange = false;
 
@@ -21,7 +22,9 @@ public class Card : MonoBehaviour
 
     public void PickUp()
     {
-        PlayerData.instance.AddCard(cardName);
+        string res = cardName.Replace(" Card", "");
+        Debug.Log($"Picking up {res}");
+        PlayerData.instance.AddItem(cardName, Resources.Load<Sprite>(res), $"{cardDescription}");;
         pickupMessageText.text = ""; // Clears the pickup message
         Destroy(gameObject); // Removes the card from the scene
     }
