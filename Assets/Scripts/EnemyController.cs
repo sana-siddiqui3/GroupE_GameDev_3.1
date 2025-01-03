@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviour
     private Animator animator;  // Reference to Animator
     public bool isEnemyDefeated = false; // Flag to indicate if the enemy is defeated
     private GameController gameController;
+    public bool dropHealthPotion;  // Flag to indicate if the enemy should drop a Health potion
 
     private NavMeshAgent navMeshAgent;  // Reference to the NavMeshAgent
 
@@ -37,6 +38,11 @@ public class EnemyController : MonoBehaviour
         {
             // If the enemy is defeated, make it disappear
             Disappear();
+            if(dropHealthPotion)
+            {
+                // Drop a health potion
+                PlayerData.instance.AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "Restores 20 health.");
+            }
             return;  // Exit the update method to stop further behavior
         }
 
