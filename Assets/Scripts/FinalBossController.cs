@@ -2,44 +2,45 @@ using UnityEngine;
 
 public class FinalBossController : MonoBehaviour
 {
-    public Transform[] patrolPoints;  // Array to hold the patrol points
-    public int targetPointIndex = 0;  // Index of the current patrol point
-    public float moveSpeed = 5f;  // Speed at which the enemy moves
-    public bool isFollowingPlayer = false;  // Flag to indicate if the enemy should follow the player
-    private Transform player;  // Reference to the player's transform
-    private Collider roomCollider;  // The room area collider
-    private bool isStopped = false;  // Flag to stop the enemy's movement
-    private Animator animator;  // Reference to Animator
+    public Transform[] patrolPoints; // Array to hold the patrol points
+    public int targetPointIndex = 0; // Index of the current patrol point
+    public float moveSpeed = 5f; // Speed at which the enemy moves
+    public bool isFollowingPlayer = false; // Flag to indicate if the enemy should follow the player
+    private Transform player; // Reference to the player's transform
+    private Collider roomCollider; // The room area collider
+    private bool isStopped = false; // Flag to stop the enemy's movement
+    private Animator animator; // Reference to Animator
     public bool isEnemyDefeated = false; // Flag to indicate if the enemy is defeated
     private GameController gameController;
+    private bool isFightActive = false; // Flag to track if a fight is active
 
     void Start()
     {
         gameController = FindFirstObjectByType<GameController>();
         animator = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;  // Get the player
-        roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>();  // Get the room area collider
+        player = GameObject.FindGameObjectWithTag("Player").transform; // Get the player
+        roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>(); // Get the room area collider
     }
 
     void Update()
     {
         if (isEnemyDefeated)
         {
-            Disappear();  // Handle defeat
-            return;  // Exit the update method
+            Disappear(); // Handle defeat
+            return; // Exit the update method
         }
 
         animator.SetBool("isWalking", true); // Start walking animation
 
-        if (isStopped)
+        if (isStopped || isFightActive)
         {
             animator.SetBool("isWalking", false);
-            return;  // Exit if the enemy is stopped
+            return; // Exit if the enemy is stopped or fight is active
         }
 
         Vector3 targetPosition;
 
-        if (isFollowingPlayer || IsPlayerInsideRoom())  // Follow the player if detected
+        if (isFollowingPlayer || IsPlayerInsideRoom()) // Follow the player if detected
         {
             isFollowingPlayer = true;
 
@@ -78,8 +79,10 @@ public class FinalBossController : MonoBehaviour
     {
         if (other.CompareTag("Player") && !isEnemyDefeated)
         {
-            isFollowingPlayer = true;  // Ensure chasing
-            gameController.StartFight();  // Trigger the fight
+            isFollowingPlayer = false; // Stop following the player
+            isFightActive = true; // Set fight active
+            StopEnemy(); // Ensure the enemy stops moving
+            gameController.StartFight(); // Trigger the fight
         }
     }
 
@@ -118,5 +121,10 @@ public class FinalBossController : MonoBehaviour
     void Disappear()
     {
         Destroy(gameObject);
+    }
+
+    public void EndFight()
+    {
+        isFightActive = false; // Allow movement after the fight ends
     }
 }
