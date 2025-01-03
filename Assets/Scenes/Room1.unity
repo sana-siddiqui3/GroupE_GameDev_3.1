@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 49591320}
   - component: {fileID: 49591319}
   m_Layer: 5
-  m_Name: KeyCountText
+  m_Name: KeyDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -184,8 +184,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Keys: 0/2'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5ba934557332f4c68b43a8374bcc3c66, type: 2}
+  m_sharedMaterial: {fileID: 5989894303618023258, guid: 5ba934557332f4c68b43a8374bcc3c66, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7395,7 +7395,7 @@ GameObject:
   - component: {fileID: 1274685013}
   - component: {fileID: 1274685012}
   m_Layer: 5
-  m_Name: InventoryText
+  m_Name: HealthDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7440,7 +7440,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Inventory:'
+  m_text: 'Health:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7552,6 +7552,8 @@ MonoBehaviour:
   totalKeysRequired: 2
   objective: 
   objectiveText: {fileID: 994341711}
+  healthDisplay: {fileID: 1274685012}
+  keyDisplay: {fileID: 49591319}
 --- !u!4 &1285041001
 Transform:
   m_ObjectHideFlags: 0
@@ -12174,10 +12176,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 89560256}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 105, y: -20}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 2.5, y: 0}
+  m_SizeDelta: {x: -15, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2050061754
 MonoBehaviour:
