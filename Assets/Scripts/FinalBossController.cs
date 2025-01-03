@@ -11,12 +11,12 @@ public class FinalBossController : MonoBehaviour
     private bool isStopped = false; // Flag to stop the enemy's movement
     private Animator animator; // Reference to Animator
     public bool isEnemyDefeated = false; // Flag to indicate if the enemy is defeated
-    private GameController gameController;
+    private GameControllerFinalBoss gameController;
     private bool isFightActive = false; // Flag to track if a fight is active
 
     void Start()
     {
-        gameController = FindFirstObjectByType<GameController>();
+        gameController = FindFirstObjectByType<GameControllerFinalBoss>();
         animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform; // Get the player
         roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>(); // Get the room area collider
@@ -26,7 +26,7 @@ public class FinalBossController : MonoBehaviour
     {
         if (isEnemyDefeated)
         {
-            Disappear(); // Handle defeat
+            animator.SetBool("isWalking", false); // Stop all animations
             return; // Exit the update method
         }
 
@@ -77,8 +77,14 @@ public class FinalBossController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isEnemyDefeated)
+        if (other.CompareTag("Player"))
         {
+            if (isEnemyDefeated)
+            {
+                // If the enemy is defeated, do nothing
+                return;
+            }
+
             isFollowingPlayer = false; // Stop following the player
             isFightActive = true; // Set fight active
             StopEnemy(); // Ensure the enemy stops moving
@@ -118,9 +124,11 @@ public class FinalBossController : MonoBehaviour
         isStopped = false;
     }
 
-    void Disappear()
+    public void DefeatEnemy()
     {
-        Destroy(gameObject);
+        isEnemyDefeated = true; // Set the enemy's defeated state
+        animator.SetTrigger("FallOver"); // Play the fall over animation
+        gameObject.layer = LayerMask.NameToLayer("DefeatedEnemy"); // Change the layer to avoid interactions
     }
 
     public void EndFight()

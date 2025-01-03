@@ -42,6 +42,9 @@ public class PlayerData : MonoBehaviour
     {
         // Example: Add predefined items
         AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
+        AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
+        AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
+        AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
         AddItem("Heal Card", Resources.Load<Sprite>("Heal"), "A basic healing card.");
     }
 
