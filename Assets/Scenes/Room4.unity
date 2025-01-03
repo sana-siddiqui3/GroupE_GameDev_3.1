@@ -1368,6 +1368,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 211704201}
   m_CullTransparentMesh: 1
+--- !u!1 &218865391
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 218865393}
+  - component: {fileID: 218865392}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &218865392
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218865391}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &218865393
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218865391}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.45853359, y: -0, z: -0, w: 0.8886771}
+  m_LocalPosition: {x: 13.67, y: 3.92, z: -22.18}
+  m_LocalScale: {x: 11.408971, y: 24.540771, z: 8.343032}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: -54.585, y: 0, z: 0}
 --- !u!1 &222255983
 GameObject:
   m_ObjectHideFlags: 0
@@ -3496,7 +3549,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c46be4c3dbb0b41b189abc74a56b7033, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 665986927}
+      addedObject: {fileID: 665986930}
   m_SourcePrefab: {fileID: 100100000, guid: c46be4c3dbb0b41b189abc74a56b7033, type: 3}
 --- !u!4 &665986925 stripped
 Transform:
@@ -3508,7 +3561,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c46be4c3dbb0b41b189abc74a56b7033, type: 3}
   m_PrefabInstance: {fileID: 665986924}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &665986927
+--- !u!64 &665986930
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10490,3 +10543,4 @@ SceneRoots:
   - {fileID: 934213412}
   - {fileID: 112579523}
   - {fileID: 98458675}
+  - {fileID: 218865393}
