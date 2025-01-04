@@ -42,11 +42,19 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 Debug.Log("Health potion clicked!");
                 UseHealthPotion();
             }
-
-            if (item.itemName == "Purity Potion")
+            else if (item.itemName == "Purity Potion")
             {
                 Debug.Log("Purity potion clicked!");
                 UsePurityPotion();
+            }
+            else if (item.itemName == "Poison Potion")
+            {
+                Debug.Log("Poison potion clicked!");
+                GameControllerRoom3 gameController = FindFirstObjectByType<GameControllerRoom3>();
+                if (gameController != null)
+                {
+                    gameController.UsePoisonPotion();  // Call the UsePoisonPotion method to win the battle
+                }
             }
         }
     }
@@ -58,13 +66,9 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             PlayerData.instance.HealPlayer(20); // Heal the player by 20
             Debug.Log("Used health potion!");
 
-            // Optionally remove the health potion from the inventory
             PlayerData.instance.RemoveItem(item.itemName);
-
-            // Hide the tooltip
             InventoryTooltip.instance.gameObject.SetActive(false);
 
-            // Update the inventory display
             PlayerInventory playerInventory = FindFirstObjectByType<PlayerInventory>();
             if (playerInventory != null)
             {
@@ -75,26 +79,16 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private void UsePurityPotion()
     {
-        // Check if PlayerData instance is valid
         if (PlayerData.instance != null)
         {
-           
-            // Find the HeartCrystal in the scene
             HeartCrystal heartCrystal = FindFirstObjectByType<HeartCrystal>();
-
-            // Check if the player is near the Heart Crystal
             if (heartCrystal != null && heartCrystal.IsPlayerNear())
             {
-                // Remove the Purity Potion from the inventory
                 PlayerData.instance.RemoveItem("Purity Potion");
-
-                // Add the Purified Heart to the inventory
                 PlayerData.instance.AddItem("Purified Heart", Resources.Load<Sprite>("PurifiedHeart"), "A heart purified by the potion.");
 
-                // Optionally update UI or show a message to the player
                 Debug.Log("Purified heart added to inventory.");
 
-                // Optionally update the inventory display
                 InventoryTooltip.instance.gameObject.SetActive(false);
                 PlayerInventory playerInventory = FindFirstObjectByType<PlayerInventory>();
                 if (playerInventory != null)
@@ -104,9 +98,9 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             }
             else
             {
-                // Notify the player they need to be near the Heart Crystal
                 Debug.LogWarning("You need to be near the Heart Crystal to use the Purity Potion.");
             }
         }
     }
+
 }
