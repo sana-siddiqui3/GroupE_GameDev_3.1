@@ -9,6 +9,7 @@ TagManager:
   - Room2
   - Inventory
   - RoomArea
+  - GameControllerRoom2
   layers:
   - Default
   - TransparentFX

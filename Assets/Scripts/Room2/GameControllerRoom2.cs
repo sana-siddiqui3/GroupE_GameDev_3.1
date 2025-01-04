@@ -44,6 +44,7 @@ public class GameControllerRoom2 : MonoBehaviour
     public Transform playerFightPosition;
     public Transform enemyFightPosition;
     public Transform enemyFightPosition2;
+    private bool isVictoryAchieved = false;
 
     [SerializeField] private GhostEnemyController enemyGhost1Controller;
     [SerializeField] private GhostEnemyController enemyGhost2Controller;
@@ -413,20 +414,26 @@ public class GameControllerRoom2 : MonoBehaviour
     }
 
     private void CheckForVictory()
-{
-    if (EnemyHealth.value <= 0 && Enemy2Health.value <= 0)
     {
-        isGameOver = true;
-        resultText.text = "You Win!";
+        if (EnemyHealth.value <= 0 && Enemy2Health.value <= 0)
+        {
+            isVictoryAchieved = true; // Set the victory flag
+            isGameOver = true;
+            resultText.text = "You Win!";
 
-        // Switch back to player view and end the fight
-        fightView.enabled = false;
-        playerView.enabled = true;
-        FightUI.SetActive(false);
+            // Switch back to player view and end the fight
+            fightView.enabled = false;
+            playerView.enabled = true;
+            FightUI.SetActive(false);
 
-        Debug.Log("Both enemies are defeated. Game Over!");
+            Debug.Log("Both enemies are defeated. Game Over!");
+        }
     }
-}
+
+    public bool IsVictoryAchieved()
+    {
+        return isVictoryAchieved;
+    }
 
     private void GameOver()
     {
