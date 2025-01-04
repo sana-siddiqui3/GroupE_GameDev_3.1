@@ -24,7 +24,7 @@ public class GuardController : MonoBehaviour
         fightView.enabled = false;
         gameController = FindFirstObjectByType<GameControllerRoom4>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>();
+        roomCollider = GameObject.FindGameObjectWithTag("RoomArea2").GetComponent<Collider>();
         allGuards = FindObjectsByType<GuardController>(FindObjectsSortMode.None);
         animator = GetComponent<Animator>();
     }
