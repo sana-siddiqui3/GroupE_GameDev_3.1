@@ -17173,7 +17173,8 @@ MonoBehaviour:
   roomEnterPromptUI: {fileID: 334076943}
   RoomChangeUI: {fileID: 1883235155}
   player: {fileID: 871860057}
-  NotEnoughKeysUI: {fileID: 1148530897}
+  NotEnoughItemsUI: {fileID: 1148530897}
+  currentRoom: 0
 --- !u!65 &1866375050
 BoxCollider:
   m_ObjectHideFlags: 0

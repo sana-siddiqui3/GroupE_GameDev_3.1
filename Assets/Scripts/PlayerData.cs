@@ -173,4 +173,17 @@ public class PlayerData : MonoBehaviour
             Debug.LogWarning("Key display text is not assigned!");
         }
     }
+
+    public bool HasItem(string itemName)
+    {
+        // Check if any item in the inventory matches the given itemName
+        foreach (var item in inventory)
+        {
+            if (item.itemName == itemName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

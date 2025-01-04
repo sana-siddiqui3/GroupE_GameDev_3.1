@@ -8,15 +8,18 @@ namespace Assets.Scripts
         public GameObject roomEnterPromptUI;
         public GameObject RoomChangeUI;
         public GameObject player;
-        public GameObject NotEnoughKeysUI;
+        public GameObject NotEnoughItemsUI;
 
-        private int keys;
         private PlayerData inventory;
         private bool playerInRange = false;
 
         // Reference to the input action for interaction
         private PlayerInput controls;
         private InputAction interactAction;
+
+        // Enum to indicate which room the trigger corresponds to
+        public enum RoomType { Room1, Room3 }
+        public RoomType currentRoom;
 
         void Awake()
         {
@@ -37,7 +40,7 @@ namespace Assets.Scripts
         void Start()
         {
             roomEnterPromptUI.SetActive(false);
-            NotEnoughKeysUI.SetActive(false);
+            NotEnoughItemsUI.SetActive(false);
         }
 
         void OnTriggerEnter(Collider other)
@@ -47,15 +50,32 @@ namespace Assets.Scripts
                 playerInRange = true;
                 inventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<PlayerData>();
 
-                keys = inventory.GetKeys();
-
-                if (keys == 2)
+                // Room-specific checks
+                if (currentRoom == RoomType.Room1)
                 {
-                    roomEnterPromptUI.SetActive(true);
+                    // Check if the player has 2 keys for Room 1
+                    int keys = inventory.GetKeys();
+                    if (keys >= 2)
+                    {
+                        roomEnterPromptUI.SetActive(true);
+                    }
+                    else
+                    {
+                        NotEnoughItemsUI.SetActive(true);
+                    }
                 }
-                else
+                else if (currentRoom == RoomType.Room3)
                 {
-                    NotEnoughKeysUI.SetActive(true);
+                    // Check if the player has the "Purified Heart" for Room 2
+                    bool hasPurifiedHeart = inventory.HasItem("Purified Heart");
+                    if (hasPurifiedHeart)
+                    {
+                        roomEnterPromptUI.SetActive(true);
+                    }
+                    else
+                    {
+                        NotEnoughItemsUI.SetActive(true);
+                    }
                 }
             }
         }
@@ -66,15 +86,23 @@ namespace Assets.Scripts
             {
                 playerInRange = false;
                 roomEnterPromptUI.SetActive(false);
-                NotEnoughKeysUI.SetActive(false);
+                NotEnoughItemsUI.SetActive(false);
             }
         }
 
         void Update()
         {
-            if (playerInRange && interactAction.triggered && keys == 2)
+            if (playerInRange && interactAction.triggered)
             {
-                EnterRoom();
+                // Room-specific enter logic
+                if (currentRoom == RoomType.Room1 && inventory.GetKeys() >= 2)
+                {
+                    EnterRoom();
+                }
+                else if (currentRoom == RoomType.Room3 && inventory.HasItem("Purified Heart"))
+                {
+                    EnterRoom();
+                }
             }
         }
 

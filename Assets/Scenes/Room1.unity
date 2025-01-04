@@ -8191,7 +8191,8 @@ MonoBehaviour:
   roomEnterPromptUI: {fileID: 1812191129}
   RoomChangeUI: {fileID: 1195321570}
   player: {fileID: 1272181455}
-  NotEnoughKeysUI: {fileID: 630747494}
+  NotEnoughItemsUI: {fileID: 630747494}
+  currentRoom: 0
 --- !u!1 &1327035388 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4936f351089b541b59d742c403ec06bb, type: 3}
