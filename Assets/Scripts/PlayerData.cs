@@ -7,8 +7,6 @@ public class PlayerData : MonoBehaviour
 {
     public static PlayerData instance;
     public float playerHealth = 100f;
-
-        // Player's inventory and key count
     public List<InventoryItem> inventory = new List<InventoryItem>();
     public int keysCollected = 0;
     public int totalKeysRequired = 2;
@@ -36,7 +34,6 @@ public class PlayerData : MonoBehaviour
     {
         UpdateHealthDisplay();
         setObjective("Fight the enemy to access the chest.");
-        // Initialize the player's inventory
         InitializeStartingItems();
     }
 
@@ -108,11 +105,6 @@ public class PlayerData : MonoBehaviour
                 Debug.LogError("PlayerInventory not found!");
             }
         }
-    }
-
-    public void SavePlayerHealth(float health)
-    {
-        playerHealth = Mathf.Clamp(health, 0, 100); // Ensure health stays between 0 and 100
     }
 
     // Method to retrieve the number of keys

@@ -80,7 +80,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
            
             // Find the HeartCrystal in the scene
-            HeartCrystal heartCrystal = FindObjectOfType<HeartCrystal>();
+            HeartCrystal heartCrystal = FindFirstObjectByType<HeartCrystal>();
 
             // Check if the player is near the Heart Crystal
             if (heartCrystal != null && heartCrystal.IsPlayerNear())
@@ -96,7 +96,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
                 // Optionally update the inventory display
                 InventoryTooltip.instance.gameObject.SetActive(false);
-                PlayerInventory playerInventory = FindObjectOfType<PlayerInventory>();
+                PlayerInventory playerInventory = FindFirstObjectByType<PlayerInventory>();
                 if (playerInventory != null)
                 {
                     playerInventory.UpdateInventoryDisplay();

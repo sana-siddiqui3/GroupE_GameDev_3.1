@@ -273,7 +273,7 @@ public class GameControllerFinalBoss : MonoBehaviour
 
             if (PlayerData.instance != null)
             {
-                PlayerData.instance.SavePlayerHealth(PlayerHealth.value); // Save updated health
+                PlayerData.instance.DamagePlayer(damage); // Save updated health
             }
 
             if (PlayerHealth.value <= 0)
@@ -295,9 +295,7 @@ public class GameControllerFinalBoss : MonoBehaviour
             PlayerHealth.value += amount;
 
             if (PlayerData.instance != null)
-            {
-                PlayerData.instance.SavePlayerHealth(PlayerHealth.value); // Save updated health
-            }
+                PlayerData.instance.HealPlayer(amount);
         }
     }
 
