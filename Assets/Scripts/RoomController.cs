@@ -9,7 +9,6 @@ namespace Assets.Scripts
     public class RoomController : MonoBehaviour
     {
         [SerializeField] private GameObject enterRoomUI = null;
-        [SerializeField] private GameObject Door = null;
         
         // Add a field to specify which scene to load
         [SerializeField] private string sceneToLoad = "";

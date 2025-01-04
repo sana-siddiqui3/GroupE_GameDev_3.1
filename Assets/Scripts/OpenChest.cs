@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem; // Add this line for the new input system
 
-public class Chest : MonoBehaviour
+public class OpenKeyChest : MonoBehaviour
 {
     public EnemyController enemyTrigger;
 

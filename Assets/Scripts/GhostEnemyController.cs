@@ -6,7 +6,6 @@ public class GhostEnemyController : MonoBehaviour
 {
     public Transform[] patrolPoints;
     public int targetPointIndex = 0;
-
     public float moveSpeed = 5f;
     public float separationDistance = 1.5f; // Minimum distance between ghosts
     public float separationStrength = 2f; // Strength of the separation force
@@ -15,11 +14,9 @@ public class GhostEnemyController : MonoBehaviour
     private Collider roomCollider;
     public bool isEnemyDefeated = false;
     private GameControllerRoom2 gameController;
-
     public bool hasStartedFight = false;
     public Camera playerView;
     public Camera fightView;
-
     public Transform enemyFightPosition;
     public Transform playerFightPosition;
 

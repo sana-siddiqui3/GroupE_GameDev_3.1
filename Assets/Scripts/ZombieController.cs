@@ -1,29 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;  // Import NavMeshAgent
+using UnityEngine.AI; 
 
 public class ZombieController : MonoBehaviour
 {
     public Transform[] patrolPoints;
     public int targetPointIndex = 0;
-
     public float moveSpeed = 5f;
     public bool isFollowingPlayer = false;
     private Transform player;
     private Collider roomCollider;
     public bool isEnemyDefeated = false;
     private GameControllerRoom3 gameController;
-
     public bool hasStartedFight = false;
     public Camera playerView;
     public Camera fightView;
-
     public Transform enemyFightPosition;
     public Transform playerFightPosition;
-
     private Animator animator; // Reference to the Animator
-
     private NavMeshAgent navAgent; // NavMeshAgent component reference
 
     void Start()
@@ -33,10 +28,10 @@ public class ZombieController : MonoBehaviour
         gameController = FindFirstObjectByType<GameControllerRoom3>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>();
-        animator = GetComponent<Animator>(); // Initialize the Animator
+        animator = GetComponent<Animator>();
 
-        navAgent = GetComponent<NavMeshAgent>(); // Initialize the NavMeshAgent
-        navAgent.speed = moveSpeed; // Set the speed for the NavMeshAgent
+        navAgent = GetComponent<NavMeshAgent>(); 
+        navAgent.speed = moveSpeed; 
     }
 
     void Update()
@@ -55,7 +50,7 @@ public class ZombieController : MonoBehaviour
         isFollowingPlayer = false;
 
         // Ensure the zombie goes to idle animation and stops walking
-        animator.SetBool("isWalking", false); // Stop walking animation
+        animator.SetBool("isWalking", false); 
 
         // Position the zombies in their designated positions for the fight
         if (!isEnemyDefeated) 
@@ -97,7 +92,7 @@ public class ZombieController : MonoBehaviour
     // If not in battle, play walking animation when moving
     if (!hasStartedFight)
     {
-        animator.SetBool("isWalking", navAgent.velocity.sqrMagnitude > 0.1f); // Play walking animation when moving
+        animator.SetBool("isWalking", navAgent.velocity.sqrMagnitude > 0.1f);
     }
 }
 

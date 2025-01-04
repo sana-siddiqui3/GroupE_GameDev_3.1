@@ -59,7 +59,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             InventoryTooltip.instance.gameObject.SetActive(false);
 
             // Update the inventory display
-            PlayerInventory playerInventory = FindObjectOfType<PlayerInventory>();
+            PlayerInventory playerInventory = FindFirstObjectByType<PlayerInventory>();
             if (playerInventory != null)
             {
                 playerInventory.UpdateInventoryDisplay();
