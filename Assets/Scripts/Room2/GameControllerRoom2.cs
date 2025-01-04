@@ -333,8 +333,6 @@ public class GameControllerRoom2 : MonoBehaviour
         }
     }
 
-
-
     public void Attack(GameObject target, float damage)
     {
         if (target == Enemy && !enemyGhost1Controller.isEnemyDefeated)
@@ -376,9 +374,6 @@ public class GameControllerRoom2 : MonoBehaviour
         }
     }
 
-
-
-
     public void Heal(GameObject target, float amount)
     {
         if (target == Enemy)
@@ -396,6 +391,26 @@ public class GameControllerRoom2 : MonoBehaviour
             if (PlayerData.instance != null)
                 PlayerData.instance.HealPlayer(amount);
         }
+    }
+
+    public void UsePoisonPotion()
+    {
+        Debug.Log("Poison potion used! Ending the fight...");
+
+        // Mark the enemies as defeated
+        enemyGhost1Controller.isEnemyDefeated = true;
+        enemyGhost2Controller.isEnemyDefeated = true;
+        isVictoryAchieved = true;
+        // Disable the fight UI and switch back to the player view
+        fightView.enabled = false;
+        playerView.enabled = true;
+        FightUI.SetActive(false);
+
+        // Display the result text as a win
+        resultText.text = "You won by using the poison potion!";
+        isGameOver = true;
+
+        Debug.Log("Both enemies are defeated without a fight.");
     }
 
     private void FallOver(GameObject target)

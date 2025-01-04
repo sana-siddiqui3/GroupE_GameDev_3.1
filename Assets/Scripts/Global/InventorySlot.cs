@@ -33,41 +33,48 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-{
-    if (item != null)
+ public void OnPointerClick(PointerEventData eventData)
     {
-        if (item.itemName == "Health Potion") // Check if the clicked item is a health potion
+        if (item != null)
         {
-            Debug.Log("Health potion clicked!");
-            UseHealthPotion();
-        }
-        else if (item.itemName == "Purity Potion")
-        {
-            Debug.Log("Purity potion clicked!");
-            UsePurityPotion();
-        }
-        else if (item.itemName == "Poison Potion")
-        {
-            Debug.Log("Poison potion clicked!");
-
-            // Try to find GameControllerRoom4 and GameControllerRoom3
-            GameControllerRoom4 gameControllerRoom4 = FindFirstObjectByType<GameControllerRoom4>();
-            GameControllerRoom3 gameControllerRoom3 = FindFirstObjectByType<GameControllerRoom3>();
-
-            // If in Room 4, use the poison potion in Room 4
-            if (gameControllerRoom4 != null)
+            if (item.itemName == "Health Potion") // Check if the clicked item is a health potion
             {
-                gameControllerRoom4.UsePoisonPotion();  // Skip the battle by using the poison potion in Room 4
+                Debug.Log("Health potion clicked!");
+                UseHealthPotion();
             }
-            // If in Room 3, use the poison potion in Room 3
-            else if (gameControllerRoom3 != null)
+            else if (item.itemName == "Purity Potion")
             {
-                gameControllerRoom3.UsePoisonPotion();  // Skip the battle by using the poison potion in Room 3
+                Debug.Log("Purity potion clicked!");
+                UsePurityPotion();
+            }
+            else if (item.itemName == "Poison Potion")
+            {
+                Debug.Log("Poison potion clicked!");
+
+                // Try to find GameControllerRoom4, GameControllerRoom3, or GameControllerRoom2
+                GameControllerRoom4 gameControllerRoom4 = FindFirstObjectByType<GameControllerRoom4>();
+                GameControllerRoom3 gameControllerRoom3 = FindFirstObjectByType<GameControllerRoom3>();
+                GameControllerRoom2 gameControllerRoom2 = FindFirstObjectByType<GameControllerRoom2>();
+
+                // If in Room 4, use the poison potion in Room 4
+                if (gameControllerRoom4 != null)
+                {
+                    gameControllerRoom4.UsePoisonPotion();  // Skip the battle by using the poison potion in Room 4
+                }
+                // If in Room 3, use the poison potion in Room 3
+                else if (gameControllerRoom3 != null)
+                {
+                    gameControllerRoom3.UsePoisonPotion();  // Skip the battle by using the poison potion in Room 3
+                }
+                // If in Room 2, use the poison potion in Room 2
+                else if (gameControllerRoom2 != null)
+                {
+                    gameControllerRoom2.UsePoisonPotion();  // Skip the battle by using the poison potion in Room 2
+                }
             }
         }
     }
-}
+
 
 
     private void UseHealthPotion()
