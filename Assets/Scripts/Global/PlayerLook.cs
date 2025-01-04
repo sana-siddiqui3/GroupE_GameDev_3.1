@@ -8,7 +8,6 @@ public class PlayerLook : MonoBehaviour
 
     public float xSensitivity = 100f;
     public float ySensitivity = 100f;
-    private bool isMouseClicked = false;
 
     private PlayerInput controls;
     private InputAction mouseLookAction;
@@ -32,22 +31,9 @@ public class PlayerLook : MonoBehaviour
 
     void Update()
     {
-        if (isMouseClicked)
-        {
-            Vector2 input = mouseLookAction.ReadValue<Vector2>(); // Get the mouse delta for movement
-            ProcessLook(input);
-        }
-
-        // Mouse click handling
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            isMouseClicked = true;
-        }
-
-        if (Mouse.current.leftButton.wasReleasedThisFrame)
-        {
-            isMouseClicked = false;
-        }
+        // Get the mouse delta for movement
+        Vector2 input = mouseLookAction.ReadValue<Vector2>(); 
+        ProcessLook(input);
     }
 
     private void ProcessLook(Vector2 input)
