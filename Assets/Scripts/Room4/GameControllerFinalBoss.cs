@@ -49,6 +49,7 @@ public class GameControllerFinalBoss : MonoBehaviour
         FightUI.SetActive(false);
         UpdateEnergyUI();
         InitializeDeck();
+        PlayerData.instance.setObjective("Defeat the boss to win the game!");
 
         // Load player health from PlayerData
         if (PlayerData.instance != null)
