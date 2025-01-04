@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;  // For NavMeshAgent
 
 public class GuardController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class GuardController : MonoBehaviour
     public Camera fightView; // Camera for the fight view
     private GuardController[] allGuards; // All guards in the scene for separation
     private Animator animator; // Animator component
+    private NavMeshAgent navMeshAgent; // NavMeshAgent component for pathfinding
 
     void Start()
     {
@@ -27,6 +29,10 @@ public class GuardController : MonoBehaviour
         roomCollider = GameObject.FindGameObjectWithTag("RoomArea2").GetComponent<Collider>();
         allGuards = FindObjectsByType<GuardController>(FindObjectsSortMode.None);
         animator = GetComponent<Animator>();
+        navMeshAgent = GetComponent<NavMeshAgent>(); // Get the NavMeshAgent component
+        navMeshAgent.speed = moveSpeed; // Set the guard's move speed
+        navMeshAgent.autoBraking = false; // Optional: Prevent the agent from braking when reaching the target
+        navMeshAgent.enabled = false; // Start with the NavMeshAgent disabled for patrolling
     }
 
     void Update()
@@ -45,6 +51,7 @@ public class GuardController : MonoBehaviour
             if (!isFollowingPlayer)
             {
                 isFollowingPlayer = true;
+                navMeshAgent.enabled = true; // Enable the NavMeshAgent when chasing the player
             }
 
             // Follow the player's exact position
@@ -58,15 +65,20 @@ public class GuardController : MonoBehaviour
         else
         {
             isFollowingPlayer = false;
+            navMeshAgent.enabled = false; // Disable the NavMeshAgent when patrolling
 
-            // Patrol between points
+            // Patrol between points manually
             targetPosition = patrolPoints[targetPointIndex].position;
 
-            if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+            // If the guard has reached the patrol point, update the target point
+            if (Vector3.Distance(transform.position, targetPosition) < 0.5f)
             {
                 IncreaseTargetIndex();
                 targetPosition = patrolPoints[targetPointIndex].position;
             }
+
+            // Manually move the guard when NavMeshAgent is disabled
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
         }
 
         if (!hasStartedFight)
@@ -77,12 +89,20 @@ public class GuardController : MonoBehaviour
             bool isWalking = Vector3.Distance(transform.position, finalTarget) > 0.1f;
             UpdateAnimationState(isWalking);
 
-            transform.position = Vector3.MoveTowards(transform.position, finalTarget, moveSpeed * Time.deltaTime);
-            RotateTowards(targetPosition);
+            if (navMeshAgent.enabled)
+            {
+                // Set the NavMeshAgent's destination when it's enabled
+                navMeshAgent.SetDestination(finalTarget);
+            }
+
+            // Turn the guard towards the target position when moving
+            RotateTowards(finalTarget);
         }
         else
         {
             UpdateAnimationState(false); // Idle during fights
+            // Stop the movement when the battle starts
+            if (navMeshAgent.enabled) navMeshAgent.isStopped = true;
         }
     }
 
@@ -97,8 +117,9 @@ public class GuardController : MonoBehaviour
 
     void RotateTowards(Vector3 targetPosition)
     {
+        // Rotate the guard to face the target position
         Vector3 direction = (targetPosition - transform.position).normalized;
-        direction.y = 0;
+        direction.y = 0; // Keep the rotation on the y-axis only
 
         if (direction.magnitude > 0.1f)
         {
