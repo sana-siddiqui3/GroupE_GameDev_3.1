@@ -15,7 +15,7 @@ public class PlayerMotor : MonoBehaviour
     private float gravity = -9.8f;
     private float jumpHeight = 2f;
 
-    public GameObject fightStarted; // Reference to fightStarted object
+    public GameObject[] fightUIs; // Array of fight UI references
 
     // Reference to Input Actions
     private PlayerInput controls;
@@ -50,8 +50,11 @@ public class PlayerMotor : MonoBehaviour
     {
         isGrounded = controller.isGrounded;  // Check if the player is on the ground
 
-        // If the player is not in a fight, allow movement
-        if (!fightStarted.activeSelf)
+        // Check if any fight UI is active
+        bool isFightActive = IsAnyFightUIActive();
+
+        // If no fight is active, allow movement
+        if (!isFightActive)
         {
             Vector2 input = moveAction.ReadValue<Vector2>(); // Get movement input
 
@@ -101,5 +104,18 @@ public class PlayerMotor : MonoBehaviour
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravity);
         }
+    }
+
+    // Check if any fight UI is active
+    private bool IsAnyFightUIActive()
+    {
+        foreach (GameObject fightUI in fightUIs)
+        {
+            if (fightUI.activeSelf)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

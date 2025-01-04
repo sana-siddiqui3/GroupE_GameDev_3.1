@@ -83,6 +83,12 @@ public class GameControllerFinalBoss : MonoBehaviour
             enemyController.StopEnemy(); // Stop the enemy's movement
         }
 
+        // Load player health from PlayerData without resetting
+        if (PlayerData.instance != null)
+        {
+            PlayerHealth.value = PlayerData.instance.playerHealth; // Set current health
+        }
+
         FightUI.SetActive(true); // Activate the fight UI in the GameController
         InitializeDeck();
         DrawCards(5);
