@@ -68,8 +68,9 @@ namespace Assets.Scripts
                 }
                 else if (currentRoom == RoomType.Room2)
                 {
+                    gameController = GameObject.FindGameObjectWithTag("GameControllerRoom2")?.GetComponent<GameControllerRoom2>();
                     // Check if all ghosts are defeated for Room 2
-                    if (gameController != null && gameController.IsVictoryAchieved())
+                    if (gameController.IsVictoryAchieved())
                     {
                         roomEnterPromptUI.SetActive(true); // Show enter prompt
                     }
@@ -115,7 +116,7 @@ namespace Assets.Scripts
                     PlayerData.instance.RemoveItem("Key");
                     EnterRoom();
                 }
-                else if (currentRoom == RoomType.Room2 && gameController != null && gameController.IsVictoryAchieved())
+                else if (currentRoom == RoomType.Room2 && gameController.IsVictoryAchieved())
                 {
                     EnterRoom();
                 }
