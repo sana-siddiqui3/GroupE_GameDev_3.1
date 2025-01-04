@@ -14174,7 +14174,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 180
   speed: 15
-  fightStarted: {fileID: 2008277192}
+  fightUIs:
+  - {fileID: 2008277192}
 --- !u!114 &1507990349
 MonoBehaviour:
   m_ObjectHideFlags: 0

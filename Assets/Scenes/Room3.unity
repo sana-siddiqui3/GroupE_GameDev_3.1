@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028292, g: 0.22571306, b: 0.30692118, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4808,7 +4808,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 180
   speed: 15
-  fightStarted: {fileID: 1683369591}
+  fightUIs:
+  - {fileID: 1683369591}
 --- !u!114 &817443797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9172,7 +9173,7 @@ MonoBehaviour:
   RoomChangeUI: {fileID: 1355092775}
   player: {fileID: 817443792}
   NotEnoughItemsUI: {fileID: 395850751}
-  currentRoom: 1
+  currentRoom: 2
 --- !u!65 &1428988460
 BoxCollider:
   m_ObjectHideFlags: 0
