@@ -42,6 +42,12 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 Debug.Log("Health potion clicked!");
                 UseHealthPotion();
             }
+
+            if (item.itemName == "Purity Potion")
+            {
+                Debug.Log("Purity potion clicked!");
+                UsePurityPotion();
+            }
         }
     }
 
@@ -63,6 +69,43 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             if (playerInventory != null)
             {
                 playerInventory.UpdateInventoryDisplay();
+            }
+        }
+    }
+
+    private void UsePurityPotion()
+    {
+        // Check if PlayerData instance is valid
+        if (PlayerData.instance != null)
+        {
+           
+            // Find the HeartCrystal in the scene
+            HeartCrystal heartCrystal = FindObjectOfType<HeartCrystal>();
+
+            // Check if the player is near the Heart Crystal
+            if (heartCrystal != null && heartCrystal.IsPlayerNear())
+            {
+                // Remove the Purity Potion from the inventory
+                PlayerData.instance.RemoveItem("Purity Potion");
+
+                // Add the Purified Heart to the inventory
+                PlayerData.instance.AddItem("Purified Heart", Resources.Load<Sprite>("PurifiedHeart"), "A heart purified by the potion.");
+
+                // Optionally update UI or show a message to the player
+                Debug.Log("Purified heart added to inventory.");
+
+                // Optionally update the inventory display
+                InventoryTooltip.instance.gameObject.SetActive(false);
+                PlayerInventory playerInventory = FindObjectOfType<PlayerInventory>();
+                if (playerInventory != null)
+                {
+                    playerInventory.UpdateInventoryDisplay();
+                }
+            }
+            else
+            {
+                // Notify the player they need to be near the Heart Crystal
+                Debug.LogWarning("You need to be near the Heart Crystal to use the Purity Potion.");
             }
         }
     }
