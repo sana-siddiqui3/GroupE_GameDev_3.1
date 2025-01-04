@@ -81,7 +81,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (PlayerData.instance != null)
         {
-            PlayerData.instance.HealPlayer(20); // Heal the player by 20
+            PlayerData.instance.HealPlayer(20);
             Debug.Log("Used health potion!");
 
             PlayerData.instance.RemoveItem(item.itemName);

@@ -411,6 +411,19 @@ public class GameControllerRoom2 : MonoBehaviour
         isGameOver = true;
 
         Debug.Log("Both enemies are defeated without a fight.");
+
+        // Remove the Poison Potion from the inventory
+        if (PlayerData.instance != null)
+        {
+            PlayerData.instance.RemoveItem("Poison Potion");
+            InventoryTooltip.instance.gameObject.SetActive(false);
+
+            PlayerInventory playerInventory = FindFirstObjectByType<PlayerInventory>();
+            if (playerInventory != null)
+            {
+                playerInventory.UpdateInventoryDisplay();
+            }
+        }
     }
 
     private void FallOver(GameObject target)
