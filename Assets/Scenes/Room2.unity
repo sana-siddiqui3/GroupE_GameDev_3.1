@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028292, g: 0.22571306, b: 0.30692118, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1152,7 +1152,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 96769752}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e18fb055b94e647919ca1cb63fee9158, type: 3}
   m_Name: 
@@ -8405,7 +8405,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07e0e6a82a3854c83bdee5c333874d28, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1197259051}
+      addedObject: {fileID: 1684560477}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07e0e6a82a3854c83bdee5c333874d28, type: 3}
       insertIndex: -1
@@ -16306,7 +16306,6 @@ MonoBehaviour:
   healthDisplay: {fileID: 1203669611}
   keyDisplay: {fileID: 372038618}
   difficulty: 0
-  currentRoom: Room1
 --- !u!4 &1653918687
 Transform:
   m_ObjectHideFlags: 0
@@ -16697,6 +16696,77 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7758928414542082597, guid: 520b77e85789c4112909244dc8fb27af, type: 3}
+--- !u!1 &1684560476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1684560477}
+  - component: {fileID: 1684560479}
+  - component: {fileID: 1684560478}
+  m_Layer: 0
+  m_Name: DoorCollider (1)
+  m_TagString: Room2
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1684560477
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684560476}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000001545431, y: 0.7071068, z: -0.00000001545431, w: 0.7071068}
+  m_LocalPosition: {x: 0.0058, y: 0.0026382513, z: 0.002957181}
+  m_LocalScale: {x: 0.013482878, y: 0.028172849, z: 0.008296831}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 824942909}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1684560478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684560476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 655b3877e284e454da7f6a67ab5be110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomEnterPromptUI: {fileID: 334076943}
+  RoomChangeUI: {fileID: 1883235155}
+  player: {fileID: 1507990344}
+  NotEnoughItemsUI: {fileID: 1148530897}
+  currentRoom: 1
+--- !u!65 &1684560479
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684560476}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 2}
+  m_Center: {x: -0.108371824, y: 0, z: -0.68654144}
 --- !u!1001 &1694907104
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20693,6 +20763,5 @@ SceneRoots:
   - {fileID: 1645114618}
   - {fileID: 1912218240}
   - {fileID: 1383338938}
-  - {fileID: 1812232550}
   - {fileID: 98085804}
   - {fileID: 142801287}
