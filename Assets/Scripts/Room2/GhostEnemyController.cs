@@ -19,7 +19,6 @@ public class GhostEnemyController : MonoBehaviour
     public Camera fightView;
     public Transform enemyFightPosition;
     public Transform playerFightPosition;
-
     private GhostEnemyController[] allGhosts;
 
     void Start()
