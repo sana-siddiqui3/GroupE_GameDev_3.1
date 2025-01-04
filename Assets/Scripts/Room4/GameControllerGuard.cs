@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GameControllerGuard : MonoBehaviour
+public class GameControllerRoom4 : MonoBehaviour
 {
     public Camera playerView;
     public Camera fightView;
@@ -46,8 +46,8 @@ public class GameControllerGuard : MonoBehaviour
     public Transform enemyFightPosition2;
     private bool isVictoryAchieved = false;
 
-    [SerializeField] private GuardController enemyGuard1Controller;
-    [SerializeField] private GuardController enemyGuard2Controller;
+    [SerializeField] private GuardController enemyGhost1Controller;
+    [SerializeField] private GuardController enemyGhost2Controller;
 
     private GameObject currentTarget = null;
 
@@ -81,8 +81,8 @@ public class GameControllerGuard : MonoBehaviour
         Enemy2.transform.position = enemyFightPosition2.position;
         Enemy2.transform.rotation = enemyFightPosition2.rotation;
 
-        enemyGuard1Controller.hasStartedFight = true;
-        enemyGuard2Controller.hasStartedFight = true;
+        enemyGhost1Controller.hasStartedFight = true;
+        enemyGhost2Controller.hasStartedFight = true;
         
 
         playerView.enabled = false;
@@ -191,15 +191,17 @@ public class GameControllerGuard : MonoBehaviour
         }
     }
 
+
+
     private void SetTarget(GameObject target, Slider targetHealth)
     {
-        if (target == Enemy && enemyGuard1Controller.isEnemyDefeated)
+        if (target == Enemy && enemyGhost1Controller.isEnemyDefeated)
         {
             Debug.Log("Enemy 1 is already defeated and cannot be targeted.");
             return;  // Do nothing if the enemy is defeated
         }
 
-        if (target == Enemy2 && enemyGuard2Controller.isEnemyDefeated)
+        if (target == Enemy2 && enemyGhost2Controller.isEnemyDefeated)
         {
             Debug.Log("Enemy 2 is already defeated and cannot be targeted.");
             return;  // Do nothing if the enemy is defeated
@@ -208,6 +210,7 @@ public class GameControllerGuard : MonoBehaviour
         currentTarget = target;
         Debug.Log($"{target.name} selected!");
     }
+
 
     public void PlayerEndTurn()
     {
@@ -239,6 +242,7 @@ public class GameControllerGuard : MonoBehaviour
 
         DisplayCardsInFightUI(); // Refresh the card UI after the action
     }
+
 
     private void EndTurn()
     {
@@ -328,69 +332,125 @@ public class GameControllerGuard : MonoBehaviour
         }
     }
 
+
+
     public void Attack(GameObject target, float damage)
     {
-        if (target == Enemy && !enemyGuard1Controller.isEnemyDefeated)
+        if (target == Enemy && !enemyGhost1Controller.isEnemyDefeated)
         {
             EnemyHealth.value -= damage;
             if (EnemyHealth.value <= 0)
             {
-                enemyGuard1Controller.isEnemyDefeated = true;  // Mark enemy 1 as defeated
+                enemyGhost1Controller.isEnemyDefeated = true;  // Mark enemy 1 as defeated
                 FallOver(target);
                 enemy1Button.interactable = false;  // Disable the attack button for this enemy
-                currentTarget = null;  // Reset target
+                currentTarget = null;  // Deselect the current target
+                Debug.Log("Enemy 1 defeated and deselected!");
             }
         }
-        else if (target == Enemy2 && !enemyGuard2Controller.isEnemyDefeated)
+        else if (target == Enemy2 && !enemyGhost2Controller.isEnemyDefeated)
         {
             Enemy2Health.value -= damage;
             if (Enemy2Health.value <= 0)
             {
-                enemyGuard2Controller.isEnemyDefeated = true;  // Mark enemy 2 as defeated
+                enemyGhost2Controller.isEnemyDefeated = true;  // Mark enemy 2 as defeated
                 FallOver(target);
                 enemy2Button.interactable = false;  // Disable the attack button for this enemy
-                currentTarget = null;  // Reset target
+                currentTarget = null;  // Deselect the current target
+                Debug.Log("Enemy 2 defeated and deselected!");
             }
+        }
+        else
+        {
+            PlayerHealth.value -= damage;
+
+            if (PlayerData.instance != null)
+                PlayerData.instance.DamagePlayer(damage);
+
+            if (PlayerHealth.value <= 0)
+            {
+                FallOver(target);
+                GameOver(); // Trigger the game over when player health is zero or less
+            }
+        }
+    }
+
+
+
+
+    public void Heal(GameObject target, float amount)
+    {
+        if (target == Enemy)
+        {
+            EnemyHealth.value += amount;
+        }
+        else if (target == Enemy2)
+        {
+            Enemy2Health.value += amount;
+        }
+        else
+        {
+            PlayerHealth.value += amount;
+
+            if (PlayerData.instance != null)
+                PlayerData.instance.HealPlayer(amount);
         }
     }
 
     private void FallOver(GameObject target)
     {
-        // Handle animation of the enemy falling over
-        Animator animator = target.GetComponent<Animator>();
-        animator.SetTrigger("Fall");
-    }
+        target.transform.Rotate(new Vector3(90f, 0f, 0f)); // Simulate falling over
 
-    public void Heal(GameObject target, float amount)
-    {
-        if (target == Player)
+        if (target == Enemy)
         {
-            PlayerHealth.value += amount;
-            if (PlayerHealth.value > PlayerHealth.maxValue)
-                PlayerHealth.value = PlayerHealth.maxValue;
-        }
-        else if (target == Enemy)
-        {
-            EnemyHealth.value += amount;
-            if (EnemyHealth.value > EnemyHealth.maxValue)
-                EnemyHealth.value = EnemyHealth.maxValue;
+            Debug.Log("Enemy 1 defeated!");
         }
         else if (target == Enemy2)
         {
-            Enemy2Health.value += amount;
-            if (Enemy2Health.value > Enemy2Health.maxValue)
-                Enemy2Health.value = Enemy2Health.maxValue;
+            Debug.Log("Enemy 2 defeated!");
+        }
+
+        CheckForVictory();
+    }
+
+    private void CheckForVictory()
+    {
+        if (EnemyHealth.value <= 0 && Enemy2Health.value <= 0)
+        {
+            isVictoryAchieved = true; // Set the victory flag
+            isGameOver = true;
+            resultText.text = "You Win!";
+
+            // Switch back to player view and end the fight
+            fightView.enabled = false;
+            playerView.enabled = true;
+            FightUI.SetActive(false);
+
+            Debug.Log("Both enemies are defeated. Game Over!");
         }
     }
 
-    public void UpdateEnergyUI()
+    public bool IsVictoryAchieved()
     {
-        energyText.text = "Energy: " + currentEnergy;
+        return isVictoryAchieved;
+    }
+
+    private void GameOver()
+    {
+        isGameOver = true;
+        resultText.text = "Game Over! You Lose.";
+
+        Debug.Log("Player defeated. Game Over!");
+    }
+
+    private void UpdateEnergyUI()
+    {
+        energyText.text = $"Energy: {currentEnergy}/{maxEnergy}";
     }
 
     private void LogDeckAndDiscardState()
     {
-        Debug.Log("Deck: " + string.Join(", ", deck));
-        Debug.Log("Discard Pile: " + string.Join(", ", discardPile));
+        Debug.Log($"Deck: {string.Join(", ", deck)}");
+        Debug.Log($"Discard Pile: {string.Join(", ", discardPile)}");
     }
 }

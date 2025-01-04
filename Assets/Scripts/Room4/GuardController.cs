@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GuardController : MonoBehaviour
@@ -13,12 +11,10 @@ public class GuardController : MonoBehaviour
     private Transform player; // Reference to the player
     private Collider roomCollider; // Room collider to check if player is inside
     public bool isEnemyDefeated = false; // Whether the guard is defeated
-    private GameControllerGuard gameController; // Reference to the game controller
+    private GameControllerRoom4 gameController; // Reference to the game controller
     public bool hasStartedFight = false; // Whether the fight has started
     public Camera playerView; // Camera for the player's view
     public Camera fightView; // Camera for the fight view
-    public Transform enemyFightPosition; // The position for the guard during the fight
-    public Transform playerFightPosition; // The position for the player during the fight
     private GuardController[] allGuards; // All guards in the scene for separation
     private Animator animator; // Animator component
 
@@ -26,14 +22,10 @@ public class GuardController : MonoBehaviour
     {
         playerView.enabled = true;
         fightView.enabled = false;
-        gameController = FindFirstObjectByType<GameControllerGuard>();
+        gameController = FindFirstObjectByType<GameControllerRoom4>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         roomCollider = GameObject.FindGameObjectWithTag("RoomArea").GetComponent<Collider>();
-
-        // Get all guards in the scene for separation behavior
         allGuards = FindObjectsByType<GuardController>(FindObjectsSortMode.None);
-
-        // Get Animator component
         animator = GetComponent<Animator>();
     }
 
@@ -99,13 +91,6 @@ public class GuardController : MonoBehaviour
         if (hasStartedFight) return;
 
         hasStartedFight = true;
-
-        transform.position = enemyFightPosition.position;
-        transform.rotation = enemyFightPosition.rotation;
-
-        player.transform.position = playerFightPosition.position;
-        player.transform.rotation = playerFightPosition.rotation;
-
         UpdateAnimationState(false); // Set to idle during fight
         gameController.StartFight();
     }
