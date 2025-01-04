@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,21 +8,15 @@ public class OptionsMenuManager : MonoBehaviour
     public Slider sensitivitySlider;
     public Slider volumeSlider;
 
-    private int sensitivity;
-    private int volume;
-
-    // Reference to PlayerLook, but we will find it dynamically
-    private PlayerLook playerLook;
-
     private void Start()
     {
         // Load saved settings or use default values
-        volume = PlayerPrefs.GetInt("Volume", 100); // Default: 100
-        sensitivity = PlayerPrefs.GetInt("Sensitivity", 50); // Default: 50
+        int volume = PlayerPrefs.GetInt("Volume", 100);
+        float sensitivity = PlayerPrefs.GetFloat("Sensitivity", 100f);
 
         // Initialize sliders
-        sensitivitySlider.minValue = 0;
-        sensitivitySlider.maxValue = 100;
+        sensitivitySlider.minValue = 0f;
+        sensitivitySlider.maxValue = 200f; // Adjust range as needed
         sensitivitySlider.value = sensitivity;
 
         volumeSlider.minValue = 0;
@@ -33,52 +25,25 @@ public class OptionsMenuManager : MonoBehaviour
 
         // Add listeners to sliders
         sensitivitySlider.onValueChanged.AddListener((value) => UpdateSensitivity(value));
-        volumeSlider.onValueChanged.AddListener((value) => UpdateVolume(value));
-
-        // Find the PlayerLook component in the scene
-        playerLook = FindFirstObjectByType<PlayerLook>();
-
-        // If PlayerLook is found, update its sensitivity with the saved value
-        if (playerLook != null)
-        {
-            playerLook.UpdateSensitivity(sensitivity);
-        }
-        else
-        {
-            Debug.LogWarning("PlayerLook component not found in the scene!");
-        }
+        volumeSlider.onValueChanged.AddListener((value) => UpdateVolume((int)value));
     }
 
     private void UpdateSensitivity(float value)
     {
-        sensitivity = Mathf.RoundToInt(value); // Convert to integer
-        PlayerPrefs.SetInt("Sensitivity", sensitivity); // Save to PlayerPrefs
-        PlayerPrefs.Save(); // Ensure data is saved
-
-        // Update PlayerLook sensitivity if it's found
-        if (playerLook != null)
-        {
-            playerLook.UpdateSensitivity(sensitivity);
-        }
-
-        Debug.Log($"Input Sensitivity updated to: {sensitivity}");
+        PlayerPrefs.SetFloat("Sensitivity", value);
+        PlayerPrefs.Save();
+        Debug.Log($"Sensitivity updated to: {value}");
     }
 
-    private void UpdateVolume(float value)
+    private void UpdateVolume(int value)
     {
-        volume = Mathf.RoundToInt(value); // Convert to integer
-        PlayerPrefs.SetInt("Volume", volume); // Save to PlayerPrefs
-        PlayerPrefs.Save(); // Ensure data is saved
-
-        // Scale volume to a 0.0 - 1.0 range and apply
-        AudioListener.volume = volume / 100f;
-        Debug.Log($"Volume updated to: {volume}");
+        PlayerPrefs.SetInt("Volume", value);
+        PlayerPrefs.Save();
+        AudioListener.volume = value / 100f;
     }
 
     public void ReturnToMainMenu()
     {
-        // Load the main menu scene
         SceneManager.LoadScene("MainMenu");
-        Debug.Log("Returning to Main Menu.");
     }
 }
