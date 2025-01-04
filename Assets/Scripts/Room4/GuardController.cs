@@ -20,6 +20,7 @@ public class GuardController : MonoBehaviour
     public Transform enemyFightPosition; // The position for the guard during the fight
     public Transform playerFightPosition; // The position for the player during the fight
     private GuardController[] allGuards; // All guards in the scene for separation
+    private Animator animator; // Animator component
 
     void Start()
     {
@@ -31,6 +32,9 @@ public class GuardController : MonoBehaviour
 
         // Get all guards in the scene for separation behavior
         allGuards = FindObjectsByType<GuardController>(FindObjectsSortMode.None);
+
+        // Get Animator component
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -78,8 +82,15 @@ public class GuardController : MonoBehaviour
             Vector3 separationOffset = CalculateSeparationOffset();
             Vector3 finalTarget = targetPosition + separationOffset;
 
+            bool isWalking = Vector3.Distance(transform.position, finalTarget) > 0.1f;
+            UpdateAnimationState(isWalking);
+
             transform.position = Vector3.MoveTowards(transform.position, finalTarget, moveSpeed * Time.deltaTime);
             RotateTowards(targetPosition);
+        }
+        else
+        {
+            UpdateAnimationState(false); // Idle during fights
         }
     }
 
@@ -95,6 +106,7 @@ public class GuardController : MonoBehaviour
         player.transform.position = playerFightPosition.position;
         player.transform.rotation = playerFightPosition.rotation;
 
+        UpdateAnimationState(false); // Set to idle during fight
         gameController.StartFight();
     }
 
@@ -153,5 +165,13 @@ public class GuardController : MonoBehaviour
         }
 
         return separation;
+    }
+
+    void UpdateAnimationState(bool isWalking)
+    {
+        if (animator != null)
+        {
+            animator.SetBool("isWalking", isWalking);
+        }
     }
 }
