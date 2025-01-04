@@ -6,22 +6,21 @@ public class PlayerLook : MonoBehaviour
     public Camera cam;
     private float xRotation = 0f;
 
-    public float xSensitivity = 100f;
-    public float ySensitivity = 100f;
-
     private PlayerInput controls;
     private InputAction mouseLookAction;
 
-    // Reference to PlayerMotor to access the fight UI status
-    public PlayerMotor playerMotor;
-
-    private bool isMouseLookEnabled = true; // Variable to track if mouse look is enabled
+    private float xSensitivity = 100f; // Default sensitivity value
+    private float ySensitivity = 100f; // Default sensitivity value
 
     void Awake()
     {
         // Get the Input Actions
         controls = new PlayerInput();
         mouseLookAction = controls.Player.MouseLook; // Assuming the action is named MouseLook under Player action map
+
+        // Retrieve sensitivity from PlayerPrefs or OptionsMenuManager
+        xSensitivity = PlayerPrefs.GetInt("Sensitivity", 50); // Default value 50
+        ySensitivity = PlayerPrefs.GetInt("Sensitivity", 50); // Use the same for ySensitivity for uniformity
     }
 
     void OnEnable()
@@ -36,22 +35,9 @@ public class PlayerLook : MonoBehaviour
 
     void Update()
     {
-        // Check if any fight UI is active and disable/enable mouse look accordingly
-        if (IsAnyFightUIActive())
-        {
-            isMouseLookEnabled = false; // Disable mouse look if fight UI is active
-        }
-        else
-        {
-            isMouseLookEnabled = true; // Enable mouse look if no fight UI is active
-        }
-
-        // Only allow mouse look if it's enabled
-        if (isMouseLookEnabled)
-        {
-            Vector2 input = mouseLookAction.ReadValue<Vector2>(); 
-            ProcessLook(input);
-        }
+        // Get mouse input and process look
+        Vector2 input = mouseLookAction.ReadValue<Vector2>(); 
+        ProcessLook(input);
     }
 
     private void ProcessLook(Vector2 input)
@@ -66,16 +52,10 @@ public class PlayerLook : MonoBehaviour
         transform.Rotate(Vector3.up * mouseX);
     }
 
-    // Checks if any fight UI is active
-    private bool IsAnyFightUIActive()
+    // Add a method to update sensitivity from the OptionsMenuManager
+    public void UpdateSensitivity(float newSensitivity)
     {
-        foreach (GameObject fightUI in playerMotor.fightUIs)
-        {
-            if (fightUI.activeSelf)
-            {
-                return true;
-            }
-        }
-        return false;
+        xSensitivity = newSensitivity;
+        ySensitivity = newSensitivity; // If you want both axes to use the same sensitivity
     }
 }

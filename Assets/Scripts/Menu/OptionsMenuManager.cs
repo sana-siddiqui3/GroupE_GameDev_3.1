@@ -13,6 +13,9 @@ public class OptionsMenuManager : MonoBehaviour
     private int sensitivity;
     private int volume;
 
+    // Reference to PlayerLook, but we will find it dynamically
+    private PlayerLook playerLook;
+
     private void Start()
     {
         // Load saved settings or use default values
@@ -29,21 +32,41 @@ public class OptionsMenuManager : MonoBehaviour
         volumeSlider.value = volume;
 
         // Add listeners to sliders
-        sensitivitySlider.onValueChanged.AddListener((value) => UpdateSensitivity((int)value));
-        volumeSlider.onValueChanged.AddListener((value) => UpdateVolume((int)value));
+        sensitivitySlider.onValueChanged.AddListener((value) => UpdateSensitivity(value));
+        volumeSlider.onValueChanged.AddListener((value) => UpdateVolume(value));
+
+        // Find the PlayerLook component in the scene
+        playerLook = FindFirstObjectByType<PlayerLook>();
+
+        // If PlayerLook is found, update its sensitivity with the saved value
+        if (playerLook != null)
+        {
+            playerLook.UpdateSensitivity(sensitivity);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerLook component not found in the scene!");
+        }
     }
 
-    private void UpdateSensitivity(int value)
+    private void UpdateSensitivity(float value)
     {
-        sensitivity = value;
+        sensitivity = Mathf.RoundToInt(value); // Convert to integer
         PlayerPrefs.SetInt("Sensitivity", sensitivity); // Save to PlayerPrefs
         PlayerPrefs.Save(); // Ensure data is saved
+
+        // Update PlayerLook sensitivity if it's found
+        if (playerLook != null)
+        {
+            playerLook.UpdateSensitivity(sensitivity);
+        }
+
         Debug.Log($"Input Sensitivity updated to: {sensitivity}");
     }
 
-    private void UpdateVolume(int value)
+    private void UpdateVolume(float value)
     {
-        volume = value;
+        volume = Mathf.RoundToInt(value); // Convert to integer
         PlayerPrefs.SetInt("Volume", volume); // Save to PlayerPrefs
         PlayerPrefs.Save(); // Ensure data is saved
 
