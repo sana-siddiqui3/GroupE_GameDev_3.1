@@ -35,6 +35,7 @@ public class PlayerData : MonoBehaviour
     private void Start()
     {
         difficulty = PlayerPrefs.GetInt("Difficulty", 1); // Default: 1
+        SetPlayerHealth(100f);
         UpdateHealthDisplay();
         setObjective("Fight the enemy to access the chest.");
         InitializeStartingItems();
@@ -187,6 +188,7 @@ public class PlayerData : MonoBehaviour
         }
     }
 
+    // Method to check if the player has a specific item
     public bool HasItem(string itemName)
     {
         // Check if any item in the inventory matches the given itemName
@@ -198,5 +200,12 @@ public class PlayerData : MonoBehaviour
             }
         }
         return false;
+    }
+
+    // Method to set player health
+    public void SetPlayerHealth(float health)
+    {
+        playerHealth = health;
+        UpdateHealthDisplay();
     }
 }
