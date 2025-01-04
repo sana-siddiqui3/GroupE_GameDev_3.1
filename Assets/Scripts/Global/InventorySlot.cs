@@ -34,30 +34,41 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
 
     public void OnPointerClick(PointerEventData eventData)
+{
+    if (item != null)
     {
-        if (item != null)
+        if (item.itemName == "Health Potion") // Check if the clicked item is a health potion
         {
-            if (item.itemName == "Health Potion") // Check if the clicked item is a health potion
+            Debug.Log("Health potion clicked!");
+            UseHealthPotion();
+        }
+        else if (item.itemName == "Purity Potion")
+        {
+            Debug.Log("Purity potion clicked!");
+            UsePurityPotion();
+        }
+        else if (item.itemName == "Poison Potion")
+        {
+            Debug.Log("Poison potion clicked!");
+
+            // Try to find GameControllerRoom4 and GameControllerRoom3
+            GameControllerRoom4 gameControllerRoom4 = FindFirstObjectByType<GameControllerRoom4>();
+            GameControllerRoom3 gameControllerRoom3 = FindFirstObjectByType<GameControllerRoom3>();
+
+            // If in Room 4, use the poison potion in Room 4
+            if (gameControllerRoom4 != null)
             {
-                Debug.Log("Health potion clicked!");
-                UseHealthPotion();
+                gameControllerRoom4.UsePoisonPotion();  // Skip the battle by using the poison potion in Room 4
             }
-            else if (item.itemName == "Purity Potion")
+            // If in Room 3, use the poison potion in Room 3
+            else if (gameControllerRoom3 != null)
             {
-                Debug.Log("Purity potion clicked!");
-                UsePurityPotion();
-            }
-            else if (item.itemName == "Poison Potion")
-            {
-                Debug.Log("Poison potion clicked!");
-                GameControllerRoom3 gameController = FindFirstObjectByType<GameControllerRoom3>();
-                if (gameController != null)
-                {
-                    gameController.UsePoisonPotion();  // Call the UsePoisonPotion method to win the battle
-                }
+                gameControllerRoom3.UsePoisonPotion();  // Skip the battle by using the poison potion in Room 3
             }
         }
     }
+}
+
 
     private void UseHealthPotion()
     {
