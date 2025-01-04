@@ -421,6 +421,12 @@ public class GameControllerRoom4 : MonoBehaviour
             isGameOver = true;
             resultText.text = "You Win!";
 
+            // Save player's health before ending the fight
+            if (PlayerData.instance != null)
+            {
+                PlayerData.instance.playerHealth = PlayerHealth.value;
+            }
+
             // Switch back to player view and end the fight
             fightView.enabled = false;
             playerView.enabled = true;
