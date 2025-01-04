@@ -56,6 +56,7 @@ public class GameControllerRoom2 : MonoBehaviour
         FightUI.SetActive(false);
         UpdateEnergyUI();
         InitializeDeck();
+        PlayerData.instance.setObjective("Defeat all ghosts to proceed.");
 
         if (PlayerData.instance != null)
         {
