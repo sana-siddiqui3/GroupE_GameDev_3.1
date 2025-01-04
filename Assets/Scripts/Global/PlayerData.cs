@@ -49,7 +49,6 @@ public class PlayerData : MonoBehaviour
         AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
         AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
         AddItem("Heal Card", Resources.Load<Sprite>("Heal"), "A basic healing card.");
-        AddItem("Poison Potion", Resources.Load<Sprite>("PoisonPotion"), "A potion that poisons the enemy.");
     }
 
     // Method to add an item to the inventory
