@@ -16,6 +16,8 @@ public class PlayerData : MonoBehaviour
     public TextMeshProUGUI healthDisplay;
     public TextMeshProUGUI keyDisplay;
 
+    public int difficulty;
+
     private void Awake()
     {
         // Ensure this instance persists across scenes
@@ -32,6 +34,7 @@ public class PlayerData : MonoBehaviour
 
     private void Start()
     {
+        difficulty = PlayerPrefs.GetInt("Difficulty", 1); // Default: 1
         UpdateHealthDisplay();
         setObjective("Fight the enemy to access the chest.");
         InitializeStartingItems();
@@ -46,6 +49,7 @@ public class PlayerData : MonoBehaviour
         AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
         AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
         AddItem("Heal Card", Resources.Load<Sprite>("Heal"), "A basic healing card.");
+        AddItem("Poison Potion", Resources.Load<Sprite>("PoisonPotion"), "A potion that poisons the enemy.");
     }
 
     // Method to add an item to the inventory
@@ -92,6 +96,11 @@ public class PlayerData : MonoBehaviour
         if (itemToRemove != null)
         {
             inventory.Remove(itemToRemove);
+            if(name == "Key")
+            {
+                keysCollected--;
+                UpdateKeyDisplay();
+            }
             Debug.Log($"Removed {name} from inventory!");
 
             // Update the inventory display if needed

@@ -97,6 +97,8 @@ namespace Assets.Scripts
                 // Room-specific enter logic
                 if (currentRoom == RoomType.Room1 && inventory.GetKeys() >= 2)
                 {
+                    PlayerData.instance.RemoveItem("Key");
+                    PlayerData.instance.RemoveItem("Key");
                     EnterRoom();
                 }
                 else if (currentRoom == RoomType.Room3 && inventory.HasItem("Purified Heart"))
