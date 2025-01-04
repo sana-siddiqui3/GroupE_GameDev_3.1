@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028292, g: 0.22571306, b: 0.30692118, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -572,7 +572,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: c46be4c3dbb0b41b189abc74a56b7033, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1812232550}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c46be4c3dbb0b41b189abc74a56b7033, type: 3}
       insertIndex: -1
@@ -997,6 +1000,7 @@ GameObject:
   - component: {fileID: 90385062}
   - component: {fileID: 90385061}
   - component: {fileID: 90385060}
+  - component: {fileID: 90385064}
   m_Layer: 0
   m_Name: Floor (4)
   m_TagString: Untagged
@@ -1056,12 +1060,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 40, z: 2}
+  m_Center: {x: 0, y: 5, z: 0}
 --- !u!23 &90385062
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1112,6 +1116,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 90385058}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &90385064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90385058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce19fc0a34f28477589700ce1349edb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &96769752
 GameObject:
   m_ObjectHideFlags: 0
@@ -3913,6 +3929,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 60399600}
   - {fileID: 1726461475}
   - {fileID: 1580142460}
   - {fileID: 1224968415}
@@ -4001,7 +4018,6 @@ Transform:
   - {fileID: 1590244035}
   - {fileID: 1702567595}
   - {fileID: 1961733948}
-  - {fileID: 60399600}
   - {fileID: 1467982864}
   - {fileID: 306166911}
   - {fileID: 253690757}
@@ -4047,7 +4063,7 @@ Transform:
   m_GameObject: {fileID: 358682463}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.5, y: 0.2, z: -26.2}
+  m_LocalPosition: {x: -0.4, y: 6.62, z: -26.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4375,7 +4391,7 @@ GameObject:
   - component: {fileID: 390375352}
   m_Layer: 0
   m_Name: GameController
-  m_TagString: Untagged
+  m_TagString: GameControllerRoom2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7082,7 +7098,7 @@ Transform:
   m_GameObject: {fileID: 694146413}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.1, y: 0.2, z: 0.4}
+  m_LocalPosition: {x: -2.6, y: 5.91, z: 6.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8136,8 +8152,8 @@ Transform:
   m_GameObject: {fileID: 793894421}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 19, y: 3.8, z: -5.78}
-  m_LocalScale: {x: 26.49349, y: 7, z: 33.608}
+  m_LocalPosition: {x: 11.8, y: 3.8, z: -5.78}
+  m_LocalScale: {x: 65.22168, y: 7, z: 38.302567}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -8386,7 +8402,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07e0e6a82a3854c83bdee5c333874d28, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1684560477}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07e0e6a82a3854c83bdee5c333874d28, type: 3}
       insertIndex: -1
@@ -10041,7 +10060,7 @@ GameObject:
   - component: {fileID: 1148530900}
   - component: {fileID: 1148530899}
   m_Layer: 5
-  m_Name: NotEnoughKeysPrompt
+  m_Name: BreakSealPrompt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10063,7 +10082,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -543, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1148530899
@@ -10086,7 +10105,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You don't have enough keys to access this door!
+  m_text: The seal of the door is bound by the spirits. Only their defeat can release
+    the lock.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -16279,14 +16299,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: 100
   inventory: []
-  keysCollected: 2
+  keysCollected: 0
   totalKeysRequired: 2
   objective: 
   objectiveText: {fileID: 705371790}
   healthDisplay: {fileID: 1203669611}
   keyDisplay: {fileID: 372038618}
   difficulty: 0
-  currentRoom: Room1
 --- !u!4 &1653918687
 Transform:
   m_ObjectHideFlags: 0
@@ -16677,6 +16696,77 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 7758928414542082597, guid: 520b77e85789c4112909244dc8fb27af, type: 3}
+--- !u!1 &1684560476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1684560477}
+  - component: {fileID: 1684560479}
+  - component: {fileID: 1684560478}
+  m_Layer: 0
+  m_Name: DoorCollider (1)
+  m_TagString: Room2
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1684560477
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684560476}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000001545431, y: 0.7071068, z: -0.00000001545431, w: 0.7071068}
+  m_LocalPosition: {x: 0.0058, y: 0.0026382513, z: 0.002957181}
+  m_LocalScale: {x: 0.013482878, y: 0.028172849, z: 0.008296831}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 824942909}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1684560478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684560476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 655b3877e284e454da7f6a67ab5be110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomEnterPromptUI: {fileID: 334076943}
+  RoomChangeUI: {fileID: 1883235155}
+  player: {fileID: 1507990344}
+  NotEnoughItemsUI: {fileID: 1148530897}
+  currentRoom: 1
+--- !u!65 &1684560479
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684560476}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 2}
+  m_Center: {x: -0.108371824, y: 0, z: -0.68654144}
 --- !u!1001 &1694907104
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17339,12 +17429,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1812232548}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.44861752, y: -0, z: -0, w: 0.8937239}
-  m_LocalPosition: {x: 13.67, y: 3.14, z: -20.91}
-  m_LocalScale: {x: 11.408971, y: 20.922235, z: 8.343032}
+  m_LocalRotation: {x: -0.44861755, y: -0, z: -0, w: 0.8937239}
+  m_LocalPosition: {x: 0.00009991041, y: -0.0072453446, z: -0.000672936}
+  m_LocalScale: {x: 0.02559193, y: 0.046931516, z: 0.018714596}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 60399600}
   m_LocalEulerAnglesHint: {x: -53.31, y: 0, z: 0}
 --- !u!1001 &1812779675
 PrefabInstance:
@@ -17731,9 +17821,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomEnterPromptUI: {fileID: 334076943}
   RoomChangeUI: {fileID: 1883235155}
-  player: {fileID: 0}
+  player: {fileID: 1507990344}
   NotEnoughItemsUI: {fileID: 1148530897}
-  currentRoom: 0
+  currentRoom: 1
 --- !u!65 &1866375050
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20673,6 +20763,5 @@ SceneRoots:
   - {fileID: 1645114618}
   - {fileID: 1912218240}
   - {fileID: 1383338938}
-  - {fileID: 1812232550}
   - {fileID: 98085804}
   - {fileID: 142801287}

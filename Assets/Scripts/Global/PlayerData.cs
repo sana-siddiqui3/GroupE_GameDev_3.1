@@ -49,7 +49,6 @@ public class PlayerData : MonoBehaviour
         AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
         AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
         AddItem("Heal Card", Resources.Load<Sprite>("Heal"), "A basic healing card.");
-        AddItem("Poison Potion", Resources.Load<Sprite>("PoisonPotion"), "A potion that poisons the enemy.");
         AddItem("Energy Card", Resources.Load<Sprite>("Energy"), "A card that restores energy.");
         AddItem("Shield Card", Resources.Load<Sprite>("Shield"), "A basic shield card.");
         AddItem("AttackBlock Card", Resources.Load<Sprite>("AttackBlock"), "A card that attacks & blocks.");
