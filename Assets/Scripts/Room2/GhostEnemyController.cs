@@ -37,6 +37,7 @@ public class GhostEnemyController : MonoBehaviour
     {
         if (isEnemyDefeated)
         {
+            PlayerData.instance.setObjective("Go through a door to the next room.");
             gameObject.SetActive(false);
             return;
         }

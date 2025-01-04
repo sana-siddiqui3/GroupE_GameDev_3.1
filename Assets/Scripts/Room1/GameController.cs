@@ -167,7 +167,20 @@ public class GameController : MonoBehaviour
         {
             selectedCards.Add(card);
             cardsSelected++;
-            currentEnergy--;
+            if(card != "Energy Card")
+            {
+                currentEnergy--;
+            } else {
+                cardsSelected--;
+            }
+            if(card == "TripleAttack Card")
+            {
+                currentEnergy -= 3;
+            }
+            if(card == "BadAttack Card")
+            {
+                currentEnergy -= 2;
+            }
             UpdateEnergyUI();
             discardPile.Add(card);
             drawnCards.Remove(card);
@@ -193,6 +206,38 @@ public class GameController : MonoBehaviour
         else if (card == "Heal Card")
         {
             Heal(Player, 10);
+        } 
+        else if (card == "Energy Card")
+        {
+            currentEnergy++;
+            UpdateEnergyUI();
+        }
+        else if (card == "Shield Card")
+        {
+            Heal(Player, 5);
+        }
+        else if (card == "AttackBlock Card")
+        {
+            Attack(Enemy, 5);
+            Heal(Player, 5);
+        }
+        else if (card == "TripleAttack Card")
+        {
+            Attack(Enemy, 5);
+            Attack(Enemy, 5);
+            Attack(Enemy, 5);
+        }
+        else if (card == "AttackAll Card")
+        {
+            Attack(Enemy, 5);
+        }
+        else if (card == "BadAttack Card")
+        {
+            Attack(Enemy, 5);
+        }
+        else if (card == "LowAttack Card")
+        {
+            Attack(Enemy, 2);
         }
 
         DisplayCardsInFightUI();  // Refresh the UI

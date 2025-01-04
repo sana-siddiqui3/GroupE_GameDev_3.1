@@ -35,6 +35,7 @@ public class PlayerData : MonoBehaviour
     private void Start()
     {
         difficulty = PlayerPrefs.GetInt("Difficulty", 1); // Default: 1
+        SetPlayerHealth(100f);
         UpdateHealthDisplay();
         setObjective("Fight the enemy to access the chest.");
         InitializeStartingItems();
@@ -54,6 +55,8 @@ public class PlayerData : MonoBehaviour
         //AddItem("AttackBlock Card", Resources.Load<Sprite>("AttackBlock"), "A card that attacks & blocks.");
         //AddItem("TripleAttack Card", Resources.Load<Sprite>("TripleAttack"), "A card that performs 3 attacks.");
         //AddItem("AtackAll Card", Resources.Load<Sprite>("AttackAll"), "A card that attacks all enemies.");
+        AddItem("BadAttack Card", Resources.Load<Sprite>("BadAttack"), "An inefficient attack card.");
+        AddItem("LowAttack Card", Resources.Load<Sprite>("LowAttack"), "A low damage attack card.");
     }
 
     // Method to add an item to the inventory
@@ -187,6 +190,7 @@ public class PlayerData : MonoBehaviour
         }
     }
 
+    // Method to check if the player has a specific item
     public bool HasItem(string itemName)
     {
         // Check if any item in the inventory matches the given itemName
@@ -198,5 +202,12 @@ public class PlayerData : MonoBehaviour
             }
         }
         return false;
+    }
+
+    // Method to set player health
+    public void SetPlayerHealth(float health)
+    {
+        playerHealth = health;
+        UpdateHealthDisplay();
     }
 }

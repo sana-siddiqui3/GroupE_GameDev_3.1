@@ -60,6 +60,7 @@ public class GameControllerRoom3 : MonoBehaviour
         FightUI.SetActive(false);
         UpdateEnergyUI();
         InitializeDeck();
+        PlayerData.instance.setObjective("Defeat the enemies to proceed.");
 
         if (PlayerData.instance != null)
         {
