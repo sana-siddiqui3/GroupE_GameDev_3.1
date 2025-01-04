@@ -49,11 +49,11 @@ public class PlayerData : MonoBehaviour
         AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
         AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
         AddItem("Heal Card", Resources.Load<Sprite>("Heal"), "A basic healing card.");
-        AddItem("Energy Card", Resources.Load<Sprite>("Energy"), "A card that restores energy.");
-        AddItem("Shield Card", Resources.Load<Sprite>("Shield"), "A basic shield card.");
-        AddItem("AttackBlock Card", Resources.Load<Sprite>("AttackBlock"), "A card that attacks & blocks.");
-        AddItem("TripleAttack Card", Resources.Load<Sprite>("TripleAttack"), "A card that performs 3 attacks.");
-        AddItem("AtackAll Card", Resources.Load<Sprite>("AttackAll"), "A card that attacks all enemies.");
+        //AddItem("Energy Card", Resources.Load<Sprite>("Energy"), "A card that restores energy.");
+        //AddItem("Shield Card", Resources.Load<Sprite>("Shield"), "A basic shield card.");
+        //AddItem("AttackBlock Card", Resources.Load<Sprite>("AttackBlock"), "A card that attacks & blocks.");
+        //AddItem("TripleAttack Card", Resources.Load<Sprite>("TripleAttack"), "A card that performs 3 attacks.");
+        //AddItem("AtackAll Card", Resources.Load<Sprite>("AttackAll"), "A card that attacks all enemies.");
     }
 
     // Method to add an item to the inventory
