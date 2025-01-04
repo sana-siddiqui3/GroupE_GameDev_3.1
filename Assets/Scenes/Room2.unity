@@ -572,7 +572,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: c46be4c3dbb0b41b189abc74a56b7033, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1812232550}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c46be4c3dbb0b41b189abc74a56b7033, type: 3}
       insertIndex: -1
@@ -1003,7 +1006,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 96769752}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e18fb055b94e647919ca1cb63fee9158, type: 3}
   m_Name: 
@@ -3421,6 +3424,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 60399600}
   - {fileID: 1726461475}
   - {fileID: 1580142460}
   - {fileID: 1224968415}
@@ -3509,7 +3513,6 @@ Transform:
   - {fileID: 1590244035}
   - {fileID: 1702567595}
   - {fileID: 1961733948}
-  - {fileID: 60399600}
   - {fileID: 1467982864}
   - {fileID: 306166911}
   - {fileID: 253690757}
@@ -7685,7 +7688,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07e0e6a82a3854c83bdee5c333874d28, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1197259051}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07e0e6a82a3854c83bdee5c333874d28, type: 3}
       insertIndex: -1
@@ -9634,7 +9640,7 @@ GameObject:
   - component: {fileID: 1148530900}
   - component: {fileID: 1148530899}
   m_Layer: 5
-  m_Name: NotEnoughKeysPrompt
+  m_Name: BreakSealPrompt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9679,7 +9685,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You don't have enough keys to access this door!
+  m_text: The seal of the door is bound by the spirits. Only their defeat can release
+    the lock.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10106,6 +10113,77 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165596603}
   m_CullTransparentMesh: 1
+--- !u!1 &1197259050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1197259051}
+  - component: {fileID: 1197259053}
+  - component: {fileID: 1197259052}
+  m_Layer: 0
+  m_Name: DoorCollider (1)
+  m_TagString: Room2
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1197259051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197259050}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.0053, y: 0.0005, z: -0.006}
+  m_LocalScale: {x: 0.01348288, y: 0.028172849, z: 0.00829683}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 824942909}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &1197259052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197259050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 655b3877e284e454da7f6a67ab5be110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomEnterPromptUI: {fileID: 334076943}
+  RoomChangeUI: {fileID: 1883235155}
+  player: {fileID: 1507990344}
+  NotEnoughItemsUI: {fileID: 1148530897}
+  currentRoom: 2
+--- !u!65 &1197259053
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197259050}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 2}
+  m_Center: {x: -0.108371824, y: 0, z: -0.68654144}
 --- !u!1 &1200996877
 GameObject:
   m_ObjectHideFlags: 0
@@ -15471,7 +15549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: 100
   inventory: []
-  keysCollected: 2
+  keysCollected: 0
   totalKeysRequired: 2
   objective: 
   objectiveText: {fileID: 1882452475}
@@ -16530,12 +16608,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1812232548}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.44861752, y: -0, z: -0, w: 0.8937239}
-  m_LocalPosition: {x: 13.67, y: 3.14, z: -20.91}
-  m_LocalScale: {x: 11.408971, y: 20.922235, z: 8.343032}
+  m_LocalRotation: {x: -0.44861755, y: -0, z: -0, w: 0.8937239}
+  m_LocalPosition: {x: 0.00009991041, y: -0.0072453446, z: -0.000672936}
+  m_LocalScale: {x: 0.02559193, y: 0.046931516, z: 0.018714596}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 60399600}
   m_LocalEulerAnglesHint: {x: -53.31, y: 0, z: 0}
 --- !u!1001 &1812779675
 PrefabInstance:
@@ -16922,9 +17000,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomEnterPromptUI: {fileID: 334076943}
   RoomChangeUI: {fileID: 1883235155}
-  player: {fileID: 0}
+  player: {fileID: 1507990344}
   NotEnoughItemsUI: {fileID: 1148530897}
-  currentRoom: 0
+  currentRoom: 2
 --- !u!65 &1866375050
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19881,4 +19959,3 @@ SceneRoots:
   - {fileID: 1645114618}
   - {fileID: 1912218240}
   - {fileID: 1383338938}
-  - {fileID: 1812232550}

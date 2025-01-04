@@ -18,8 +18,10 @@ namespace Assets.Scripts
         private InputAction interactAction;
 
         // Enum to indicate which room the trigger corresponds to
-        public enum RoomType { Room1, Room3 }
+        public enum RoomType { Room1, Room2, Room3 }
         public RoomType currentRoom;
+
+        private GameControllerRoom2 gameController;  // Reference to Room 2 game controller
 
         void Awake()
         {
@@ -64,9 +66,21 @@ namespace Assets.Scripts
                         NotEnoughItemsUI.SetActive(true);
                     }
                 }
+                else if (currentRoom == RoomType.Room2)
+                {
+                    // Check if all ghosts are defeated for Room 2
+                    if (gameController != null && gameController.IsVictoryAchieved())
+                    {
+                        roomEnterPromptUI.SetActive(true); // Show enter prompt
+                    }
+                    else
+                    {
+                        NotEnoughItemsUI.SetActive(true); // Show seal is not broken message
+                    }
+                }
                 else if (currentRoom == RoomType.Room3)
                 {
-                    // Check if the player has the "Purified Heart" for Room 2
+                    // Check if the player has the "Purified Heart" for Room 3
                     bool hasPurifiedHeart = inventory.HasItem("Purified Heart");
                     if (hasPurifiedHeart)
                     {
@@ -101,6 +115,10 @@ namespace Assets.Scripts
                     PlayerData.instance.RemoveItem("Key");
                     EnterRoom();
                 }
+                else if (currentRoom == RoomType.Room2 && gameController != null && gameController.IsVictoryAchieved())
+                {
+                    EnterRoom();
+                }
                 else if (currentRoom == RoomType.Room3 && inventory.HasItem("Purified Heart"))
                 {
                     EnterRoom();
@@ -114,6 +132,7 @@ namespace Assets.Scripts
 
             roomEnterPromptUI.SetActive(false);
             RoomChangeUI.SetActive(true);
+
         }
     }
 }
