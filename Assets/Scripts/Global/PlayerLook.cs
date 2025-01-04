@@ -12,6 +12,11 @@ public class PlayerLook : MonoBehaviour
     private PlayerInput controls;
     private InputAction mouseLookAction;
 
+    // Reference to PlayerMotor to access the fight UI status
+    public PlayerMotor playerMotor;
+
+    private bool isMouseLookEnabled = true; // Variable to track if mouse look is enabled
+
     void Awake()
     {
         // Get the Input Actions
@@ -31,9 +36,22 @@ public class PlayerLook : MonoBehaviour
 
     void Update()
     {
-        // Get the mouse delta for movement
-        Vector2 input = mouseLookAction.ReadValue<Vector2>(); 
-        ProcessLook(input);
+        // Check if any fight UI is active and disable/enable mouse look accordingly
+        if (IsAnyFightUIActive())
+        {
+            isMouseLookEnabled = false; // Disable mouse look if fight UI is active
+        }
+        else
+        {
+            isMouseLookEnabled = true; // Enable mouse look if no fight UI is active
+        }
+
+        // Only allow mouse look if it's enabled
+        if (isMouseLookEnabled)
+        {
+            Vector2 input = mouseLookAction.ReadValue<Vector2>(); 
+            ProcessLook(input);
+        }
     }
 
     private void ProcessLook(Vector2 input)
@@ -46,5 +64,18 @@ public class PlayerLook : MonoBehaviour
 
         cam.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
+    }
+
+    // Checks if any fight UI is active
+    private bool IsAnyFightUIActive()
+    {
+        foreach (GameObject fightUI in playerMotor.fightUIs)
+        {
+            if (fightUI.activeSelf)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
