@@ -52,22 +52,25 @@ public class GhostEnemyController : MonoBehaviour
                 isFollowingPlayer = true;
             }
 
-            targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
+            // Follow the player's exact position
+            targetPosition = player.position;
         }
         else if (isFollowingPlayer)
         {
-            targetPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
+            // Continue following the player
+            targetPosition = player.position;
         }
         else
         {
             isFollowingPlayer = false;
 
-            targetPosition = new Vector3(patrolPoints[targetPointIndex].position.x, transform.position.y, patrolPoints[targetPointIndex].position.z);
+            // Patrol between points
+            targetPosition = patrolPoints[targetPointIndex].position;
 
             if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
             {
                 IncreaseTargetIndex();
-                targetPosition = new Vector3(patrolPoints[targetPointIndex].position.x, transform.position.y, patrolPoints[targetPointIndex].position.z);
+                targetPosition = patrolPoints[targetPointIndex].position;
             }
         }
 
