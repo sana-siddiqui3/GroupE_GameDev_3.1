@@ -397,6 +397,39 @@ public class GameControllerRoom4 : MonoBehaviour
         }
     }
 
+    public void UsePoisonPotion()
+    {
+        // Mark enemies as defeated when poison is used
+        enemyGhost1Controller.isEnemyDefeated = true;
+        enemyGhost2Controller.isEnemyDefeated = true;
+        
+        // Set enemy health to 0 to indicate they are defeated
+        EnemyHealth.value = 0;
+        Enemy2Health.value = 0;
+
+        // Update the UI with the result
+        resultText.text = "You used poison to skip the battle!";
+
+        // Check for victory
+        CheckForVictory();
+
+        // End the fight
+        GameOver();
+
+        // Remove the Poison Potion from the inventory
+        if (PlayerData.instance != null)
+        {
+            PlayerData.instance.RemoveItem("Poison Potion");
+            InventoryTooltip.instance.gameObject.SetActive(false);
+
+            PlayerInventory playerInventory = FindFirstObjectByType<PlayerInventory>();
+            if (playerInventory != null)
+            {
+                playerInventory.UpdateInventoryDisplay();
+            }
+        }
+    }
+
     private void FallOver(GameObject target)
     {
         target.transform.Rotate(new Vector3(90f, 0f, 0f)); // Simulate falling over

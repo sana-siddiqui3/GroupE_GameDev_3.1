@@ -391,91 +391,79 @@ public class GameControllerRoom3 : MonoBehaviour
                 Debug.Log("Enemy 3 defeated and deselected!");
             }
         }
-        else
-        {
-            PlayerHealth.value -= damage;
-
-            PlayerData.instance.DamagePlayer(damage); // Update player health in PlayerData
-
-            if (PlayerHealth.value <= 0)
-            {
-                FallOver(target);
-                GameOver();
-            }
-        }
-
-        CheckForVictory(); // Check for victory after every attack
     }
 
-
-    public void Heal(GameObject target, float healingAmount)
+    private void Heal(GameObject target, float healAmount)
     {
         if (target == Player)
         {
-            PlayerHealth.value += healingAmount;
-
-            PlayerData.instance.HealPlayer(healingAmount); // Update player health in PlayerData
-
+            PlayerHealth.value += healAmount;
             if (PlayerHealth.value > 100)
-                PlayerHealth.value = 100;
-        }
-        else if (target == Enemy)
-        {
-            EnemyHealth.value += healingAmount;
-            if (EnemyHealth.value > 100)
-                EnemyHealth.value = 100;
-        }
-        else if (target == Enemy2)
-        {
-            Enemy2Health.value += healingAmount;
-            if (Enemy2Health.value > 100)
-                Enemy2Health.value = 100;
-        }
-        else if (target == Enemy3)
-        {
-            Enemy3Health.value += healingAmount;
-            if (Enemy3Health.value > 100)
-                Enemy3Health.value = 100;
+                PlayerHealth.value = 100; // Cap the player's health
         }
     }
 
-    public void FallOver(GameObject target)
+    private void FallOver(GameObject enemy)
     {
-        Debug.Log($"{target.name} has fallen over.");
+        enemy.GetComponent<Animator>().SetTrigger("FallOver");
+    }
+
+    public void UsePoisonPotion()
+    {
+        if (PlayerData.instance.HasItem("Poison Potion"))
+        {
+            Debug.Log("Poison Potion used! You win the battle automatically.");
+            EndBattle(true);
+        }
+        else
+        {
+            Debug.LogWarning("Poison Potion not found in inventory!");
+        }
+    }
+
+    private void EndBattle(bool playerWon)
+    {
+        isGameOver = true;
+        zombie1Controller.isEnemyDefeated = true;
+        zombie2Controller.isEnemyDefeated = true;
+        zombie3Controller.isEnemyDefeated = true; 
+
+        if (playerWon)
+        {
+            resultText.text = "You Win! Poison Potion was used!";
+        }
+        else
+        {
+            resultText.text = "Game Over!";
+        }
+
+        fightView.enabled = false;
+        playerView.enabled = true;
+        FightUI.SetActive(false);
+
+        // Remove the Poison Potion from the inventory
+        if (PlayerData.instance != null)
+        {
+            PlayerData.instance.RemoveItem("Poison Potion");
+            InventoryTooltip.instance.gameObject.SetActive(false);
+
+            PlayerInventory playerInventory = FindFirstObjectByType<PlayerInventory>();
+            if (playerInventory != null)
+            {
+                playerInventory.UpdateInventoryDisplay();
+            }
+        }
     }
 
     private void UpdateEnergyUI()
     {
-        energyText.text = "Energy: " + currentEnergy;
+        energyText.text = $"Energy: {currentEnergy}";
     }
 
     private void LogDeckAndDiscardState()
     {
+        // Log deck and discard for debugging
         Debug.Log("Deck: " + string.Join(", ", deck));
-        Debug.Log("Discard Pile: " + string.Join(", ", discardPile));
-    }
-
-    private void GameOver()
-    {
-        isGameOver = true;
-        resultText.text = "Game Over!";
-        fightView.enabled = false;
-        playerView.enabled = true;
-        FightUI.SetActive(false);
-    }
-
-    private void CheckForVictory()
-    {
-        if (EnemyHealth.value <= 0 && Enemy2Health.value <= 0 && Enemy3Health.value <= 0)
-        {
-            isGameOver = true;
-            resultText.text = "You Win!";
-
-            fightView.enabled = false;
-            playerView.enabled = true;
-            FightUI.SetActive(false);
-
-            Debug.Log("All enemies are defeated. Game Over!");
-        }
+        Debug.Log("Discard: " + string.Join(", ", discardPile));
     }
 }
