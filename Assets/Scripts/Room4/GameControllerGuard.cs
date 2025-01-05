@@ -172,7 +172,21 @@ public class GameControllerRoom4 : MonoBehaviour
             // Set the card's sprite and name
             Sprite cardSprite = GetCardSprite(card);
             cardUIScript.SetCardSprite(cardSprite);
-            cardUIScript.SetCardName(card);
+            
+            // Change card name and energy cost based on card type
+            if(card == "Energy Card")
+            {
+                cardUIScript.SetCardName(card + " E: 0");
+            } else if(card == "TripleAttack Card")
+            {
+                cardUIScript.SetCardName(card + " E: 3");
+            } else if(card == "BadAttack Card")
+            {
+                cardUIScript.SetCardName(card + " E: 2");
+            } else
+            {
+                cardUIScript.SetCardName(card + " E: 1");
+            }
 
             // Add the card button to the list
             cardButtons.Add(cardButton);
@@ -250,6 +264,7 @@ public class GameControllerRoom4 : MonoBehaviour
 
                 // Apply the effect of the card
                 ApplyCardEffect(card);
+                CardTooltip.instance.HideTooltip(); // Hide the tooltip
             }
             else
             {
