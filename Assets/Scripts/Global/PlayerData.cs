@@ -17,6 +17,7 @@ public class PlayerData : MonoBehaviour
     public TextMeshProUGUI keyDisplay;
 
     public int difficulty;
+    private int volume;
 
     private void Awake()
     {
@@ -35,6 +36,10 @@ public class PlayerData : MonoBehaviour
     private void Start()
     {
         difficulty = PlayerPrefs.GetInt("Difficulty", 1); // Default: 1
+        volume = PlayerPrefs.GetInt("Volume", 100); // Default: 100
+        // Scale volume to a 0.0 - 1.0 range and apply
+        AudioListener.volume = volume / 100f;
+        Debug.Log($"Volume updated to: {volume}");
         SetPlayerHealth(100f);
         UpdateHealthDisplay();
         setObjective("Fight the enemy to access the chest.");
