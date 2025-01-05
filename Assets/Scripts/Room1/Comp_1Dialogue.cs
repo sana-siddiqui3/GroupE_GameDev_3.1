@@ -74,7 +74,7 @@ public class CompanionTrigger : MonoBehaviour
 
     IEnumerator HideDialogueAfterDelay()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(10);
         dialogueUI.SetActive(false);
         Debug.Log("Dialogue hidden.");
     }
