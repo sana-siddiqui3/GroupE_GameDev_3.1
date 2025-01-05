@@ -10,7 +10,6 @@ public class PathGenerator : MonoBehaviour
     public int difficulty = 1; // Difficulty level: 1 (easy), 2 (medium), 3 (hard)
     private int triesRemaining = 4; // Track remaining tries
     private float fallPenalty; // Amount to reduce health by after each fall
-    private bool isFirstFall = true; // Flag to check if it's the first fall
 
     private CharacterController characterController; // Reference to the CharacterController
 

@@ -561,7 +561,7 @@ public class GameControllerRoom3 : MonoBehaviour
 
     private void FallOver(GameObject enemy)
     {
-        enemy.GetComponent<Animator>().SetTrigger("FallOver");
+
     }
 
     private void CheckForVictory()
