@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
                 PlayerData.instance.setObjective("Find the chest to get the key.");
             }
 
-
+            CardTooltip.instance.HideTooltip(); // Hide the tooltip
             return;  // Exit the update method to stop further behavior
         }
 
