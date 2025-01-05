@@ -40,18 +40,6 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             CardTooltip.instance.HideTooltip();
         }
     }
-
-        public TextMeshProUGUI cardNameText;
-
-    public void SetCardNameText(string cardName)
-    {
-        cardNameText.text = cardName;
-    }
-
-    public string GetCardName()
-    {
-        return cardNameText.text;
-    }
 }
 
 
