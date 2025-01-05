@@ -5118,6 +5118,7 @@ MonoBehaviour:
   cam: {fileID: 836384020}
   xSensitivity: 100
   ySensitivity: 100
+  playerMotor: {fileID: 703740040}
 --- !u!143 &703740042
 CharacterController:
   m_ObjectHideFlags: 0
