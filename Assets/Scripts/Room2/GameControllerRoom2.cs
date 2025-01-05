@@ -176,7 +176,7 @@ public class GameControllerRoom2 : MonoBehaviour
             // Check energy requirements before playing the card
             bool canPlayCard = false;
 
-            if (card == "Heal Card" || card == "Shield Card" || card == "AttackAll Card" ||  currentTarget != null){
+            if (card == "Heal Card" || card == "Shield Card" || card == "AttackAll Card" || card == "Energy Card" ||  currentTarget != null){
 
             if (card == "TripleAttack Card" && currentEnergy >= 3)
             {
