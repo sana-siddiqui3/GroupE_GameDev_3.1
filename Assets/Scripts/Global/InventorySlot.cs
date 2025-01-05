@@ -3,9 +3,6 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    public AudioSource audioSource;    // Reference to the Audio Source
-    public AudioClip hoverSound;      // Sound for hovering
-    public AudioClip clickSound;      // Sound for clicking
     public InventoryItem item; // The item assigned to this slot
     private InventoryTooltip tooltip;
 
@@ -25,7 +22,6 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         {
             tooltip.ShowTooltip(item.itemDescription);
             tooltip.UpdateTooltipPosition(Input.mousePosition);
-            audioSource.PlayOneShot(hoverSound);
         }
     }
 
@@ -77,7 +73,6 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
                 }
             }
         }
-        audioSource.PlayOneShot(clickSound);
     }
 
 
