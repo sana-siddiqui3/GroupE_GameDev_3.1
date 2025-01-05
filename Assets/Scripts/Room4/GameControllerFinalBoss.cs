@@ -83,6 +83,12 @@ public class GameControllerFinalBoss : MonoBehaviour
             enemyController.StopEnemy(); // Stop the enemy's movement
         }
 
+        // Load player health from PlayerData without resetting
+        if (PlayerData.instance != null)
+        {
+            PlayerHealth.value = PlayerData.instance.playerHealth; // Set current health
+        }
+
         FightUI.SetActive(true); // Activate the fight UI in the GameController
         InitializeDeck();
         DrawCards(5);
@@ -163,19 +169,62 @@ public class GameControllerFinalBoss : MonoBehaviour
     }
 
     private void SelectCard(string card)
+{
+    // Only allow card selection if it doesn't cause the energy to go below 0
+    if (card == "Energy Card" || currentEnergy > 0)  // Allow Energy Card and cards that don't reduce energy
     {
-        if (cardsSelected < 3 && currentEnergy > 0)
+        // Check energy requirements before playing the card
+        bool canPlayCard = false;
+
+        if (card == "TripleAttack Card" && currentEnergy >= 3)
+        {
+            canPlayCard = true;
+        }
+        else if (card == "BadAttack Card" && currentEnergy >= 2)
+        {
+            canPlayCard = true;
+        }
+        else if (card != "TripleAttack Card" && card != "BadAttack Card") // For other cards
+        {
+            canPlayCard = true;
+        }
+
+        // If the card can be played, update the energy and select it
+        if (canPlayCard)
         {
             selectedCards.Add(card);
             cardsSelected++;
-            currentEnergy--;
+
+            // Deduct energy
+            if (card == "TripleAttack Card")
+            {
+                currentEnergy -= 3;
+            }
+            else if (card == "BadAttack Card")
+            {
+                currentEnergy -= 2;
+            }
+            else if (card != "Energy Card")
+            {
+                currentEnergy--;
+            }
+
+            // Update the energy UI
             UpdateEnergyUI();
+
+            // Move the card to the discard pile and remove it from the drawn cards
             discardPile.Add(card);
             drawnCards.Remove(card);
 
+            // Apply the effect of the card
             ApplyCardEffect(card);
         }
+        else
+        {
+            Debug.Log("Not enough energy to play this card.");
+        }
     }
+}
 
     public void PlayerEndTurn()
     {
@@ -194,6 +243,36 @@ public class GameControllerFinalBoss : MonoBehaviour
         else if (card == "Heal Card")
         {
             Heal(Player, 10);
+        } 
+        else if (card == "Energy Card")
+        {
+            currentEnergy++;
+            UpdateEnergyUI();
+        }
+        else if (card == "Shield Card")
+        {
+            Heal(Player, 5);
+        }
+        else if (card == "AttackBlock Card")
+        {
+            Attack(Enemy, 5);
+            Heal(Player, 5);
+        }
+        else if (card == "TripleAttack Card")
+        {
+            Attack(Enemy, 30);
+        }
+        else if (card == "AttackAll Card")
+        {
+            Attack(Enemy, 10);
+        }
+        else if (card == "BadAttack Card")
+        {
+            Attack(Enemy, 5);
+        }
+        else if (card == "LowAttack Card")
+        {
+            Attack(Enemy, 2);
         }
 
         DisplayCardsInFightUI();  // Refresh the UI
