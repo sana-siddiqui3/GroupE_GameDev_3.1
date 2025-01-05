@@ -27,6 +27,7 @@ public class FinalBossController : MonoBehaviour
         if (isEnemyDefeated)
         {
             animator.SetBool("isWalking", false); // Stop all animations
+            CardTooltip.instance.HideTooltip(); // Hide the tooltip
             return; // Exit the update method
         }
 
