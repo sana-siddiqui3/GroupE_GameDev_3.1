@@ -38,7 +38,7 @@ public class PauseMenu : MonoBehaviour
         volumeSlider.onValueChanged.AddListener(UpdateVolume);
 
         // Get the PlayerLook component to update sensitivity
-        playerLook = FindObjectOfType<PlayerLook>();  // Make sure to get the PlayerLook component from the scene
+        playerLook = FindFirstObjectByType<PlayerLook>();  // Make sure to get the PlayerLook component from the scene
         if (playerLook != null)
         {
             playerLook.UpdateSensitivity(sensitivity); // Set initial sensitivity
