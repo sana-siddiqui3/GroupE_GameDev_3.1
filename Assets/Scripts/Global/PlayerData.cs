@@ -55,6 +55,8 @@ public class PlayerData : MonoBehaviour
         AddItem("AttackAll Card", Resources.Load<Sprite>("AttackAll"), "A card that attacks all enemies.");
         AddItem("BadAttack Card", Resources.Load<Sprite>("BadAttack"), "An inefficient attack card.");
         AddItem("LowAttack Card", Resources.Load<Sprite>("LowAttack"), "A low damage attack card.");
+        AddItem("Purity Potion", Resources.Load<Sprite>("PurityPotion"), "A potion to purify the corrupted heart crystal.");
+        AddItem("Heart Crystal", Resources.Load<Sprite>("Heart"), "A heart crystal.");
     }
 
     // Method to add an item to the inventory
