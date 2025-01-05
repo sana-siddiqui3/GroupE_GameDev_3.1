@@ -78,4 +78,15 @@ public class PlayerLook : MonoBehaviour
         }
         return false;
     }
+
+    // Method to update sensitivity from options menu
+    public void UpdateSensitivity(float newSensitivity)
+    {
+        xSensitivity = newSensitivity;
+        ySensitivity = newSensitivity;
+
+        // Save the new sensitivity value
+        PlayerPrefs.SetFloat("Sensitivity", newSensitivity);
+        PlayerPrefs.Save();
+    }
 }
