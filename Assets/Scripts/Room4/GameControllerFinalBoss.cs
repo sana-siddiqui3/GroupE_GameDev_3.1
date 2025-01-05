@@ -44,6 +44,7 @@ public class GameControllerFinalBoss : MonoBehaviour
     public Transform enemyFightPosition;  // Predefined enemy position for the fight
     private FinalBossController enemyController; // Reference to the EnemyController script
 
+
     public void Start()
     {
         FightUI.SetActive(false);
@@ -57,6 +58,11 @@ public class GameControllerFinalBoss : MonoBehaviour
             PlayerHealth.maxValue = 100; // Set max health
             PlayerHealth.value = PlayerData.instance.playerHealth; // Set current health
         }
+    }
+
+    public void Update()
+    {
+        PlayerHealth.value = PlayerData.instance.playerHealth;
     }
 
     public void StartFight()
@@ -322,13 +328,13 @@ public class GameControllerFinalBoss : MonoBehaviour
 
         if (random == 1)
         {
-            Attack(Player, 20);
-            Heal(Enemy, 5);
+            Attack(Player, 10);
+            Heal(Enemy, 10);
         }
         else
         {
-            Attack(Player, 10);
-            Heal(Enemy, 10);
+            Attack(Player, 8);
+            Heal(Enemy, 7);
         }
 
         currentEnergy = maxEnergy;

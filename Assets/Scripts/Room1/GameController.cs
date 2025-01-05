@@ -57,6 +57,11 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        PlayerHealth.value = PlayerData.instance.playerHealth;
+    }
+
     public void StartFight()
     {
         // Hide the fight prompt and show the fight UI
