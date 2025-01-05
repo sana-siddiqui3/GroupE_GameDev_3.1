@@ -169,65 +169,65 @@ public class GameControllerRoom2 : MonoBehaviour
     }
 
     private void SelectCard(string card)
-{
-    // Only allow card selection if it doesn't cause the energy to go below 0
-    if (card == "Energy Card" || currentEnergy > 0)  // Allow Energy Card and cards that don't reduce energy
     {
-        // Check energy requirements before playing the card
-        bool canPlayCard = false;
-
-        if (card == "Heal Card" || card == "Shield Card" || card == "AttackAll Card" ||  currentTarget != null){
-
-        if (card == "TripleAttack Card" && currentEnergy >= 3)
+        // Only allow card selection if it doesn't cause the energy to go below 0
+        if (card == "Energy Card" || currentEnergy > 0)  // Allow Energy Card and cards that don't reduce energy
         {
-            canPlayCard = true;
-        }
-        else if (card == "BadAttack Card" && currentEnergy >= 2)
-        {
-            canPlayCard = true;
-        }
-        else if (card != "TripleAttack Card" && card != "BadAttack Card") // For other cards
-        {
-            canPlayCard = true;
-        }
-        }
+            // Check energy requirements before playing the card
+            bool canPlayCard = false;
 
-        // If the card can be played, update the energy and select it
-        if (canPlayCard)
-        {
-            selectedCards.Add(card);
-            cardsSelected++;
+            if (card == "Heal Card" || card == "Shield Card" || card == "AttackAll Card" ||  currentTarget != null){
 
-            // Deduct energy
-            if (card == "TripleAttack Card")
+            if (card == "TripleAttack Card" && currentEnergy >= 3)
             {
-                currentEnergy -= 3;
+                canPlayCard = true;
             }
-            else if (card == "BadAttack Card")
+            else if (card == "BadAttack Card" && currentEnergy >= 2)
             {
-                currentEnergy -= 2;
+                canPlayCard = true;
             }
-            else if (card != "Energy Card")
+            else if (card != "TripleAttack Card" && card != "BadAttack Card") // For other cards
             {
-                currentEnergy--;
+                canPlayCard = true;
+            }
             }
 
-            // Update the energy UI
-            UpdateEnergyUI();
+            // If the card can be played, update the energy and select it
+            if (canPlayCard)
+            {
+                selectedCards.Add(card);
+                cardsSelected++;
 
-            // Move the card to the discard pile and remove it from the drawn cards
-            discardPile.Add(card);
-            drawnCards.Remove(card);
+                // Deduct energy
+                if (card == "TripleAttack Card")
+                {
+                    currentEnergy -= 3;
+                }
+                else if (card == "BadAttack Card")
+                {
+                    currentEnergy -= 2;
+                }
+                else if (card != "Energy Card")
+                {
+                    currentEnergy--;
+                }
 
-            // Apply the effect of the card
-            ApplyCardEffect(card);
-        }
-        else
-        {
-            Debug.Log("Not enough energy to play this card / Enemy not selected.");
+                // Update the energy UI
+                UpdateEnergyUI();
+
+                // Move the card to the discard pile and remove it from the drawn cards
+                discardPile.Add(card);
+                drawnCards.Remove(card);
+
+                // Apply the effect of the card
+                ApplyCardEffect(card);
+            }
+            else
+            {
+                Debug.Log("Not enough energy to play this card / Enemy not selected.");
+            }
         }
     }
-}
 
     private void SetTarget(GameObject target, Slider targetHealth)
     {
