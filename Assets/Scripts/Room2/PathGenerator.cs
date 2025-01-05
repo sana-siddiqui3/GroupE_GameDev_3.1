@@ -9,7 +9,8 @@ public class PathGenerator : MonoBehaviour
     public Transform startingPosition; // Starting position (beginning of the bridge)
     public int difficulty = 1; // Difficulty level: 1 (easy), 2 (medium), 3 (hard)
     private int triesRemaining = 4; // Track remaining tries
-    private float fallPenalty; // Amount to reduce health by after each fall
+    private float initialFallPenalty; // Amount to reduce health by after the first fall
+    private float currentFallPenalty; // Fixed penalty to use after the first fall
 
     private CharacterController characterController; // Reference to the CharacterController
 
@@ -17,9 +18,6 @@ public class PathGenerator : MonoBehaviour
     {
         // Get the CharacterController (if attached)
         characterController = player.GetComponent<CharacterController>();
-
-        // Adjust fall penalty based on difficulty
-        AdjustFallPenalty();
 
         // Call to randomize the bridge
         ResetBridge();
@@ -30,23 +28,23 @@ public class PathGenerator : MonoBehaviour
         // Any other update logic if needed
     }
 
-    // Adjusts the fall penalty based on the difficulty level
+    // Adjusts the fall penalty based on difficulty level
     void AdjustFallPenalty()
     {
         switch (difficulty)
         {
             case 1: // Easy
-                fallPenalty = 0.10f; // 10% of health
+                initialFallPenalty = 0.10f; // 10% of health
                 break;
             case 2: // Medium
-                fallPenalty = 0.25f; // 20% of health
+                initialFallPenalty = 0.25f; // 25% of health
                 break;
             case 3: // Hard
-                fallPenalty = 0.33f; // 33% of health
+                initialFallPenalty = 0.33f; // 33% of health
                 break;
             default:
                 Debug.LogWarning("Invalid difficulty level. Defaulting to medium.");
-                fallPenalty = 0.25f;
+                initialFallPenalty = 0.25f;
                 break;
         }
     }
@@ -73,15 +71,24 @@ public class PathGenerator : MonoBehaviour
                 }
             }
         }
+
+        // Apply the initial penalty adjustment at the start
+        AdjustFallPenalty();
     }
 
     public void PlayerFell()
     {
         if (triesRemaining > 0)
         {
-            // Reduce health based on the adjusted penalty
-            float penalty = PlayerData.instance.playerHealth * fallPenalty;
-            PlayerData.instance.playerHealth = Mathf.Max(0, Mathf.RoundToInt(PlayerData.instance.playerHealth - penalty));
+            // If the player is falling for the first time, calculate the penalty
+            if (currentFallPenalty == 0)
+            {
+                // Apply the fall penalty based on health and difficulty
+                currentFallPenalty = PlayerData.instance.playerHealth * initialFallPenalty;
+            }
+
+            // Apply the fixed penalty after the first fall
+            PlayerData.instance.playerHealth = Mathf.Max(0, Mathf.RoundToInt(PlayerData.instance.playerHealth - currentFallPenalty));
 
             triesRemaining--;
             Debug.Log($"Player fell! Health: {PlayerData.instance.playerHealth}, Tries: {triesRemaining}");
