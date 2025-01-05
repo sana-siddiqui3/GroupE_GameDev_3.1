@@ -391,6 +391,21 @@ public class GameControllerRoom3 : MonoBehaviour
                 Debug.Log("Enemy 3 defeated and deselected!");
             }
         }
+
+        else
+        {
+            PlayerHealth.value -= damage;
+
+            PlayerData.instance.DamagePlayer(damage); // Update player health in PlayerData
+
+            if (PlayerHealth.value <= 0)
+            {
+                FallOver(target);
+                GameOver();
+            }
+        }
+
+        CheckForVictory();
     }
 
     private void Heal(GameObject target, float healAmount)
@@ -406,6 +421,30 @@ public class GameControllerRoom3 : MonoBehaviour
     private void FallOver(GameObject enemy)
     {
         enemy.GetComponent<Animator>().SetTrigger("FallOver");
+    }
+
+    private void CheckForVictory()
+    {
+        if (EnemyHealth.value <= 0 && Enemy2Health.value <= 0 && Enemy3Health.value <= 0)
+        {
+            isGameOver = true;
+            resultText.text = "You Win!";
+
+            fightView.enabled = false;
+            playerView.enabled = true;
+            FightUI.SetActive(false);
+
+            Debug.Log("All enemies are defeated. Game Over!");
+        }
+    }
+
+    private void GameOver()
+    {
+        isGameOver = true;
+        resultText.text = "Game Over!";
+        fightView.enabled = false;
+        playerView.enabled = true;
+        FightUI.SetActive(false);
     }
 
     public void UsePoisonPotion()
