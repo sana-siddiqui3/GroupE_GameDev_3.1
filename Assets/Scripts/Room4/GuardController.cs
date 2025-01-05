@@ -41,6 +41,7 @@ public class GuardController : MonoBehaviour
         {
             gameObject.SetActive(false);
             PlayerData.instance.setObjective("Defeat the boss to win the game!");
+            CardTooltip.instance.HideTooltip(); // Hide the tooltip
             return;
         }
 
