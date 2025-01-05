@@ -272,7 +272,7 @@ public class GameControllerRoom4 : MonoBehaviour
             // Only attack if a valid target is selected
             if (currentTarget != null)
             {
-                Attack(currentTarget, 100); 
+                Attack(currentTarget, 10); 
             }
             else
             {

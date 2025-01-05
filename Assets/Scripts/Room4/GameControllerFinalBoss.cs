@@ -43,7 +43,6 @@ public class GameControllerFinalBoss : MonoBehaviour
     public Transform playerFightPosition; // Predefined player position for the fight
     public Transform enemyFightPosition;  // Predefined enemy position for the fight
     private FinalBossController enemyController; // Reference to the EnemyController script
-    [SerializeField] private GameControllerRoom4 room4GameController;
 
 
     public void Start()
@@ -64,10 +63,6 @@ public class GameControllerFinalBoss : MonoBehaviour
     public void Update()
     {
         PlayerHealth.value = PlayerData.instance.playerHealth;
-        if (room4GameController != null)
-        {
-            room4GameController.isFightActive = false;
-        }
     }
 
     public void StartFight()
@@ -249,7 +244,7 @@ public class GameControllerFinalBoss : MonoBehaviour
     {
         if (card == "Attack Card")
         {
-            Attack(Enemy, 100);
+            Attack(Enemy, 10);
         }
         else if (card == "Heal Card")
         {
