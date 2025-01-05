@@ -165,7 +165,7 @@ public class PlayerData : MonoBehaviour
     }
 
     // Method to update the health display
-    private void UpdateHealthDisplay()
+    public void UpdateHealthDisplay()
     {
         if (healthDisplay != null)
         {

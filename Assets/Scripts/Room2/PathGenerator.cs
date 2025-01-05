@@ -1,35 +1,30 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;  // Required for scene management if you want to reload
+using TMPro;
 
 public class PathGenerator : MonoBehaviour
 {
     public GameObject[] rows; // List of rows (each row has two child tiles)
     public GameObject player;  // Reference to the player object
-    public int totalLives = 3; // Total lives
-    private int currentLives; // Current lives
-
     public Transform startingPosition; // Starting position (beginning of the bridge)
+    private int triesRemaining = 4; // Track remaining tries
+    private float fallPenalty; // Amount to reduce health by after each fall
+    private bool isFirstFall = true; // Flag to check if it's the first fall
 
     private CharacterController characterController; // Reference to the CharacterController
 
     void Start()
     {
-        currentLives = totalLives; // Set lives at the start
-        ResetBridge();  // Randomize tiles on startup
-
         // Get the CharacterController (if attached)
         characterController = player.GetComponent<CharacterController>();
+
+        // Call to randomize the bridge
+        ResetBridge();
     }
 
     void Update()
     {
-        // Check if the player is out of lives
-        if (currentLives <= 0)
-        {
-            // Optional: Display Game Over and Reload Level
-            Debug.Log("Game Over!");
-            Debug.Log("Returning to Main Menu.");
-        }
+        // Any other update logic if needed
     }
 
     // Randomizes the bridge tiles on start or reset
@@ -63,19 +58,47 @@ public class PathGenerator : MonoBehaviour
     public void PlayerFell()
     {
         // Handle the player's fall
-        currentLives--;  // Decrease life
-        Debug.Log("Player fell! Lives remaining: " + currentLives);
-
-        if (currentLives > 0)
+        if (isFirstFall)
         {
-            ResetPlayerPosition();
+            // Calculate the fall penalty (25% of the player's initial health) on the first fall
+            fallPenalty = Mathf.RoundToInt(PlayerData.instance.playerHealth * 0.25f); // Round the penalty to nearest integer
+            isFirstFall = false; // Set flag to false to ensure we don't recalculate
+        }
+
+        if (triesRemaining > 0)
+        {
+            // Reduce health by the stored fall penalty value (rounded)
+            PlayerData.instance.playerHealth = Mathf.Max(0, Mathf.RoundToInt(PlayerData.instance.playerHealth - fallPenalty)); // Round the health
+
+            // Decrease tries left
+            triesRemaining--;
+            Debug.Log($"Player fell! Health remaining: {PlayerData.instance.playerHealth}. Tries remaining: {triesRemaining}");
+
+            // Update the health display
+            PlayerData.instance.UpdateHealthDisplay();
+
+            // Check if the player has health remaining
+            if (PlayerData.instance.playerHealth <= 0)
+            {
+                GameOver();
+            }
+            else
+            {
+                ResetPlayerPosition();  // Reset the player's position if they still have tries left
+            }
         }
         else
         {
-            // Reload the scene or display game over
-            SceneManager.LoadScene("MainMenu");
-            Debug.Log("Returning to Main Menu.");
+            GameOver(); // Game over if no tries left
         }
+    }
+
+    // Handle game over scenario
+    private void GameOver()
+    {
+        // Reload or end the game
+        Debug.Log("Game Over!");
+        SceneManager.LoadScene("MainMenu");
     }
 
     // Reset player position to the beginning of the bridge
