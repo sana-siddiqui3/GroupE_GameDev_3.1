@@ -40,6 +40,7 @@ public class ZombieController : MonoBehaviour
     {
         PlayerData.instance.setObjective("Find the purity potion.");
         gameObject.SetActive(false);
+        CardTooltip.instance.HideTooltip(); // Hide the tooltip
         return;
     }
 
