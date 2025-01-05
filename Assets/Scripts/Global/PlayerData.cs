@@ -41,6 +41,8 @@ public class PlayerData : MonoBehaviour
         InitializeStartingItems();
     }
 
+
+
     // Method to initialize starting inventory items
     private void InitializeStartingItems()
     {
