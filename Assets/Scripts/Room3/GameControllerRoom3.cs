@@ -496,25 +496,39 @@ public class GameControllerRoom3 : MonoBehaviour
         {
             PlayerHealth.value -= damage;
 
-            PlayerData.instance.DamagePlayer(damage); // Update player health in PlayerData
+            if (PlayerData.instance != null)
+                PlayerData.instance.DamagePlayer(damage);
 
             if (PlayerHealth.value <= 0)
             {
                 FallOver(target);
-                GameOver();
+                GameOver(); // Trigger the game over when player health is zero or less
             }
         }
 
         CheckForVictory();
     }
 
-    private void Heal(GameObject target, float healAmount)
+    public void Heal(GameObject target, float amount)
     {
-        if (target == Player)
+        if (target == Enemy)
         {
-            PlayerHealth.value += healAmount;
-            if (PlayerHealth.value > 100)
-                PlayerHealth.value = 100; // Cap the player's health
+            EnemyHealth.value += amount;
+        }
+        else if (target == Enemy2)
+        {
+            Enemy2Health.value += amount;
+        }
+        else if (target == Enemy3)
+        {
+            Enemy2Health.value += amount;
+        }
+        else
+        {
+            PlayerHealth.value += amount;
+
+            if (PlayerData.instance != null)
+                PlayerData.instance.HealPlayer(amount);
         }
     }
 
