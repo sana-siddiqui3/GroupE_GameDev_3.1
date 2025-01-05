@@ -50,6 +50,7 @@ public class GameControllerRoom4 : MonoBehaviour
     [SerializeField] private GuardController enemyGhost2Controller;
 
     private GameObject currentTarget = null;
+    public bool isFightActive = false;
 
     public void Start()
     {
@@ -68,29 +69,37 @@ public class GameControllerRoom4 : MonoBehaviour
         enemy2Button.onClick.AddListener(() => SetTarget(Enemy2, Enemy2Health));
     }
 
-    public void StartFight()
+    public void Update()
     {
-        FightUI.SetActive(true);
-
-        Player.transform.position = playerFightPosition.position;
-        Player.transform.rotation = playerFightPosition.rotation;
-
-        Enemy.transform.position = enemyFightPosition.position;
-        Enemy.transform.rotation = enemyFightPosition.rotation;
-
-        Enemy2.transform.position = enemyFightPosition2.position;
-        Enemy2.transform.rotation = enemyFightPosition2.rotation;
-
-        enemyGhost1Controller.hasStartedFight = true;
-        enemyGhost2Controller.hasStartedFight = true;
-        
-
-        playerView.enabled = false;
-        fightView.enabled = true;
-
-        InitializeDeck();
-        DrawCards(5);
+        PlayerHealth.value = PlayerData.instance.playerHealth;
     }
+
+    public void StartFight()
+{
+    FightUI.SetActive(true);
+
+    // Set up positions and cameras
+    Player.transform.position = playerFightPosition.position;
+    Player.transform.rotation = playerFightPosition.rotation;
+
+    Enemy.transform.position = enemyFightPosition.position;
+    Enemy.transform.rotation = enemyFightPosition.rotation;
+
+    Enemy2.transform.position = enemyFightPosition2.position;
+    Enemy2.transform.rotation = enemyFightPosition2.rotation;
+
+    enemyGhost1Controller.hasStartedFight = true;
+    enemyGhost2Controller.hasStartedFight = true;
+
+    playerView.enabled = false;
+    fightView.enabled = true;
+
+    InitializeDeck();
+    DrawCards(5);
+
+    isFightActive = true;
+}
+
 
 
     public void InitializeDeck()
@@ -262,7 +271,7 @@ public class GameControllerRoom4 : MonoBehaviour
             // Only attack if a valid target is selected
             if (currentTarget != null)
             {
-                Attack(currentTarget, 10); 
+                Attack(currentTarget, 100); 
             }
             else
             {
@@ -418,7 +427,7 @@ public class GameControllerRoom4 : MonoBehaviour
 
         if (random == 1)
         {
-            Attack(Player, 8);  // Perform attack on player
+            Attack(Player, 4);  // Perform attack on player
             Heal(enemy, 5);      // Heal the enemy
         }
         else
@@ -490,22 +499,22 @@ public class GameControllerRoom4 : MonoBehaviour
 
     public void UsePoisonPotion()
     {
+        // Check if poison can only be used in guard fight
+        if (!isFightActive )
+        {
+            Debug.Log("The poison potion cannot be used in this fight!");
+            return;
+        }
+
         // Mark enemies as defeated when poison is used
         enemyGhost1Controller.isEnemyDefeated = true;
         enemyGhost2Controller.isEnemyDefeated = true;
-        
-        // Set enemy health to 0 to indicate they are defeated
+
         EnemyHealth.value = 0;
         Enemy2Health.value = 0;
 
-        // Update the UI with the result
         resultText.text = "You used poison to skip the battle!";
-
-        // Check for victory
         CheckForVictory();
-
-        // End the fight
-        GameOver();
 
         // Remove the Poison Potion from the inventory
         if (PlayerData.instance != null)
@@ -520,6 +529,7 @@ public class GameControllerRoom4 : MonoBehaviour
             }
         }
     }
+
 
     private void FallOver(GameObject target)
     {
@@ -555,6 +565,7 @@ public class GameControllerRoom4 : MonoBehaviour
             fightView.enabled = false;
             playerView.enabled = true;
             FightUI.SetActive(false);
+            isFightActive = false; // Mark the fight as inactive
 
             Debug.Log("Both enemies are defeated. Game Over!");
         }
@@ -568,8 +579,8 @@ public class GameControllerRoom4 : MonoBehaviour
     private void GameOver()
     {
         isGameOver = true;
+        isFightActive = false; // Mark the fight as inactive
         resultText.text = "Game Over! You Lose.";
-
         Debug.Log("Player defeated. Game Over!");
     }
 

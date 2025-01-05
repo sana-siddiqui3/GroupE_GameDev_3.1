@@ -69,6 +69,11 @@ public class GameControllerRoom2 : MonoBehaviour
         enemy2Button.onClick.AddListener(() => SetTarget(Enemy2, Enemy2Health));
     }
 
+    public void Update()
+    {
+        PlayerHealth.value = PlayerData.instance.playerHealth;
+    }
+
     public void StartFight()
     {
         FightUI.SetActive(true);

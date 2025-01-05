@@ -43,6 +43,8 @@ public class GameControllerFinalBoss : MonoBehaviour
     public Transform playerFightPosition; // Predefined player position for the fight
     public Transform enemyFightPosition;  // Predefined enemy position for the fight
     private FinalBossController enemyController; // Reference to the EnemyController script
+    [SerializeField] private GameControllerRoom4 room4GameController;
+
 
     public void Start()
     {
@@ -56,6 +58,15 @@ public class GameControllerFinalBoss : MonoBehaviour
         {
             PlayerHealth.maxValue = 100; // Set max health
             PlayerHealth.value = PlayerData.instance.playerHealth; // Set current health
+        }
+    }
+
+    public void Update()
+    {
+        PlayerHealth.value = PlayerData.instance.playerHealth;
+        if (room4GameController != null)
+        {
+            room4GameController.isFightActive = false;
         }
     }
 
@@ -238,7 +249,7 @@ public class GameControllerFinalBoss : MonoBehaviour
     {
         if (card == "Attack Card")
         {
-            Attack(Enemy, 10);
+            Attack(Enemy, 100);
         }
         else if (card == "Heal Card")
         {
@@ -322,13 +333,13 @@ public class GameControllerFinalBoss : MonoBehaviour
 
         if (random == 1)
         {
-            Attack(Player, 20);
-            Heal(Enemy, 5);
+            Attack(Player, 10);
+            Heal(Enemy, 10);
         }
         else
         {
-            Attack(Player, 10);
-            Heal(Enemy, 10);
+            Attack(Player, 8);
+            Heal(Enemy, 7);
         }
 
         currentEnergy = maxEnergy;

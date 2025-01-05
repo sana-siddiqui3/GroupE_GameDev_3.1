@@ -101,6 +101,11 @@ public class GameControllerRoom3 : MonoBehaviour
         DrawCards(5);
     }
 
+    public void Update()
+    {
+        PlayerHealth.value = PlayerData.instance.playerHealth;
+    }
+
     public void InitializeDeck()
     {
         if (PlayerData.instance != null)
@@ -406,7 +411,7 @@ public class GameControllerRoom3 : MonoBehaviour
         }
 
         // Check if Enemy 2 is alive, and then perform its actions
-        if (Enemy2Health.value > 0)
+        if (Enemy2Health.value > 0 )
         {
             Debug.Log("Enemy 2's Turn - Attacking/Healing Player");
             EnemyAction(Enemy2);
@@ -443,13 +448,13 @@ public class GameControllerRoom3 : MonoBehaviour
 
         if (random == 1)
         {
-            Attack(Player, 8);  // Perform attack on player
-            Heal(enemy, 5);      // Heal the enemy
+            Attack(Player, 4);  // Perform attack on player
+            Heal(enemy, 7);      // Heal the enemy
         }
         else
         {
             Attack(Player, 5);  // Perform attack on player
-            Heal(enemy, 10);     // Heal the enemy
+            Heal(enemy, 5);     // Heal the enemy
         }
     }
 
@@ -521,7 +526,7 @@ public class GameControllerRoom3 : MonoBehaviour
         }
         else if (target == Enemy3)
         {
-            Enemy2Health.value += amount;
+            Enemy3Health.value += amount;
         }
         else
         {
