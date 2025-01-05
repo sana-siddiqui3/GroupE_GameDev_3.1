@@ -157,15 +157,44 @@ public class GameControllerFinalBoss : MonoBehaviour
 
         foreach (string card in drawnCards)
         {
-            GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
-            CardUI cardUIScript = cardUI.GetComponent<CardUI>();
+            GameObject cardUI = new GameObject(card);
+            cardUI.transform.SetParent(cardPanel.transform, false); // Attach it to the cardPanel
+            cardUI.AddComponent<RectTransform>(); // Add a RectTransform for layout compatibility
+
+            // Add UI components
+            Button cardButton = cardUI.AddComponent<Button>();
+            Image cardImage = cardUI.AddComponent<Image>();
+
+            // Configure CardUI
+            CardUI cardUIScript = cardUI.AddComponent<CardUI>();
+            cardUIScript.cardImage = cardImage; // Assign the image component
+
+            // Set the card's sprite and name
+            Sprite cardSprite = GetCardSprite(card);
+            cardUIScript.SetCardSprite(cardSprite);
             cardUIScript.SetCardName(card);
 
-            Button cardButton = cardUI.GetComponent<Button>();
+            // Add the card button to the list
             cardButtons.Add(cardButton);
 
+            // Add a click listener for the card
             cardButton.onClick.AddListener(() => SelectCard(card));
         }
+    }
+
+    private Sprite GetCardSprite(string cardName)
+    {
+        string res = cardName.Replace(" Card", ""); // Remove spaces from the card name
+        // Load the sprite from the Resources folder (e.g., Resources/Cards)
+        Sprite sprite = Resources.Load<Sprite>($"{res}");
+
+        if (sprite == null)
+        {
+            Debug.LogWarning($"Sprite for {cardName} not found. Using default sprite.");
+            sprite = Resources.Load<Sprite>("defaultitem"); // Fallback to a default sprite
+        }
+
+        return sprite;
     }
 
     private void SelectCard(string card)
