@@ -169,30 +169,65 @@ public class GameControllerRoom2 : MonoBehaviour
     }
 
     private void SelectCard(string card)
+{
+    // Only allow card selection if it doesn't cause the energy to go below 0
+    if (card == "Energy Card" || currentEnergy > 0)  // Allow Energy Card and cards that don't reduce energy
     {
-        // Only allow selection if there's a target and enough energy, unless it's a "Heal" card
-        if (cardsSelected < 3 && currentEnergy > 0)
-        {
-            if (card == "Heal Card" || currentTarget != null) // Allow healing even if no target is selected
-            {
-                selectedCards.Add(card);
-                cardsSelected++;
-                currentEnergy--;
-                UpdateEnergyUI();
-                discardPile.Add(card);
-                drawnCards.Remove(card);
+        // Check energy requirements before playing the card
+        bool canPlayCard = false;
 
-                ApplyCardEffect(card);
-            }
-            else
+        if (card == "Heal Card" || card == "Shield Card" || card == "AttackAll Card" ||  currentTarget != null){
+
+        if (card == "TripleAttack Card" && currentEnergy >= 3)
+        {
+            canPlayCard = true;
+        }
+        else if (card == "BadAttack Card" && currentEnergy >= 2)
+        {
+            canPlayCard = true;
+        }
+        else if (card != "TripleAttack Card" && card != "BadAttack Card") // For other cards
+        {
+            canPlayCard = true;
+        }
+        }
+
+        // If the card can be played, update the energy and select it
+        if (canPlayCard)
+        {
+            selectedCards.Add(card);
+            cardsSelected++;
+
+            // Deduct energy
+            if (card == "TripleAttack Card")
             {
-                // Notify the player that no enemy is selected
-                Debug.Log("No enemy selected for attack!");
+                currentEnergy -= 3;
             }
+            else if (card == "BadAttack Card")
+            {
+                currentEnergy -= 2;
+            }
+            else if (card != "Energy Card")
+            {
+                currentEnergy--;
+            }
+
+            // Update the energy UI
+            UpdateEnergyUI();
+
+            // Move the card to the discard pile and remove it from the drawn cards
+            discardPile.Add(card);
+            drawnCards.Remove(card);
+
+            // Apply the effect of the card
+            ApplyCardEffect(card);
+        }
+        else
+        {
+            Debug.Log("Not enough energy to play this card / Enemy not selected.");
         }
     }
-
-
+}
 
     private void SetTarget(GameObject target, Slider targetHealth)
     {
@@ -228,7 +263,7 @@ public class GameControllerRoom2 : MonoBehaviour
             // Only attack if a valid target is selected
             if (currentTarget != null)
             {
-                Attack(currentTarget, 10);  // 10 damage is just an example
+                Attack(currentTarget, 10); 
             }
             else
             {
@@ -240,10 +275,71 @@ public class GameControllerRoom2 : MonoBehaviour
             // Always heal the player
             Heal(Player, 10);
         }
+        else if (card == "Energy Card")
+        {
+            currentEnergy++;
+            UpdateEnergyUI();
+        }
+        else if (card == "Shield Card")
+        {
+            Heal(Player, 5);
+        }
+        else if (card == "AttackBlock Card")
+        {
+            if (currentTarget != null)
+            {
+                Attack(currentTarget, 5);
+                Heal(Player, 5);
+            }
+            else
+            {
+                Debug.Log("No target selected. Cannot attack.");
+            }
+        }
+        else if (card == "TripleAttack Card")
+        {
+            if (currentTarget != null)
+            {
+                Attack(currentTarget, 30);
+            }
+            else
+            {
+                Debug.Log("No target selected. Cannot attack.");
+            }
+        }
+        else if (card == "AttackAll Card")
+        {
+            Attack(Enemy, 10);
+            Attack(Enemy2, 10);
+            
+        }
+
+        else if (card == "BadAttack Card")
+        {
+            if (currentTarget != null)
+            {
+                Attack(currentTarget, 5);
+            }
+            else
+            {
+                Debug.Log("No target selected. Cannot attack.");
+            }
+        }
+        else if (card == "LowAttack Card")
+        {
+            if (currentTarget != null)
+            {
+                Attack(currentTarget, 2);
+            }
+            else
+            {
+                Debug.Log("No target selected. Cannot attack.");
+            }
+        }
+
 
         DisplayCardsInFightUI(); // Refresh the card UI after the action
     }
-
 
     private void EndTurn()
     {
