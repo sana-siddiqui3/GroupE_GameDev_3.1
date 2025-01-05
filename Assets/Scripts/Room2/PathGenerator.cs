@@ -61,7 +61,7 @@ public class PathGenerator : MonoBehaviour
         if (isFirstFall)
         {
             // Calculate the fall penalty (25% of the player's initial health) on the first fall
-            fallPenalty = Mathf.RoundToInt(PlayerData.instance.playerHealth * 0.25f); // Round the penalty to nearest integer
+            fallPenalty = Mathf.RoundToInt(PlayerData.instance.playerHealth * 0.33f); // Round the penalty to nearest integer
             isFirstFall = false; // Set flag to false to ensure we don't recalculate
         }
 
