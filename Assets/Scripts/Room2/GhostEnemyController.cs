@@ -39,6 +39,7 @@ public class GhostEnemyController : MonoBehaviour
         {
             PlayerData.instance.setObjective("Go through a door to the next room.");
             gameObject.SetActive(false);
+            CardTooltip.instance.HideTooltip(); // Hide the tooltip
             return;
         }
 
