@@ -25,17 +25,6 @@ public class PlayerMotor : MonoBehaviour
     // Reference to the Animator for walking animation
     private Animator animator;
 
-    // **Audio Fields**
-    public AudioSource audioSource;       // Reference to the Audio Source
-    public AudioClip footstepSound;       // Sound for footsteps
-    public AudioClip jumpSound;           // Sound for jumping
-    public AudioClip landingSound; // Sound for landing on the ground
-    
-    private bool wasGrounded;      // Tracks if the player was grounded in the previous frame
-
-    private float footstepInterval = 0.4f; // Time between footstep sounds
-    private float footstepTimer = 0f;     // Timer for footstep sounds
-
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -45,13 +34,6 @@ public class PlayerMotor : MonoBehaviour
         controls = new PlayerInput();
         moveAction = controls.Player.Move;  // Move action
         jumpAction = controls.Player.Jump;  // Jump action
-
-        // Get the AudioSource component
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            Debug.LogError("AudioSource is not assigned to PlayerMotor!");
-        }
     }
 
     void OnEnable()
@@ -67,15 +49,6 @@ public class PlayerMotor : MonoBehaviour
     void Update()
     {
         isGrounded = controller.isGrounded;  // Check if the player is on the ground
-
-        // Detect landing
-        if (!wasGrounded && isGrounded)
-        {
-            PlayLandingSound();
-        }
-
-        // Update wasGrounded for the next frame
-        wasGrounded = isGrounded;
 
         // Check if any fight UI is active
         bool isFightActive = IsAnyFightUIActive();
@@ -95,9 +68,6 @@ public class PlayerMotor : MonoBehaviour
                 playerVelocity.y = -2f;
             }
             controller.Move(playerVelocity * Time.deltaTime);
-
-            // Play footstep sounds
-            HandleFootstepSounds(input);
         }
         else
         {
@@ -133,33 +103,6 @@ public class PlayerMotor : MonoBehaviour
         if (isGrounded)
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravity);
-
-            // Play jump sound
-            if (audioSource != null && jumpSound != null)
-            {
-                audioSource.PlayOneShot(jumpSound);
-            }
-        }
-    }
-
-    // Play footstep sounds while moving
-    private void HandleFootstepSounds(Vector2 input)
-    {
-        if (isGrounded && input.magnitude > 0f) // Check if moving and grounded
-        {
-            footstepTimer -= Time.deltaTime;
-            if (footstepTimer <= 0f)
-            {
-                if (audioSource != null && footstepSound != null)
-                {
-                    audioSource.PlayOneShot(footstepSound);
-                }
-                footstepTimer = footstepInterval; // Reset timer
-            }
-        }
-        else
-        {
-            footstepTimer = footstepInterval; // Reset timer when not moving
         }
     }
 
@@ -175,13 +118,4 @@ public class PlayerMotor : MonoBehaviour
         }
         return false;
     }
-
-    private void PlayLandingSound()
-    {
-        if (audioSource != null && landingSound != null)
-        {
-            audioSource.PlayOneShot(landingSound);
-        }
-    }
-
 }
