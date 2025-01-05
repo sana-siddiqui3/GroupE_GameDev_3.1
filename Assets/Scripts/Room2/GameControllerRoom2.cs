@@ -263,12 +263,34 @@ public class GameControllerRoom2 : MonoBehaviour
 
     private void ApplyCardEffect(string card)
     {
+        float multiplier1 = 1.0f;
+        float multiplier2 = 1.0f;
+        float multiplier3 = 1.0f;
+        switch (PlayerPrefs.GetInt("Difficulty", 1)) // Default difficulty: 1 (Normal)
+        {
+            case 0: // Easy
+                multiplier1 = 1.5f; // Increase card effects
+                multiplier2 = 2f; // Increase card effects
+                multiplier3 = 2f;
+                break;
+            case 1: // Normal
+                multiplier1 = 1.0f; // Default
+                multiplier2 = 1.0f; // Default
+                multiplier3 = 1.0f;
+                break;
+            case 2: // Hard
+                multiplier1 = 0.5f; // Decrease card effects
+                multiplier2 = 0.4f; // Decrease card effects
+                multiplier3 = 0f; 
+                break;
+        }
+
         if (card == "Attack Card")
         {
             // Only attack if a valid target is selected
             if (currentTarget != null)
             {
-                Attack(currentTarget, 10); 
+                Attack(currentTarget, 10 * multiplier1); 
             }
             else
             {
@@ -278,7 +300,7 @@ public class GameControllerRoom2 : MonoBehaviour
         else if (card == "Heal Card")
         {
             // Always heal the player
-            Heal(Player, 10);
+            Heal(Player, 10 * multiplier1);
         }
         else if (card == "Energy Card")
         {
@@ -287,14 +309,14 @@ public class GameControllerRoom2 : MonoBehaviour
         }
         else if (card == "Shield Card")
         {
-            Heal(Player, 5);
+            Heal(Player, 5 * multiplier2);
         }
         else if (card == "AttackBlock Card")
         {
             if (currentTarget != null)
             {
-                Attack(currentTarget, 5);
-                Heal(Player, 5);
+                Attack(currentTarget, 5 * multiplier2);
+                Heal(Player, 5 * multiplier2);
             }
             else
             {
@@ -305,7 +327,7 @@ public class GameControllerRoom2 : MonoBehaviour
         {
             if (currentTarget != null)
             {
-                Attack(currentTarget, 30);
+                Attack(currentTarget, 30 * multiplier1);
             }
             else
             {
@@ -314,8 +336,8 @@ public class GameControllerRoom2 : MonoBehaviour
         }
         else if (card == "AttackAll Card")
         {
-            Attack(Enemy, 10);
-            Attack(Enemy2, 10);
+            Attack(Enemy, 10 * multiplier1);
+            Attack(Enemy2, 10 * multiplier1);
             
         }
 
@@ -323,7 +345,7 @@ public class GameControllerRoom2 : MonoBehaviour
         {
             if (currentTarget != null)
             {
-                Attack(currentTarget, 5);
+                Attack(currentTarget, 5 * multiplier2);
             }
             else
             {
@@ -334,7 +356,7 @@ public class GameControllerRoom2 : MonoBehaviour
         {
             if (currentTarget != null)
             {
-                Attack(currentTarget, 2);
+                Attack(currentTarget, 2 * multiplier3);
             }
             else
             {

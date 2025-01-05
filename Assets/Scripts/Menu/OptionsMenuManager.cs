@@ -14,13 +14,14 @@ public class OptionsMenuManager : MonoBehaviour
     private int volume;
 
     private void Start()
+
     {
         // Load saved settings or use default values
         volume = PlayerPrefs.GetInt("Volume", 100); // Default: 100
         sensitivity = PlayerPrefs.GetFloat("Sensitivity", 50f); // Default: 50
 
         // Initialize sliders
-        sensitivitySlider.minValue = 10f; // Updated: Minimum sensitivity is now 1
+        sensitivitySlider.minValue = 10f; 
         sensitivitySlider.maxValue = 100f; // Set a maximum sensitivity value
         sensitivitySlider.value = sensitivity;
 
@@ -51,7 +52,6 @@ public class OptionsMenuManager : MonoBehaviour
         AudioListener.volume = volume / 100f;
         Debug.Log($"Volume updated to: {volume}");
     }
-
     public void ReturnToMainMenu()
     {
         // Load the main menu scene

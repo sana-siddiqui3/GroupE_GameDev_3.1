@@ -60,6 +60,8 @@ namespace Assets.Scripts
             {
                 inventory.AddItem("Poison Potion", Resources.Load<Sprite>("PoisonPotion"), "A potion that inflicts poison.");
                 inventory.AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "A potion that restores health.");
+                inventory.AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "A potion that restores health.");
+                inventory.AddItem("AttackBlock Card", Resources.Load<Sprite>("AttackBlock"), "A card that attacks & blocks.");
                 Debug.Log("Items have been added to the player's inventory.");
             }
             else

@@ -242,13 +242,35 @@ public class GameControllerFinalBoss : MonoBehaviour
 
     private void ApplyCardEffect(string card)
     {
+        float multiplier1 = 1.0f;
+        float multiplier2 = 1.0f;
+        float multiplier3 = 1.0f;
+        switch (PlayerPrefs.GetInt("Difficulty", 1)) // Default difficulty: 1 (Normal)
+        {
+            case 0: // Easy
+                multiplier1 = 1.5f; // Increase card effects
+                multiplier2 = 2f; // Increase card effects
+                multiplier3 = 2f;
+                break;
+            case 1: // Normal
+                multiplier1 = 1.0f; // Default
+                multiplier2 = 1.0f; // Default
+                multiplier3 = 1.0f;
+                break;
+            case 2: // Hard
+                multiplier1 = 0.5f; // Decrease card effects
+                multiplier2 = 0.4f; // Decrease card effects
+                multiplier3 = 0f; 
+                break;
+        }
+
         if (card == "Attack Card")
         {
-            Attack(Enemy, 10);
+            Attack(Enemy, 10 * multiplier1);
         }
         else if (card == "Heal Card")
         {
-            Heal(Player, 10);
+            Heal(Player, 10 * multiplier1);
         } 
         else if (card == "Energy Card")
         {
@@ -257,28 +279,28 @@ public class GameControllerFinalBoss : MonoBehaviour
         }
         else if (card == "Shield Card")
         {
-            Heal(Player, 5);
+            Heal(Player, 5 * multiplier2); ;
         }
         else if (card == "AttackBlock Card")
         {
-            Attack(Enemy, 5);
-            Heal(Player, 5);
+            Attack(Enemy, 5 * multiplier2);
+            Heal(Player, 5 * multiplier2);
         }
         else if (card == "TripleAttack Card")
         {
-            Attack(Enemy, 30);
+            Attack(Enemy, 30 * multiplier1);
         }
         else if (card == "AttackAll Card")
         {
-            Attack(Enemy, 10);
+            Attack(Enemy, 10 * multiplier1);
         }
         else if (card == "BadAttack Card")
         {
-            Attack(Enemy, 5);
+            Attack(Enemy, 5 * multiplier2);
         }
         else if (card == "LowAttack Card")
         {
-            Attack(Enemy, 2);
+            Attack(Enemy, 2 * multiplier3);
         }
 
         DisplayCardsInFightUI();  // Refresh the UI
