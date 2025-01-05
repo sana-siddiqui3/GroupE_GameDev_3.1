@@ -415,6 +415,19 @@ public class GameControllerRoom4 : MonoBehaviour
 
         // End the fight
         GameOver();
+
+        // Remove the Poison Potion from the inventory
+        if (PlayerData.instance != null)
+        {
+            PlayerData.instance.RemoveItem("Poison Potion");
+            InventoryTooltip.instance.gameObject.SetActive(false);
+
+            PlayerInventory playerInventory = FindFirstObjectByType<PlayerInventory>();
+            if (playerInventory != null)
+            {
+                playerInventory.UpdateInventoryDisplay();
+            }
+        }
     }
 
     private void FallOver(GameObject target)

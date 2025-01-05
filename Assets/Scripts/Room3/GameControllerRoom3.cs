@@ -440,6 +440,19 @@ public class GameControllerRoom3 : MonoBehaviour
         fightView.enabled = false;
         playerView.enabled = true;
         FightUI.SetActive(false);
+
+        // Remove the Poison Potion from the inventory
+        if (PlayerData.instance != null)
+        {
+            PlayerData.instance.RemoveItem("Poison Potion");
+            InventoryTooltip.instance.gameObject.SetActive(false);
+
+            PlayerInventory playerInventory = FindFirstObjectByType<PlayerInventory>();
+            if (playerInventory != null)
+            {
+                playerInventory.UpdateInventoryDisplay();
+            }
+        }
     }
 
     private void UpdateEnergyUI()
