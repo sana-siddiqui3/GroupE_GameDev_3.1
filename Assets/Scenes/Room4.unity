@@ -10562,6 +10562,7 @@ GameObject:
   - component: {fileID: 1263502487}
   - component: {fileID: 1263502489}
   - component: {fileID: 1263502488}
+  - component: {fileID: 1263502490}
   m_Layer: 0
   m_Name: door (2)
   m_TagString: Untagged
@@ -10635,6 +10636,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263502486}
+  m_Mesh: {fileID: 5779197439840542771, guid: dfa0d48a43e9e4d2997dca3e7af78ae9, type: 3}
+--- !u!64 &1263502490
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263502486}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 5779197439840542771, guid: dfa0d48a43e9e4d2997dca3e7af78ae9, type: 3}
 --- !u!1 &1281243750
 GameObject:

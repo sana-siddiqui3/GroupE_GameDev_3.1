@@ -25,7 +25,6 @@ public class GameController : MonoBehaviour
     private bool isGameOver = false;
 
     private int currentEnergy = 3;
-    private const int maxEnergy = 3;
 
     private List<string> deck = new List<string>();
     private List<string> discardPile = new List<string>();
@@ -162,32 +161,63 @@ public class GameController : MonoBehaviour
     }
 
     private void SelectCard(string card)
+{
+    // Only allow card selection if it doesn't cause the energy to go below 0
+    if (card == "Energy Card" || currentEnergy > 0)  // Allow Energy Card and cards that don't reduce energy
     {
-        if (cardsSelected < 3 && currentEnergy > 0)
+        // Check energy requirements before playing the card
+        bool canPlayCard = false;
+
+        if (card == "TripleAttack Card" && currentEnergy >= 3)
+        {
+            canPlayCard = true;
+        }
+        else if (card == "BadAttack Card" && currentEnergy >= 2)
+        {
+            canPlayCard = true;
+        }
+        else if (card != "TripleAttack Card" && card != "BadAttack Card") // For other cards
+        {
+            canPlayCard = true;
+        }
+
+        // If the card can be played, update the energy and select it
+        if (canPlayCard)
         {
             selectedCards.Add(card);
             cardsSelected++;
-            if(card != "Energy Card")
-            {
-                currentEnergy--;
-            } else {
-                cardsSelected--;
-            }
-            if(card == "TripleAttack Card")
+
+            // Deduct energy
+            if (card == "TripleAttack Card")
             {
                 currentEnergy -= 3;
             }
-            if(card == "BadAttack Card")
+            else if (card == "BadAttack Card")
             {
                 currentEnergy -= 2;
             }
+            else if (card != "Energy Card")
+            {
+                currentEnergy--;
+            }
+
+            // Update the energy UI
             UpdateEnergyUI();
+
+            // Move the card to the discard pile and remove it from the drawn cards
             discardPile.Add(card);
             drawnCards.Remove(card);
 
+            // Apply the effect of the card
             ApplyCardEffect(card);
         }
+        else
+        {
+            Debug.Log("Not enough energy to play this card.");
+        }
     }
+}
+
 
     public void PlayerEndTurn()
     {
@@ -223,13 +253,11 @@ public class GameController : MonoBehaviour
         }
         else if (card == "TripleAttack Card")
         {
-            Attack(Enemy, 5);
-            Attack(Enemy, 5);
-            Attack(Enemy, 5);
+            Attack(Enemy, 30);
         }
         else if (card == "AttackAll Card")
         {
-            Attack(Enemy, 5);
+            Attack(Enemy, 10);
         }
         else if (card == "BadAttack Card")
         {
@@ -271,7 +299,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            currentEnergy = maxEnergy;
+            currentEnergy = 3;
             UpdateEnergyUI();
             DrawCards(5);
         }
@@ -296,7 +324,7 @@ public class GameController : MonoBehaviour
             Heal(Enemy, 10);
         }
 
-        currentEnergy = maxEnergy;
+        currentEnergy = 3;
         UpdateEnergyUI();
         changeTurn();
     }
@@ -367,7 +395,7 @@ public class GameController : MonoBehaviour
 
     private void UpdateEnergyUI()
     {
-        energyText.text = $"Energy: {currentEnergy}/{maxEnergy}";
+        energyText.text = $"Energy: {currentEnergy}/{3}";
     }
 
     // Debugging: Log deck and discard pile state at the end of each turn
