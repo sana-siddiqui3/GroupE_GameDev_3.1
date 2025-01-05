@@ -38,7 +38,7 @@ public class ZombieController : MonoBehaviour
 {
     if (isEnemyDefeated)
     {
-        PlayerData.instance.setObjective("Use purity potion on the heart.");
+        PlayerData.instance.setObjective("Find the purity potion.");
         gameObject.SetActive(false);
         return;
     }

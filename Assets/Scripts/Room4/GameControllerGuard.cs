@@ -57,6 +57,7 @@ public class GameControllerRoom4 : MonoBehaviour
         FightUI.SetActive(false);
         UpdateEnergyUI();
         InitializeDeck();
+        PlayerData.instance.setObjective("Defeat the guards.");
 
         if (PlayerData.instance != null)
         {

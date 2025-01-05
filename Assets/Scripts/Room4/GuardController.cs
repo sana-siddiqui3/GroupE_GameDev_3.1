@@ -40,6 +40,7 @@ public class GuardController : MonoBehaviour
         if (isEnemyDefeated)
         {
             gameObject.SetActive(false);
+            PlayerData.instance.setObjective("Defeat the boss to win the game!");
             return;
         }
 
