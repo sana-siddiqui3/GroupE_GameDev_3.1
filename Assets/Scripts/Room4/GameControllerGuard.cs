@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameControllerRoom4 : MonoBehaviour
 {
@@ -605,6 +606,8 @@ public class GameControllerRoom4 : MonoBehaviour
         isFightActive = false; // Mark the fight as inactive
         resultText.text = "Game Over! You Lose.";
         Debug.Log("Player defeated. Game Over!");
+        PlayerData.instance.ResetPlayerData();
+        SceneManager.LoadScene("MainMenu");
     }
 
     private void UpdateEnergyUI()

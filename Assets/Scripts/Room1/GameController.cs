@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -401,24 +402,27 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void FallOver(GameObject target)
-    {
-        target.transform.Rotate(new Vector3(90f, 0f, 0f));
-        isGameOver = true;
+    public void FallOver(GameObject target)
+{
+    target.transform.Rotate(new Vector3(90f, 0f, 0f));
+    isGameOver = true;
 
-        if (target == Enemy)
-        {
-            resultText.text = "You Win!";
-            fightView.enabled = false;
-            playerView.enabled = true;
-            FightUI.SetActive(false);
-            Enemy.GetComponent<EnemyController>().isEnemyDefeated = true;
-        }
-        else if (target == Player)
-        {
-            resultText.text = "You Lose!";
-        }
+    if (target == Enemy)
+    {
+        resultText.text = "You Win!";
+        fightView.enabled = false;
+        playerView.enabled = true;
+        FightUI.SetActive(false);
+        Enemy.GetComponent<EnemyController>().isEnemyDefeated = true;
     }
+    else if (target == Player)
+    {
+        resultText.text = "You Lose!";
+        PlayerData.instance.ResetPlayerData();
+        SceneManager.LoadScene("MainMenu");
+    }
+}
+
 
     private void UpdateEnergyUI()
     {

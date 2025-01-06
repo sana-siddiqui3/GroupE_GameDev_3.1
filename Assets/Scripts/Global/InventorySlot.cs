@@ -103,7 +103,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             if (heartCrystal != null && heartCrystal.IsPlayerNear())
             {
                 PlayerData.instance.RemoveItem("Purity Potion");
-                PlayerData.instance.AddItem("Purified Heart", Resources.Load<Sprite>("PurifiedHeart"), "A heart purified by the potion.");
+                PlayerData.instance.AddItem("Purified Heart", Resources.Load<Sprite>("Heart"), "A heart purified by the potion.");
 
                 Debug.Log("Purified heart added to inventory.");
 
