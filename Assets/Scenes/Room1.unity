@@ -17129,18 +17129,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "You awaken to the cold, damp air of a haunted prison cell. The harsh walls
-    are made of ancient stone, and the dim light from a flickering torch barely illuminates
-    the room. Your hands are shackled, and the only sound is the distant echo of
-    unknown footsteps. You can feel the weight of despair hanging in the air, but
-    there is something stronger inside you\u2014a will to escape. The door to exit
-    is locked, and your only hope for escape lies with the skeleton nearby. It rests
-    inside an old, weathered chest. The chest is locked, but inside it lies the key
-    to your freedom. The key to the door.You can either sit here and wait for your
-    fate or push forward and find a way to unlock the chest. The path to freedom
-    starts here. Every step will bring you closer to escaping this forsaken prison.
-    But be warned\u2014danger lurks around every corner, and you\u2019re not the
-    only one imprisoned here."
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
