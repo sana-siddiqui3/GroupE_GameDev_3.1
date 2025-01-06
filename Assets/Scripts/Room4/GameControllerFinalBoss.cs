@@ -420,6 +420,7 @@ public class GameControllerFinalBoss : MonoBehaviour
             playerView.enabled = true;
             FightUI.SetActive(false);
             Enemy.GetComponent<FinalBossController>().isEnemyDefeated = true;
+            StartCoroutine(ShowEnding());
         }
         else if (target == Player)
         {
@@ -440,4 +441,44 @@ public class GameControllerFinalBoss : MonoBehaviour
         Debug.Log($"Deck: {string.Join(", ", deck)}");
         Debug.Log($"Discard Pile: {string.Join(", ", discardPile)}");
     }
+
+    private IEnumerator ShowEnding()
+{
+    // Display a white screen with a message
+    GameObject endingCanvas = new GameObject("EndingCanvas");
+    Canvas canvas = endingCanvas.AddComponent<Canvas>();
+    canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+    endingCanvas.AddComponent<CanvasScaler>();
+    endingCanvas.AddComponent<GraphicRaycaster>();
+
+    // Create a white background
+    GameObject whiteBackground = new GameObject("WhiteBackground");
+    whiteBackground.transform.parent = endingCanvas.transform;
+    Image bgImage = whiteBackground.AddComponent<Image>();
+    bgImage.color = Color.white; // Set the background color to white
+    RectTransform bgTransform = whiteBackground.GetComponent<RectTransform>();
+    bgTransform.anchorMin = Vector2.zero;
+    bgTransform.anchorMax = Vector2.one;
+    bgTransform.offsetMin = Vector2.zero;
+    bgTransform.offsetMax = Vector2.zero;
+
+    // Create a text element
+    GameObject congratsText = new GameObject("CongratsText");
+    congratsText.transform.parent = endingCanvas.transform;
+    TextMeshProUGUI text = congratsText.AddComponent<TextMeshProUGUI>();
+    text.text = "Congratulations! You Escaped!";
+    text.alignment = TextAlignmentOptions.Center;
+    text.fontSize = 36;
+    text.color = Color.black;
+
+    RectTransform textTransform = congratsText.GetComponent<RectTransform>();
+    textTransform.anchorMin = new Vector2(0.5f, 0.5f);
+    textTransform.anchorMax = new Vector2(0.5f, 0.5f);
+    textTransform.anchoredPosition = Vector2.zero;
+
+    // Wait for a few seconds before returning to the main menu
+    yield return new WaitForSeconds(3);
+    PlayerData.instance.ResetPlayerData();
+    SceneManager.LoadScene("MainMenu");
+}
 }
