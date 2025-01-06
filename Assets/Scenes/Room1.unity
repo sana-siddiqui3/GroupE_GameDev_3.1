@@ -3500,7 +3500,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 520b77e85789c4112909244dc8fb27af, type: 3}
       propertyPath: m_LocalScale.x
-      value: 438.6793
+      value: 475.00195
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 520b77e85789c4112909244dc8fb27af, type: 3}
       propertyPath: m_LocalScale.y
@@ -3512,7 +3512,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 520b77e85789c4112909244dc8fb27af, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.0607
+      value: 25.8711
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 520b77e85789c4112909244dc8fb27af, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4421,7 +4421,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 0.084905684, g: 0.07569422, b: 0.07569422, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6965,7 +6965,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4280032290
-  m_fontColor: {r: 0.13207549, g: 0.110270575, b: 0.110270575, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7464,7 +7464,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279637530
-  m_fontColor: {r: 0.103773594, g: 0.087620154, b: 0.087620154, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -12638,7 +12638,44 @@ MonoBehaviour:
     Inventory: TAB
 
     Pause/Resume:
-    ESC'
+    ESC
+
+    Click - use potion in inventory
+
+
+    Card game:
+
+    you have 3 energy
+    in each turn
+
+    Playing cards takes energy
+
+    card logi (easy, medium, hard):
+
+    attack
+    - 15, 10, 5
+
+    Heal - 15,10, 5
+
+    Energy - +1 energy
+
+    Sheild - 10, 5
+    , 2
+
+    Attack block - heals and attacks
+
+    Triple Attack - *3 of attack
+
+    bad
+    attack - takes 2 energy for a regular attack
+
+    low attack - 4, 2, 0
+
+    attack
+    all - attacks all enemy
+
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5ba934557332f4c68b43a8374bcc3c66, type: 2}
   m_sharedMaterial: {fileID: 5989894303618023258, guid: 5ba934557332f4c68b43a8374bcc3c66, type: 2}
@@ -12701,7 +12738,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: -202.20819}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -15023,7 +15060,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 0.11320752, g: 0.103061564, b: 0.103061564, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
