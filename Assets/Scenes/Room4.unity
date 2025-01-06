@@ -15027,8 +15027,8 @@ MonoBehaviour:
   fightView: {fileID: 1281243752}
   FightUI: {fileID: 1433380988}
   Player: {fileID: 703740035}
-  Enemy: {fileID: 398217378}
-  Enemy2: {fileID: 1567073154}
+  Enemy: {fileID: 1567073154}
+  Enemy2: {fileID: 398217378}
   PlayerHealth: {fileID: 2052138324}
   EnemyHealth: {fileID: 116198334}
   Enemy2Health: {fileID: 1446848932}
