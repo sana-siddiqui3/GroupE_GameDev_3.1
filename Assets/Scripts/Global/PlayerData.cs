@@ -207,19 +207,4 @@ public class PlayerData : MonoBehaviour
         playerHealth = health;
         UpdateHealthDisplay();
     }
-
-    public void ResetPlayerData()
-    {
-        playerHealth = 100f; // Reset health to full
-        keysCollected = 0; // Reset keys collected
-        inventory.Clear(); // Clear the inventory
-
-        // Re-initialize starting items (if necessary)
-        InitializeStartingItems();
-
-        // Update the UI
-        UpdateHealthDisplay();
-        UpdateKeyDisplay();
-        setObjective("Fight the enemy to access the chest.");
-    }
 }
