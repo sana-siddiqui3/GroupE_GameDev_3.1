@@ -11,12 +11,4 @@ public class ObjectiveTrigger : MonoBehaviour
             PlayerData.instance.setObjective("Jump on correct tiles to cross bridge.");
         }
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            PlayerData.instance.setObjective("Go through a door to the next room.");
-        }
-    }
 }

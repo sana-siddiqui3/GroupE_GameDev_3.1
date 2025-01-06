@@ -22,7 +22,6 @@ public class Chest : MonoBehaviour
             {
                 isOpen = true;
                 GivePurityPotion();
-                PlayerData.instance.setObjective("Use purity potion on heart.");
             }
         }
     }

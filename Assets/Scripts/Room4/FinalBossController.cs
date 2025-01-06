@@ -127,6 +127,7 @@ public class FinalBossController : MonoBehaviour
     public void DefeatEnemy()
     {
         isEnemyDefeated = true; // Set the enemy's defeated state
+        animator.SetTrigger("FallOver"); // Play the fall over animation
         gameObject.layer = LayerMask.NameToLayer("DefeatedEnemy"); // Change the layer to avoid interactions
     }
 

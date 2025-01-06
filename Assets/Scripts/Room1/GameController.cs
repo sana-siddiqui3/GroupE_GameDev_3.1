@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -26,6 +25,7 @@ public class GameController : MonoBehaviour
     private bool isGameOver = false;
 
     private int currentEnergy = 3;
+    private const int maxEnergy = 3;
 
     private List<string> deck = new List<string>();
     private List<string> discardPile = new List<string>();
@@ -56,11 +56,6 @@ public class GameController : MonoBehaviour
             PlayerHealth.maxValue = 100; // Set max health
             PlayerHealth.value = PlayerData.instance.playerHealth; // Set current health
         }
-    }
-
-    public void Update()
-    {
-        PlayerHealth.value = PlayerData.instance.playerHealth;
     }
 
     public void StartFight()
@@ -167,63 +162,32 @@ public class GameController : MonoBehaviour
     }
 
     private void SelectCard(string card)
-{
-    // Only allow card selection if it doesn't cause the energy to go below 0
-    if (card == "Energy Card" || currentEnergy > 0)  // Allow Energy Card and cards that don't reduce energy
     {
-        // Check energy requirements before playing the card
-        bool canPlayCard = false;
-
-        if (card == "TripleAttack Card" && currentEnergy >= 3)
-        {
-            canPlayCard = true;
-        }
-        else if (card == "BadAttack Card" && currentEnergy >= 2)
-        {
-            canPlayCard = true;
-        }
-        else if (card != "TripleAttack Card" && card != "BadAttack Card") // For other cards
-        {
-            canPlayCard = true;
-        }
-
-        // If the card can be played, update the energy and select it
-        if (canPlayCard)
+        if (cardsSelected < 3 && currentEnergy > 0)
         {
             selectedCards.Add(card);
             cardsSelected++;
-
-            // Deduct energy
-            if (card == "TripleAttack Card")
+            if(card != "Energy Card")
+            {
+                currentEnergy--;
+            } else {
+                cardsSelected--;
+            }
+            if(card == "TripleAttack Card")
             {
                 currentEnergy -= 3;
             }
-            else if (card == "BadAttack Card")
+            if(card == "BadAttack Card")
             {
                 currentEnergy -= 2;
             }
-            else if (card != "Energy Card")
-            {
-                currentEnergy--;
-            }
-
-            // Update the energy UI
             UpdateEnergyUI();
-
-            // Move the card to the discard pile and remove it from the drawn cards
             discardPile.Add(card);
             drawnCards.Remove(card);
 
-            // Apply the effect of the card
             ApplyCardEffect(card);
         }
-        else
-        {
-            Debug.Log("Not enough energy to play this card.");
-        }
     }
-}
-
 
     public void PlayerEndTurn()
     {
@@ -235,35 +199,13 @@ public class GameController : MonoBehaviour
 
     private void ApplyCardEffect(string card)
     {
-        float multiplier1 = 1.0f;
-        float multiplier2 = 1.0f;
-        float multiplier3 = 1.0f;
-        switch (PlayerPrefs.GetInt("Difficulty", 1)) // Default difficulty: 1 (Normal)
-        {
-            case 0: // Easy
-                multiplier1 = 1.5f; // Increase card effects
-                multiplier2 = 2f; // Increase card effects
-                multiplier3 = 2f;
-                break;
-            case 1: // Normal
-                multiplier1 = 1.0f; // Default
-                multiplier2 = 1.0f; // Default
-                multiplier3 = 1.0f;
-                break;
-            case 2: // Hard
-                multiplier1 = 0.5f; // Decrease card effects
-                multiplier2 = 0.4f; // Decrease card effects
-                multiplier3 = 0f; 
-                break;
-        }
-
         if (card == "Attack Card")
         {
-            Attack(Enemy, 10 * multiplier1);
+            Attack(Enemy, 10);
         }
         else if (card == "Heal Card")
         {
-            Heal(Player, 10 * multiplier1);
+            Heal(Player, 10);
         } 
         else if (card == "Energy Card")
         {
@@ -272,28 +214,30 @@ public class GameController : MonoBehaviour
         }
         else if (card == "Shield Card")
         {
-            Heal(Player, 5 * multiplier2);
+            Heal(Player, 5);
         }
         else if (card == "AttackBlock Card")
         {
-            Attack(Enemy, 5 * multiplier2);
-            Heal(Player, 5  * multiplier2);
+            Attack(Enemy, 5);
+            Heal(Player, 5);
         }
         else if (card == "TripleAttack Card")
         {
-            Attack(Enemy, 30 * multiplier1);
+            Attack(Enemy, 5);
+            Attack(Enemy, 5);
+            Attack(Enemy, 5);
         }
         else if (card == "AttackAll Card")
         {
-            Attack(Enemy, 10 * multiplier1); ;
+            Attack(Enemy, 5);
         }
         else if (card == "BadAttack Card")
         {
-            Attack(Enemy, 8 * multiplier1);
+            Attack(Enemy, 5);
         }
         else if (card == "LowAttack Card")
         {
-            Attack(Enemy, 2 * multiplier3);
+            Attack(Enemy, 2);
         }
 
         DisplayCardsInFightUI();  // Refresh the UI
@@ -327,7 +271,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            currentEnergy = 3;
+            currentEnergy = maxEnergy;
             UpdateEnergyUI();
             DrawCards(5);
         }
@@ -352,7 +296,7 @@ public class GameController : MonoBehaviour
             Heal(Enemy, 10);
         }
 
-        currentEnergy = 3;
+        currentEnergy = maxEnergy;
         UpdateEnergyUI();
         changeTurn();
     }
@@ -402,31 +346,28 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void FallOver(GameObject target)
-{
-    target.transform.Rotate(new Vector3(90f, 0f, 0f));
-    isGameOver = true;
-
-    if (target == Enemy)
+    private void FallOver(GameObject target)
     {
-        resultText.text = "You Win!";
-        fightView.enabled = false;
-        playerView.enabled = true;
-        FightUI.SetActive(false);
-        Enemy.GetComponent<EnemyController>().isEnemyDefeated = true;
-    }
-    else if (target == Player)
-    {
-        resultText.text = "You Lose!";
-        PlayerData.instance.ResetPlayerData();
-        SceneManager.LoadScene("MainMenu");
-    }
-}
+        target.transform.Rotate(new Vector3(90f, 0f, 0f));
+        isGameOver = true;
 
+        if (target == Enemy)
+        {
+            resultText.text = "You Win!";
+            fightView.enabled = false;
+            playerView.enabled = true;
+            FightUI.SetActive(false);
+            Enemy.GetComponent<EnemyController>().isEnemyDefeated = true;
+        }
+        else if (target == Player)
+        {
+            resultText.text = "You Lose!";
+        }
+    }
 
     private void UpdateEnergyUI()
     {
-        energyText.text = $"Energy: {currentEnergy}/{3}";
+        energyText.text = $"Energy: {currentEnergy}/{maxEnergy}";
     }
 
     // Debugging: Log deck and discard pile state at the end of each turn

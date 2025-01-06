@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class GameControllerRoom4 : MonoBehaviour
 {
@@ -51,14 +50,12 @@ public class GameControllerRoom4 : MonoBehaviour
     [SerializeField] private GuardController enemyGhost2Controller;
 
     private GameObject currentTarget = null;
-    public bool isFightActive = false;
 
     public void Start()
     {
         FightUI.SetActive(false);
         UpdateEnergyUI();
         InitializeDeck();
-        PlayerData.instance.setObjective("Defeat the guards.");
 
         if (PlayerData.instance != null)
         {
@@ -71,37 +68,29 @@ public class GameControllerRoom4 : MonoBehaviour
         enemy2Button.onClick.AddListener(() => SetTarget(Enemy2, Enemy2Health));
     }
 
-    public void Update()
-    {
-        PlayerHealth.value = PlayerData.instance.playerHealth;
-    }
-
     public void StartFight()
-{
-    FightUI.SetActive(true);
+    {
+        FightUI.SetActive(true);
 
-    // Set up positions and cameras
-    Player.transform.position = playerFightPosition.position;
-    Player.transform.rotation = playerFightPosition.rotation;
+        Player.transform.position = playerFightPosition.position;
+        Player.transform.rotation = playerFightPosition.rotation;
 
-    Enemy.transform.position = enemyFightPosition.position;
-    Enemy.transform.rotation = enemyFightPosition.rotation;
+        Enemy.transform.position = enemyFightPosition.position;
+        Enemy.transform.rotation = enemyFightPosition.rotation;
 
-    Enemy2.transform.position = enemyFightPosition2.position;
-    Enemy2.transform.rotation = enemyFightPosition2.rotation;
+        Enemy2.transform.position = enemyFightPosition2.position;
+        Enemy2.transform.rotation = enemyFightPosition2.rotation;
 
-    enemyGhost1Controller.hasStartedFight = true;
-    enemyGhost2Controller.hasStartedFight = true;
+        enemyGhost1Controller.hasStartedFight = true;
+        enemyGhost2Controller.hasStartedFight = true;
+        
 
-    playerView.enabled = false;
-    fightView.enabled = true;
+        playerView.enabled = false;
+        fightView.enabled = true;
 
-    InitializeDeck();
-    DrawCards(5);
-
-    isFightActive = true;
-}
-
+        InitializeDeck();
+        DrawCards(5);
+    }
 
 
     public void InitializeDeck()
@@ -180,64 +169,29 @@ public class GameControllerRoom4 : MonoBehaviour
 
     private void SelectCard(string card)
     {
-        // Only allow card selection if it doesn't cause the energy to go below 0
-        if (card == "Energy Card" || currentEnergy > 0)  // Allow Energy Card and cards that don't reduce energy
+        // Only allow selection if there's a target and enough energy, unless it's a "Heal" card
+        if (cardsSelected < 3 && currentEnergy > 0)
         {
-            // Check energy requirements before playing the card
-            bool canPlayCard = false;
-
-            if (card == "Heal Card" || card == "Shield Card" || card == "AttackAll Card" ||  currentTarget != null ||card == "Energy Card"){
-
-            if (card == "TripleAttack Card" && currentEnergy >= 3)
-            {
-                canPlayCard = true;
-            }
-            else if (card == "BadAttack Card" && currentEnergy >= 2)
-            {
-                canPlayCard = true;
-            }
-            else if (card != "TripleAttack Card" && card != "BadAttack Card") // For other cards
-            {
-                canPlayCard = true;
-            }
-            }
-
-            // If the card can be played, update the energy and select it
-            if (canPlayCard)
+            if (card == "Heal Card" || currentTarget != null) // Allow healing even if no target is selected
             {
                 selectedCards.Add(card);
                 cardsSelected++;
-
-                // Deduct energy
-                if (card == "TripleAttack Card")
-                {
-                    currentEnergy -= 3;
-                }
-                else if (card == "BadAttack Card")
-                {
-                    currentEnergy -= 2;
-                }
-                else if (card != "Energy Card")
-                {
-                    currentEnergy--;
-                }
-
-                // Update the energy UI
+                currentEnergy--;
                 UpdateEnergyUI();
-
-                // Move the card to the discard pile and remove it from the drawn cards
                 discardPile.Add(card);
                 drawnCards.Remove(card);
 
-                // Apply the effect of the card
                 ApplyCardEffect(card);
             }
             else
             {
-                Debug.Log("Not enough energy to play this card / Enemy not selected.");
+                // Notify the player that no enemy is selected
+                Debug.Log("No enemy selected for attack!");
             }
         }
     }
+
+
 
     private void SetTarget(GameObject target, Slider targetHealth)
     {
@@ -268,34 +222,12 @@ public class GameControllerRoom4 : MonoBehaviour
 
     private void ApplyCardEffect(string card)
     {
-        float multiplier1 = 1.0f;
-        float multiplier2 = 1.0f;
-        float multiplier3 = 1.0f;
-        switch (PlayerPrefs.GetInt("Difficulty", 1)) // Default difficulty: 1 (Normal)
-        {
-            case 0: // Easy
-                multiplier1 = 1.5f; // Increase card effects
-                multiplier2 = 2f; // Increase card effects
-                multiplier3 = 2f;
-                break;
-            case 1: // Normal
-                multiplier1 = 1.0f; // Default
-                multiplier2 = 1.0f; // Default
-                multiplier3 = 1.0f;
-                break;
-            case 2: // Hard
-                multiplier1 = 0.5f; // Decrease card effects
-                multiplier2 = 0.4f; // Decrease card effects
-                multiplier3 = 0f; 
-                break;
-        }
-
         if (card == "Attack Card")
         {
             // Only attack if a valid target is selected
             if (currentTarget != null)
             {
-                Attack(currentTarget, 10 * multiplier1); 
+                Attack(currentTarget, 10);  // 10 damage is just an example
             }
             else
             {
@@ -305,73 +237,12 @@ public class GameControllerRoom4 : MonoBehaviour
         else if (card == "Heal Card")
         {
             // Always heal the player
-            Heal(Player, 10 * multiplier1);
+            Heal(Player, 10);
         }
-        else if (card == "Energy Card")
-        {
-            currentEnergy++;
-            UpdateEnergyUI();
-        }
-        else if (card == "Shield Card")
-        {
-            Heal(Player, 5 * multiplier2);
-        }
-        else if (card == "AttackBlock Card")
-        {
-            if (currentTarget != null)
-            {
-                Attack(currentTarget, 5 * multiplier2);
-                Heal(Player, 5 * multiplier2);
-            }
-            else
-            {
-                Debug.Log("No target selected. Cannot attack.");
-            }
-        }
-        else if (card == "TripleAttack Card")
-        {
-            if (currentTarget != null)
-            {
-                Attack(currentTarget, 30 * multiplier1);
-            }
-            else
-            {
-                Debug.Log("No target selected. Cannot attack.");
-            }
-        }
-        else if (card == "AttackAll Card")
-        {
-            Attack(Enemy, 10 * multiplier1);
-            Attack(Enemy2, 10 * multiplier1);
-            
-        }
-
-        else if (card == "BadAttack Card")
-        {
-            if (currentTarget != null)
-            {
-                Attack(currentTarget, 5 * multiplier2);
-            }
-            else
-            {
-                Debug.Log("No target selected. Cannot attack.");
-            }
-        }
-        else if (card == "LowAttack Card")
-        {
-            if (currentTarget != null)
-            {
-                Attack(currentTarget, 2 * multiplier3);
-            }
-            else
-            {
-                Debug.Log("No target selected. Cannot attack.");
-            }
-        }
-
 
         DisplayCardsInFightUI(); // Refresh the card UI after the action
     }
+
 
     private void EndTurn()
     {
@@ -451,7 +322,7 @@ public class GameControllerRoom4 : MonoBehaviour
 
         if (random == 1)
         {
-            Attack(Player, 4);  // Perform attack on player
+            Attack(Player, 8);  // Perform attack on player
             Heal(enemy, 5);      // Heal the enemy
         }
         else
@@ -460,6 +331,8 @@ public class GameControllerRoom4 : MonoBehaviour
             Heal(enemy, 10);     // Heal the enemy
         }
     }
+
+
 
     public void Attack(GameObject target, float damage)
     {
@@ -502,6 +375,9 @@ public class GameControllerRoom4 : MonoBehaviour
         }
     }
 
+
+
+
     public void Heal(GameObject target, float amount)
     {
         if (target == Enemy)
@@ -520,40 +396,6 @@ public class GameControllerRoom4 : MonoBehaviour
                 PlayerData.instance.HealPlayer(amount);
         }
     }
-
-    public void UsePoisonPotion()
-    {
-        // Check if poison can only be used in guard fight
-        if (!isFightActive )
-        {
-            Debug.Log("The poison potion cannot be used in this fight!");
-            return;
-        }
-
-        // Mark enemies as defeated when poison is used
-        enemyGhost1Controller.isEnemyDefeated = true;
-        enemyGhost2Controller.isEnemyDefeated = true;
-
-        EnemyHealth.value = 0;
-        Enemy2Health.value = 0;
-
-        resultText.text = "You used poison to skip the battle!";
-        CheckForVictory();
-
-        // Remove the Poison Potion from the inventory
-        if (PlayerData.instance != null)
-        {
-            PlayerData.instance.RemoveItem("Poison Potion");
-            InventoryTooltip.instance.gameObject.SetActive(false);
-
-            PlayerInventory playerInventory = FindFirstObjectByType<PlayerInventory>();
-            if (playerInventory != null)
-            {
-                playerInventory.UpdateInventoryDisplay();
-            }
-        }
-    }
-
 
     private void FallOver(GameObject target)
     {
@@ -589,7 +431,6 @@ public class GameControllerRoom4 : MonoBehaviour
             fightView.enabled = false;
             playerView.enabled = true;
             FightUI.SetActive(false);
-            isFightActive = false; // Mark the fight as inactive
 
             Debug.Log("Both enemies are defeated. Game Over!");
         }
@@ -603,11 +444,9 @@ public class GameControllerRoom4 : MonoBehaviour
     private void GameOver()
     {
         isGameOver = true;
-        isFightActive = false; // Mark the fight as inactive
         resultText.text = "Game Over! You Lose.";
+
         Debug.Log("Player defeated. Game Over!");
-        PlayerData.instance.ResetPlayerData();
-        SceneManager.LoadScene("MainMenu");
     }
 
     private void UpdateEnergyUI()

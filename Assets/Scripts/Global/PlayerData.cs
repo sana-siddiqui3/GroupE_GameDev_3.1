@@ -41,23 +41,24 @@ public class PlayerData : MonoBehaviour
         InitializeStartingItems();
     }
 
+
+
     // Method to initialize starting inventory items
     private void InitializeStartingItems()
     {
         // Example: Add predefined items
         AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
+        AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
+        AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
+        AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.");
         AddItem("Heal Card", Resources.Load<Sprite>("Heal"), "A basic healing card.");
-        AddItem("Poison Potion", Resources.Load<Sprite>("PoisonPotion"), "A potion that inflicts poison.");
-        AddItem("Energy Card", Resources.Load<Sprite>("Energy"), "A card that restores energy.");
-        AddItem("Shield Card", Resources.Load<Sprite>("Shield"), "A basic shield card.");
-        AddItem("AttackBlock Card", Resources.Load<Sprite>("AttackBlock"), "A card that attacks & blocks.");
-        AddItem("TripleAttack Card", Resources.Load<Sprite>("TripleAttack"), "A card that performs 3 attacks.");
-        AddItem("AttackAll Card", Resources.Load<Sprite>("AttackAll"), "A card that attacks all enemies.");
+        //AddItem("Energy Card", Resources.Load<Sprite>("Energy"), "A card that restores energy.");
+        //AddItem("Shield Card", Resources.Load<Sprite>("Shield"), "A basic shield card.");
+        //AddItem("AttackBlock Card", Resources.Load<Sprite>("AttackBlock"), "A card that attacks & blocks.");
+        //AddItem("TripleAttack Card", Resources.Load<Sprite>("TripleAttack"), "A card that performs 3 attacks.");
+        //AddItem("AtackAll Card", Resources.Load<Sprite>("AttackAll"), "A card that attacks all enemies.");
         AddItem("BadAttack Card", Resources.Load<Sprite>("BadAttack"), "An inefficient attack card.");
         AddItem("LowAttack Card", Resources.Load<Sprite>("LowAttack"), "A low damage attack card.");
-        AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "A Health Potion. Restores 20 health.");
-        //AddItem("Purity Potion", Resources.Load<Sprite>("PurityPotion"), "A potion to purify the corrupted heart crystal.");
-        //AddItem("Heart Crystal", Resources.Load<Sprite>("Heart"), "A heart crystal.");
     }
 
     // Method to add an item to the inventory
@@ -166,7 +167,7 @@ public class PlayerData : MonoBehaviour
     }
 
     // Method to update the health display
-    public void UpdateHealthDisplay()
+    private void UpdateHealthDisplay()
     {
         if (healthDisplay != null)
         {
@@ -184,6 +185,10 @@ public class PlayerData : MonoBehaviour
         if (keyDisplay != null)
         {
             keyDisplay.text = $"Keys: {keysCollected}/{totalKeysRequired}";
+        }
+        else
+        {
+            Debug.LogWarning("Key display text is not assigned!");
         }
     }
 
@@ -206,18 +211,5 @@ public class PlayerData : MonoBehaviour
     {
         playerHealth = health;
         UpdateHealthDisplay();
-    }
-
-    public void ResetPlayerData()
-    {
-        playerHealth = 100f;
-        inventory.Clear();
-        InitializeStartingItems();
-        keysCollected = 0;
-        totalKeysRequired = 2;
-        objective = "";
-        UpdateHealthDisplay();
-        UpdateKeyDisplay();
-        setObjectiveText("");
     }
 }

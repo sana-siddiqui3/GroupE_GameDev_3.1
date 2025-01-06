@@ -1,51 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
-    public GameObject pauseMenu;
-    private bool isPaused = false;
+    public GameObject pauseMenu; // Reference to the pause menu UI
+    private bool isPaused = false; // Tracks pause state
 
-    [Header("UI Elements")]
-    public Slider sensitivitySlider;
-    public Slider volumeSlider;
-
-    private float sensitivity;
-    private int volume;
-    
-    private PlayerLook playerLook;
-
-    void Start()
+    private void Start()
     {
-        pauseMenu.SetActive(false);
-
-        // Load saved settings or use default values
-        volume = PlayerPrefs.GetInt("Volume", 100);
-        sensitivity = PlayerPrefs.GetFloat("Sensitivity", 100f);
-
-        // Initialize sliders
-        sensitivitySlider.minValue = 10f;
-        sensitivitySlider.maxValue = 100f;
-        sensitivitySlider.value = sensitivity;
-
-        volumeSlider.minValue = 0;
-        volumeSlider.maxValue = 100;
-        volumeSlider.value = volume;
-
-        // Add listeners to sliders
-        sensitivitySlider.onValueChanged.AddListener(UpdateSensitivity);
-        volumeSlider.onValueChanged.AddListener(UpdateVolume);
-
-        // Get the PlayerLook component to update sensitivity
-        playerLook = FindFirstObjectByType<PlayerLook>();  // Make sure to get the PlayerLook component from the scene
-        if (playerLook != null)
-        {
-            playerLook.UpdateSensitivity(sensitivity); // Set initial sensitivity
-        }
+        pauseMenu.SetActive(false); // Ensure the inventory menu is initially hidden
     }
 
-    void Update()
+    private void Update()
     {
         if (UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame)
         {
@@ -55,6 +21,7 @@ public class PauseMenu : MonoBehaviour
 
     public void TogglePause()
     {
+        Debug.Log("Pause action detected!"); // Log for testing
         if (isPaused)
         {
             Resume();
@@ -67,46 +34,24 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        pauseMenu.SetActive(false);
-        Time.timeScale = 1f;
-        isPaused = false;
+        Debug.Log("Resuming game..."); // Log for testing
+        pauseMenu.SetActive(false); // Hide the pause menu
+        Time.timeScale = 1f;          // Resume game time
+        isPaused = false;             // Update pause state
     }
 
     public void Pause()
     {
-        pauseMenu.SetActive(true);
-        Time.timeScale = 0f;
-        isPaused = true;
-    }
-
-    private void UpdateSensitivity(float value)
-    {
-        sensitivity = value;
-        PlayerPrefs.SetFloat("Sensitivity", sensitivity);
-        PlayerPrefs.Save();
-
-        // Update the PlayerLook script's sensitivity
-        if (playerLook != null)
-        {
-            playerLook.UpdateSensitivity(sensitivity);
-        }
-
-        Debug.Log($"Input Sensitivity updated to: {sensitivity}");
-    }
-
-    private void UpdateVolume(float value)
-    {
-        volume = (int)value;
-        PlayerPrefs.SetInt("Volume", volume);
-        PlayerPrefs.Save();
-
-        AudioListener.volume = volume / 100f;
-        Debug.Log($"Volume updated to: {volume}");
+        Debug.Log("Pausing game..."); // Log for testing
+        pauseMenu.SetActive(true); // Show the pause menu
+        Time.timeScale = 0f;         // Freeze game time
+        isPaused = true;             // Update pause state
     }
 
     public void QuitGame()
     {
-        Resume();
+        Debug.Log("Returning to Main Menu...");
+        Resume(); // Ensure game is unpaused before returning to main menu
         SceneManager.LoadScene("MainMenu");
     }
 }

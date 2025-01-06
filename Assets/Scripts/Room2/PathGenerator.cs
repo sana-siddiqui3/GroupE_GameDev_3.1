@@ -1,51 +1,34 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // Required for scene management
-using TMPro;
+using UnityEngine.SceneManagement;  // Required for scene management if you want to reload
 
 public class PathGenerator : MonoBehaviour
 {
     public GameObject[] rows; // List of rows (each row has two child tiles)
-    public GameObject player; // Reference to the player object
+    public GameObject player;  // Reference to the player object
+    public int totalLives = 3; // Total lives
+    private int currentLives; // Current lives
+
     public Transform startingPosition; // Starting position (beginning of the bridge)
-    public int difficulty = 1; // Difficulty level: 1 (easy), 2 (medium), 3 (hard)
-    private int triesRemaining = 4; // Track remaining tries
-    private float initialFallPenalty; // Amount to reduce health by after the first fall
-    private float currentFallPenalty; // Fixed penalty to use after the first fall
 
     private CharacterController characterController; // Reference to the CharacterController
 
     void Start()
     {
+        currentLives = totalLives; // Set lives at the start
+        ResetBridge();  // Randomize tiles on startup
+
         // Get the CharacterController (if attached)
         characterController = player.GetComponent<CharacterController>();
-
-        // Call to randomize the bridge
-        ResetBridge();
     }
 
     void Update()
     {
-        // Any other update logic if needed
-    }
-
-    // Adjusts the fall penalty based on difficulty level
-    void AdjustFallPenalty()
-    {
-        switch (difficulty)
+        // Check if the player is out of lives
+        if (currentLives <= 0)
         {
-            case 1: // Easy
-                initialFallPenalty = 0.10f; // 10% of health
-                break;
-            case 2: // Medium
-                initialFallPenalty = 0.25f; // 25% of health
-                break;
-            case 3: // Hard
-                initialFallPenalty = 0.33f; // 33% of health
-                break;
-            default:
-                Debug.LogWarning("Invalid difficulty level. Defaulting to medium.");
-                initialFallPenalty = 0.25f;
-                break;
+            // Optional: Display Game Over and Reload Level
+            Debug.Log("Game Over!");
+            Debug.Log("Returning to Main Menu.");
         }
     }
 
@@ -54,74 +37,64 @@ public class PathGenerator : MonoBehaviour
     {
         foreach (GameObject row in rows)
         {
+            // Get child objects
             Transform[] children = row.GetComponentsInChildren<Transform>();
-            if (children.Length != 3) // Ensure 2 child tiles
+
+            // Ensure there are exactly 2 children (excluding the parent row object)
+            if (children.Length != 3) // First is the parent itself
             {
                 Debug.LogWarning($"Row '{row.name}' does not have exactly 2 children.");
                 continue;
             }
 
-            int safeIndex = Random.Range(1, 3); // Randomly select safe tile
-            for (int i = 1; i < children.Length; i++)
+            // Randomly pick one child to be the safe tile
+            int safeIndex = Random.Range(1, 3); // 1 and 2 correspond to the children
+            for (int i = 1; i < children.Length; i++) // Start at 1 to skip the parent
             {
                 BoxCollider collider = children[i].GetComponent<BoxCollider>();
                 if (collider != null)
                 {
-                    collider.isTrigger = (i != safeIndex); // Unsafe tiles are triggers
+                    collider.isTrigger = (i != safeIndex); // Set unsafe tiles as triggers
                 }
             }
         }
-
-        // Apply the initial penalty adjustment at the start
-        AdjustFallPenalty();
     }
 
     public void PlayerFell()
     {
-        if (triesRemaining > 0)
+        // Handle the player's fall
+        currentLives--;  // Decrease life
+        Debug.Log("Player fell! Lives remaining: " + currentLives);
+
+        if (currentLives > 0)
         {
-            // If the player is falling for the first time, calculate the penalty
-            if (currentFallPenalty == 0)
-            {
-                // Apply the fall penalty based on health and difficulty
-                currentFallPenalty = PlayerData.instance.playerHealth * initialFallPenalty;
-            }
-
-            // Apply the fixed penalty after the first fall
-            PlayerData.instance.playerHealth = Mathf.Max(0, Mathf.RoundToInt(PlayerData.instance.playerHealth - currentFallPenalty));
-
-            triesRemaining--;
-            Debug.Log($"Player fell! Health: {PlayerData.instance.playerHealth}, Tries: {triesRemaining}");
-
-            PlayerData.instance.UpdateHealthDisplay();
-
-            if (PlayerData.instance.playerHealth <= 0)
-            {
-                GameOver();
-            }
-            else
-            {
-                ResetPlayerPosition();
-            }
+            ResetPlayerPosition();
         }
         else
         {
-            GameOver();
+            // Reload the scene or display game over
+            SceneManager.LoadScene("MainMenu");
+            Debug.Log("Returning to Main Menu.");
         }
     }
 
-    private void GameOver()
-    {
-        Debug.Log("Game Over!");
-        SceneManager.LoadScene("MainMenu");
-    }
-
+    // Reset player position to the beginning of the bridge
     void ResetPlayerPosition()
     {
-        if (characterController != null) characterController.enabled = false;
+        // Disable movement for a short time to ensure the player position is reset properly
+        if (characterController != null)
+        {
+            // Temporarily disable movement by stopping the CharacterController
+            characterController.enabled = false;
+        }
 
+        // Reset the player's position to the starting position
         player.transform.position = startingPosition.position;
 
-        if (characterController != null) characterController.enabled = true;
+        // Enable movement again after a short delay
+        if (characterController != null)
+        {
+            characterController.enabled = true;
+        }
     }
 }

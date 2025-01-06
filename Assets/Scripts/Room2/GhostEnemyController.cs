@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GhostEnemyController : MonoBehaviour
@@ -75,15 +77,10 @@ public class GhostEnemyController : MonoBehaviour
         if (!hasStartedFight)
         {
             Vector3 separationOffset = CalculateSeparationOffset();
-            if (isFollowingPlayer)
-        {
-            targetPosition.y = player.position.y + 2.0f;  // Adjust 2.0f to whatever height you want
-        }
+            Vector3 finalTarget = targetPosition + separationOffset;
 
-        Vector3 finalTarget = targetPosition + separationOffset;
-
-        transform.position = Vector3.MoveTowards(transform.position, finalTarget, moveSpeed * Time.deltaTime);
-        RotateTowards(targetPosition);
+            transform.position = Vector3.MoveTowards(transform.position, finalTarget, moveSpeed * Time.deltaTime);
+            RotateTowards(targetPosition);
         }
     }
 

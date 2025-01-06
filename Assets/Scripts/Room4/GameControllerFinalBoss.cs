@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class GameControllerFinalBoss : MonoBehaviour
 {
@@ -45,7 +44,6 @@ public class GameControllerFinalBoss : MonoBehaviour
     public Transform enemyFightPosition;  // Predefined enemy position for the fight
     private FinalBossController enemyController; // Reference to the EnemyController script
 
-
     public void Start()
     {
         FightUI.SetActive(false);
@@ -59,11 +57,6 @@ public class GameControllerFinalBoss : MonoBehaviour
             PlayerHealth.maxValue = 100; // Set max health
             PlayerHealth.value = PlayerData.instance.playerHealth; // Set current health
         }
-    }
-
-    public void Update()
-    {
-        PlayerHealth.value = PlayerData.instance.playerHealth;
     }
 
     public void StartFight()
@@ -176,62 +169,19 @@ public class GameControllerFinalBoss : MonoBehaviour
     }
 
     private void SelectCard(string card)
-{
-    // Only allow card selection if it doesn't cause the energy to go below 0
-    if (card == "Energy Card" || currentEnergy > 0)  // Allow Energy Card and cards that don't reduce energy
     {
-        // Check energy requirements before playing the card
-        bool canPlayCard = false;
-
-        if (card == "TripleAttack Card" && currentEnergy >= 3)
-        {
-            canPlayCard = true;
-        }
-        else if (card == "BadAttack Card" && currentEnergy >= 2)
-        {
-            canPlayCard = true;
-        }
-        else if (card != "TripleAttack Card" && card != "BadAttack Card") // For other cards
-        {
-            canPlayCard = true;
-        }
-
-        // If the card can be played, update the energy and select it
-        if (canPlayCard)
+        if (cardsSelected < 3 && currentEnergy > 0)
         {
             selectedCards.Add(card);
             cardsSelected++;
-
-            // Deduct energy
-            if (card == "TripleAttack Card")
-            {
-                currentEnergy -= 3;
-            }
-            else if (card == "BadAttack Card")
-            {
-                currentEnergy -= 2;
-            }
-            else if (card != "Energy Card")
-            {
-                currentEnergy--;
-            }
-
-            // Update the energy UI
+            currentEnergy--;
             UpdateEnergyUI();
-
-            // Move the card to the discard pile and remove it from the drawn cards
             discardPile.Add(card);
             drawnCards.Remove(card);
 
-            // Apply the effect of the card
             ApplyCardEffect(card);
         }
-        else
-        {
-            Debug.Log("Not enough energy to play this card.");
-        }
     }
-}
 
     public void PlayerEndTurn()
     {
@@ -243,65 +193,13 @@ public class GameControllerFinalBoss : MonoBehaviour
 
     private void ApplyCardEffect(string card)
     {
-        float multiplier1 = 1.0f;
-        float multiplier2 = 1.0f;
-        float multiplier3 = 1.0f;
-        switch (PlayerPrefs.GetInt("Difficulty", 1)) // Default difficulty: 1 (Normal)
-        {
-            case 0: // Easy
-                multiplier1 = 1.5f; // Increase card effects
-                multiplier2 = 2f; // Increase card effects
-                multiplier3 = 2f;
-                break;
-            case 1: // Normal
-                multiplier1 = 1.0f; // Default
-                multiplier2 = 1.0f; // Default
-                multiplier3 = 1.0f;
-                break;
-            case 2: // Hard
-                multiplier1 = 0.5f; // Decrease card effects
-                multiplier2 = 0.4f; // Decrease card effects
-                multiplier3 = 0f; 
-                break;
-        }
-
         if (card == "Attack Card")
         {
-            Attack(Enemy, 10 * multiplier1);
+            Attack(Enemy, 10);
         }
         else if (card == "Heal Card")
         {
-            Heal(Player, 10 * multiplier1);
-        } 
-        else if (card == "Energy Card")
-        {
-            currentEnergy++;
-            UpdateEnergyUI();
-        }
-        else if (card == "Shield Card")
-        {
-            Heal(Player, 5 * multiplier2); ;
-        }
-        else if (card == "AttackBlock Card")
-        {
-            Attack(Enemy, 5 * multiplier2);
-            Heal(Player, 5 * multiplier2);
-        }
-        else if (card == "TripleAttack Card")
-        {
-            Attack(Enemy, 30 * multiplier1);
-        }
-        else if (card == "AttackAll Card")
-        {
-            Attack(Enemy, 10 * multiplier1);
-        }
-        else if (card == "BadAttack Card")
-        {
-            Attack(Enemy, 5 * multiplier2);
-        }
-        else if (card == "LowAttack Card")
-        {
-            Attack(Enemy, 2 * multiplier3);
+            Heal(Player, 10);
         }
 
         DisplayCardsInFightUI();  // Refresh the UI
@@ -351,13 +249,13 @@ public class GameControllerFinalBoss : MonoBehaviour
 
         if (random == 1)
         {
-            Attack(Player, 10);
-            Heal(Enemy, 10);
+            Attack(Player, 20);
+            Heal(Enemy, 5);
         }
         else
         {
-            Attack(Player, 8);
-            Heal(Enemy, 7);
+            Attack(Player, 10);
+            Heal(Enemy, 10);
         }
 
         currentEnergy = maxEnergy;
@@ -420,13 +318,10 @@ public class GameControllerFinalBoss : MonoBehaviour
             playerView.enabled = true;
             FightUI.SetActive(false);
             Enemy.GetComponent<FinalBossController>().isEnemyDefeated = true;
-            StartCoroutine(ShowEnding());
         }
         else if (target == Player)
         {
             resultText.text = "You Lose!";
-            PlayerData.instance.ResetPlayerData();
-            SceneManager.LoadScene("MainMenu");
         }
     }
 
@@ -441,44 +336,4 @@ public class GameControllerFinalBoss : MonoBehaviour
         Debug.Log($"Deck: {string.Join(", ", deck)}");
         Debug.Log($"Discard Pile: {string.Join(", ", discardPile)}");
     }
-
-    private IEnumerator ShowEnding()
-{
-    // Display a white screen with a message
-    GameObject endingCanvas = new GameObject("EndingCanvas");
-    Canvas canvas = endingCanvas.AddComponent<Canvas>();
-    canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-    endingCanvas.AddComponent<CanvasScaler>();
-    endingCanvas.AddComponent<GraphicRaycaster>();
-
-    // Create a white background
-    GameObject whiteBackground = new GameObject("WhiteBackground");
-    whiteBackground.transform.parent = endingCanvas.transform;
-    Image bgImage = whiteBackground.AddComponent<Image>();
-    bgImage.color = Color.white; // Set the background color to white
-    RectTransform bgTransform = whiteBackground.GetComponent<RectTransform>();
-    bgTransform.anchorMin = Vector2.zero;
-    bgTransform.anchorMax = Vector2.one;
-    bgTransform.offsetMin = Vector2.zero;
-    bgTransform.offsetMax = Vector2.zero;
-
-    // Create a text element
-    GameObject congratsText = new GameObject("CongratsText");
-    congratsText.transform.parent = endingCanvas.transform;
-    TextMeshProUGUI text = congratsText.AddComponent<TextMeshProUGUI>();
-    text.text = "Congratulations! You Escaped!";
-    text.alignment = TextAlignmentOptions.Center;
-    text.fontSize = 36;
-    text.color = Color.black;
-
-    RectTransform textTransform = congratsText.GetComponent<RectTransform>();
-    textTransform.anchorMin = new Vector2(0.5f, 0.5f);
-    textTransform.anchorMax = new Vector2(0.5f, 0.5f);
-    textTransform.anchoredPosition = Vector2.zero;
-
-    // Wait for a few seconds before returning to the main menu
-    yield return new WaitForSeconds(3);
-    PlayerData.instance.ResetPlayerData();
-    SceneManager.LoadScene("MainMenu");
-}
 }
