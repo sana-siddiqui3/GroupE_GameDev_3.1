@@ -58,7 +58,7 @@ public class RandomChest : MonoBehaviour
         }
         else
         {
-            chestMessageText.text = "This chest is empty.";
+            chestMessageText.text = "This item is empty.";
         }
         isOpen = false;
     }
@@ -69,7 +69,7 @@ public class RandomChest : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            chestMessageText.text = "Press 'E' to open chest";
+            chestMessageText.text = "Press 'E' to open";
         }
     }
 
