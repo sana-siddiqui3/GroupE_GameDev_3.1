@@ -207,4 +207,17 @@ public class PlayerData : MonoBehaviour
         playerHealth = health;
         UpdateHealthDisplay();
     }
+
+    public void ResetPlayerData()
+    {
+        playerHealth = 100f;
+        inventory.Clear();
+        InitializeStartingItems();
+        keysCollected = 0;
+        totalKeysRequired = 2;
+        objective = "";
+        UpdateHealthDisplay();
+        UpdateKeyDisplay();
+        setObjectiveText("");
+    }
 }

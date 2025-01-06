@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameControllerRoom2 : MonoBehaviour
 {
@@ -591,7 +592,8 @@ public class GameControllerRoom2 : MonoBehaviour
     {
         isGameOver = true;
         resultText.text = "Game Over! You Lose.";
-
+        PlayerData.instance.ResetPlayerData();
+        SceneManager.LoadScene("MainMenu");
         Debug.Log("Player defeated. Game Over!");
     }
 

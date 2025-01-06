@@ -418,7 +418,8 @@ public class GameController : MonoBehaviour
     else if (target == Player)
     {
         resultText.text = "You Lose!";
-        
+        PlayerData.instance.ResetPlayerData();
+        SceneManager.LoadScene("MainMenu");
     }
 }
 

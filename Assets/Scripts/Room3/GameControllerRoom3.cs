@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameControllerRoom3 : MonoBehaviour
 {
@@ -530,6 +531,8 @@ public class GameControllerRoom3 : MonoBehaviour
             {
                 FallOver(target);
                 GameOver(); // Trigger the game over when player health is zero or less
+                PlayerData.instance.ResetPlayerData();
+                SceneManager.LoadScene("MainMenu");
             }
         }
 

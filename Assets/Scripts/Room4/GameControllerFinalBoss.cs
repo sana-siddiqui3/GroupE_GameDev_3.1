@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameControllerFinalBoss : MonoBehaviour
 {
@@ -423,6 +424,8 @@ public class GameControllerFinalBoss : MonoBehaviour
         else if (target == Player)
         {
             resultText.text = "You Lose!";
+            PlayerData.instance.ResetPlayerData();
+            SceneManager.LoadScene("MainMenu");
         }
     }
 
