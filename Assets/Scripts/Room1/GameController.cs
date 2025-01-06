@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -43,11 +44,13 @@ public class GameController : MonoBehaviour
     public Transform enemyFightPosition;  // Predefined enemy position for the fight
     private EnemyController enemyController; // Reference to the EnemyController script
 
+    public GameObject ReplayButton;
     public void Start()
     {
         FightUI.SetActive(false);
         UpdateEnergyUI();
         InitializeDeck();
+        ReplayButton.SetActive(false);
 
         // Load player health from PlayerData
         if (PlayerData.instance != null)
@@ -401,24 +404,28 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void FallOver(GameObject target)
-    {
-        target.transform.Rotate(new Vector3(90f, 0f, 0f));
-        isGameOver = true;
+    public void FallOver(GameObject target)
+{
+    target.transform.Rotate(new Vector3(90f, 0f, 0f));
+    isGameOver = true;
 
-        if (target == Enemy)
-        {
-            resultText.text = "You Win!";
-            fightView.enabled = false;
-            playerView.enabled = true;
-            FightUI.SetActive(false);
-            Enemy.GetComponent<EnemyController>().isEnemyDefeated = true;
-        }
-        else if (target == Player)
-        {
-            resultText.text = "You Lose!";
-        }
+    if (target == Enemy)
+    {
+        resultText.text = "You Win!";
+        fightView.enabled = false;
+        playerView.enabled = true;
+        FightUI.SetActive(false);
+        Enemy.GetComponent<EnemyController>().isEnemyDefeated = true;
     }
+    else if (target == Player)
+    {
+        resultText.text = "You Lose!";
+        
+        // Enable the Replay button after the player loses
+        ReplayButton.SetActive(true);
+    }
+}
+
 
     private void UpdateEnergyUI()
     {
@@ -430,5 +437,15 @@ public class GameController : MonoBehaviour
     {
         Debug.Log($"Deck: {string.Join(", ", deck)}");
         Debug.Log($"Discard Pile: {string.Join(", ", discardPile)}");
+    }
+
+    public void ReplayLevel()
+    {
+        // Reset the player's health or any other necessary data before reloading the scene
+        PlayerHealth.value = 100; // Example of resetting health
+        PlayerData.instance.ResetPlayerData(); // Reset player data (if needed)
+
+        // Reload the current scene to restart the level
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

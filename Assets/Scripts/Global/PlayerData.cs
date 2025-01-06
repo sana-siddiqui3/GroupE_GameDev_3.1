@@ -55,6 +55,7 @@ public class PlayerData : MonoBehaviour
         AddItem("AttackAll Card", Resources.Load<Sprite>("AttackAll"), "A card that attacks all enemies.");
         AddItem("BadAttack Card", Resources.Load<Sprite>("BadAttack"), "An inefficient attack card.");
         AddItem("LowAttack Card", Resources.Load<Sprite>("LowAttack"), "A low damage attack card.");
+        AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "A Health Potion. Restores 20 health.");
         //AddItem("Purity Potion", Resources.Load<Sprite>("PurityPotion"), "A potion to purify the corrupted heart crystal.");
         //AddItem("Heart Crystal", Resources.Load<Sprite>("Heart"), "A heart crystal.");
     }
@@ -184,10 +185,6 @@ public class PlayerData : MonoBehaviour
         {
             keyDisplay.text = $"Keys: {keysCollected}/{totalKeysRequired}";
         }
-        else
-        {
-            Debug.LogWarning("Key display text is not assigned!");
-        }
     }
 
     // Method to check if the player has a specific item
@@ -209,5 +206,20 @@ public class PlayerData : MonoBehaviour
     {
         playerHealth = health;
         UpdateHealthDisplay();
+    }
+
+    public void ResetPlayerData()
+    {
+        playerHealth = 100f; // Reset health to full
+        keysCollected = 0; // Reset keys collected
+        inventory.Clear(); // Clear the inventory
+
+        // Re-initialize starting items (if necessary)
+        InitializeStartingItems();
+
+        // Update the UI
+        UpdateHealthDisplay();
+        UpdateKeyDisplay();
+        setObjective("Fight the enemy to access the chest.");
     }
 }
