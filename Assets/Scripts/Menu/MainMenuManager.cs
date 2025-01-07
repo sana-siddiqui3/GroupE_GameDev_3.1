@@ -49,11 +49,4 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene("OptionsMenu");
         Debug.Log("Options menu opened.");
     }
-
-    // This method will be called when the Quit button is pressed
-    public void QuitGame()
-    {
-        Debug.Log("Quit Game");
-        Application.Quit(); // Quits the application (won't work in the editor)
-    }
 }
