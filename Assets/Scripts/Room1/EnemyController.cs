@@ -36,11 +36,6 @@ public class EnemyController : MonoBehaviour
         {
             // If the enemy is defeated, make it disappear
             Disappear();
-            if(dropHealthPotion) 
-            {
-                // Drop a health potion
-                PlayerData.instance.AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "A Health Potion. Restores 20 health.");
-            }
 
             if(SceneManager.GetActiveScene().name == "Room1") 
             {

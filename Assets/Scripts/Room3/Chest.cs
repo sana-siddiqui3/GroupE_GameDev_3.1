@@ -22,7 +22,7 @@ public class Chest : MonoBehaviour
             {
                 isOpen = true;
                 GivePurityPotion();
-                PlayerData.instance.setObjective("Use purity potion on heart.");
+                PlayerData.instance.setObjective("Use purity potion when near heart.");
             }
         }
     }
@@ -31,7 +31,7 @@ public class Chest : MonoBehaviour
     {
         if (!empty)
         {
-            PlayerData.instance.AddItem("Purity Potion", Resources.Load<Sprite>("PurityPotion"), "A potion to purify the corrupted heart crystal.");
+            PlayerData.instance.AddItem("Purity Potion", Resources.Load<Sprite>("PurityPotion"), "A potion to purify the corrupted heart crystal.", false);
             chestMessageText.text = "Added Purity Potion.";
             empty = true;
         }
