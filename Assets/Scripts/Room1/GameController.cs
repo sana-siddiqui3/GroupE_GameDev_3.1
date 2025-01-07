@@ -144,7 +144,7 @@ public class GameController : MonoBehaviour
         DisplayCardsInFightUI();
     }
 
-    public void DisplayCardsInFightUI()
+    private void DisplayCardsInFightUI()
 {
     foreach (Transform child in cardPanel.transform)
     {
@@ -158,11 +158,11 @@ public class GameController : MonoBehaviour
         GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
         CardUI cardUIScript = cardUI.GetComponent<CardUI>();
 
-        // Retrieve card details dynamically (replace with your card system logic)
-        int energyCost = GetCardEnergyCost(card);
-        int attackAmount = GetCardAttackAmount(card);
+        // Set the card details (name, energy cost, attack amount)
+        int energyCost = 2; // Example: Each card costs 2 energy (you can set this dynamically)
+        int attackAmount = GetCardAmount(card); // Get the attack amount based on the card and difficulty
 
-        cardUIScript.SetCardDetails(card, energyCost, attackAmount);
+        cardUIScript.SetCardDetails(card, energyCost, attackAmount); // Set the card details
 
         Button cardButton = cardUI.GetComponent<Button>();
         cardButtons.Add(cardButton);
@@ -177,21 +177,68 @@ private int GetCardEnergyCost(string card)
     switch (card)
     {
         case "Attack Card": return 1;
-        case "Heal Card": return 2;
+        case "Heal Card": return 1;
+        case "Energy Card": return 1;
+        case "Shield Card": return 1;
+        case "AttackBlock Card": return 1;
+        case "TripleAttack Card": return 1;
+        case "AttackAll Card": return 1;
+        case "BadAttack Card": return 2;
+        case "LowAttack Card": return 1;
         default: return 1;
     }
 }
 
-private int GetCardAttackAmount(string card)
+private int GetCardAmount(string card)
 {
-    // Example logic to retrieve attack amount (replace with actual card data retrieval)
+    float multiplier1 = 1.0f;
+    float multiplier2 = 1.0f;
+    float multiplier3 = 1.0f;
+
+    // Difficulty multipliers
+    switch (PlayerPrefs.GetInt("Difficulty", 1)) // Default difficulty: 1 (Normal)
+    {
+        case 0: // Easy
+            multiplier1 = 1.5f; // Increase card effects
+            multiplier2 = 2f;
+            multiplier3 = 2f;
+            break;
+        case 1: // Normal
+            multiplier1 = 1.0f;
+            multiplier2 = 1.0f;
+            multiplier3 = 1.0f;
+            break;
+        case 2: // Hard
+            multiplier1 = 0.5f; // Decrease card effects
+            multiplier2 = 0.4f;
+            multiplier3 = 0f;
+            break;
+    }
+
+    // Returning the appropriate value based on the card type and difficulty multipliers
     switch (card)
     {
-        case "Attack Card": return 5;
-        case "Heal Card": return 0;
-        default: return 1;
+        case "Attack Card":
+            return (int)(10 * multiplier1); // Attack amount adjusted by difficulty
+        case "Heal Card":
+            return (int)(10 * multiplier1); // Heal amount adjusted by difficulty
+        case "Shield Card":
+            return (int)(5 * multiplier2); // Shield amount adjusted by difficulty
+        case "TripleAttack Card":
+            return (int)(30 * multiplier1); // Triple attack amount adjusted by difficulty
+        case "AttackBlock Card":
+            return (int)(5 * multiplier2); // Combined attack and heal (adjusted by difficulty)
+        case "AttackAll Card":
+            return (int)(10 * multiplier1); // Attack all amount adjusted by difficulty
+        case "BadAttack Card":
+            return (int)(6* multiplier1); // Bad attack amount adjusted by difficulty
+        case "LowAttack Card":
+            return (int)(2 * multiplier3); // Low attack amount adjusted by difficulty
+        default:
+            return 1; // Default for unhandled cards
     }
 }
+
 
     private void SelectCard(string card)
 {
@@ -316,7 +363,7 @@ private int GetCardAttackAmount(string card)
         }
         else if (card == "BadAttack Card")
         {
-            Attack(Enemy, 8 * multiplier1);
+            Attack(Enemy, 6 * multiplier1);
         }
         else if (card == "LowAttack Card")
         {
