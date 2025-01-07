@@ -159,27 +159,92 @@ public class GameControllerRoom3 : MonoBehaviour
         DisplayCardsInFightUI();
     }
 
-    public void DisplayCardsInFightUI()
+    private void DisplayCardsInFightUI()
+{
+    foreach (Transform child in cardPanel.transform)
     {
-        foreach (Transform child in cardPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        cardButtons.Clear();
-
-        foreach (string card in drawnCards)
-        {
-            GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
-            CardUI cardUIScript = cardUI.GetComponent<CardUI>();
-            cardUIScript.SetCardName(card);
-
-            Button cardButton = cardUI.GetComponent<Button>();
-            cardButtons.Add(cardButton);
-
-            cardButton.onClick.AddListener(() => SelectCard(card));
-        }
+        Destroy(child.gameObject);
     }
+
+    cardButtons.Clear();
+
+    foreach (string card in drawnCards)
+    {
+        GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
+        CardUI cardUIScript = cardUI.GetComponent<CardUI>();
+
+        // Set the card details (name, energy cost, attack amount)
+        int energyCost = GetCardEnergyCost(card); // Example: Each card costs 2 energy (you can set this dynamically)
+        int attackAmount = GetCardAmount(card); // Get the attack amount based on the card and difficulty
+
+        cardUIScript.SetCardDetails(card, energyCost, attackAmount); // Set the card details
+
+        Button cardButton = cardUI.GetComponent<Button>();
+        cardButtons.Add(cardButton);
+
+        cardButton.onClick.AddListener(() => SelectCard(card));
+    }
+}
+
+private int GetCardEnergyCost(string card)
+{
+    // Example logic to retrieve energy cost (replace with actual card data retrieval)
+    switch (card)
+    {
+        case "Attack Card": return 1;
+        case "Heal Card": return 1;
+        case "Energy Card": return 0;
+        case "Shield Card": return 1;
+        case "AttackBlock Card": return 1;
+        case "TripleAttack Card": return 1;
+        case "AttackAll Card": return 1;
+        case "BadAttack Card": return 2;
+        case "LowAttack Card": return 1;
+        default: return 1;
+    }
+}
+
+    private int GetCardAmount(string card)
+{
+    float multiplier1 = 1.0f;
+    float multiplier2 = 1.0f;
+    float multiplier3 = 1.0f;
+
+    // Difficulty multipliers
+    switch (PlayerPrefs.GetInt("Difficulty", 1)) // Default difficulty: 1 (Normal)
+    {
+        case 0: // Easy
+            multiplier1 = 1.5f; // Increase card effects
+            multiplier2 = 2f;
+            multiplier3 = 2f;
+            break;
+        case 1: // Normal
+            multiplier1 = 1.0f;
+            multiplier2 = 1.0f;
+            multiplier3 = 1.0f;
+            break;
+        case 2: // Hard
+            multiplier1 = 0.5f; // Decrease card effects
+            multiplier2 = 0.4f;
+            multiplier3 = 0f;
+            break;
+    }
+
+    // Example logic to retrieve card amount (replace with actual card data retrieval)
+    switch (card)
+    {
+        case "Attack Card": return (int)(10 * multiplier1);
+        case "Heal Card": return (int)(10 * multiplier1);
+        case "Energy Card": return 1;
+        case "Shield Card": return (int)(5 * multiplier2);
+        case "AttackBlock Card": return (int)(5 * multiplier2);
+        case "TripleAttack Card": return (int)(30 * multiplier1);
+        case "AttackAll Card": return (int)(10 * multiplier1);
+        case "BadAttack Card": return (int)(5 * multiplier2);
+        case "LowAttack Card": return (int)(2 * multiplier3);
+        default: return 0;
+    }
+}
 
     private void SelectCard(string card)
     {

@@ -4997,7 +4997,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279900701
-  m_fontColor: {r: 0.11320752, g: 0.103061564, b: 0.103061564, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6068,6 +6068,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackScreen: {fileID: 641463955}
   narrativeText: {fileID: 419520519}
+  hudUI: {fileID: 1226906334}
 --- !u!1001 &715467660
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9431,7 +9432,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279242769
-  m_fontColor: {r: 0.066037714, g: 0.061365236, b: 0.061365236, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -13994,6 +13995,8 @@ MonoBehaviour:
   objectiveText: {fileID: 1048306958}
   healthDisplay: {fileID: 745058777}
   keyDisplay: {fileID: 0}
+  notificationText: {fileID: 1102407217}
+  notificationDuration: 2
   difficulty: 0
 --- !u!4 &1621254863
 Transform:
