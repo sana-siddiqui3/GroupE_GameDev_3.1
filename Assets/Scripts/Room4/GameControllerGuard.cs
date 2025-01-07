@@ -157,26 +157,53 @@ public class GameControllerRoom4 : MonoBehaviour
     }
 
     public void DisplayCardsInFightUI()
+{
+    foreach (Transform child in cardPanel.transform)
     {
-        foreach (Transform child in cardPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        cardButtons.Clear();
-
-        foreach (string card in drawnCards)
-        {
-            GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
-            CardUI cardUIScript = cardUI.GetComponent<CardUI>();
-            cardUIScript.SetCardName(card);
-
-            Button cardButton = cardUI.GetComponent<Button>();
-            cardButtons.Add(cardButton);
-
-            cardButton.onClick.AddListener(() => SelectCard(card));
-        }
+        Destroy(child.gameObject);
     }
+
+    cardButtons.Clear();
+
+    foreach (string card in drawnCards)
+    {
+        GameObject cardUI = Instantiate(cardUIPrefab, cardPanel.transform);
+        CardUI cardUIScript = cardUI.GetComponent<CardUI>();
+
+        // Retrieve card details dynamically (replace with your card system logic)
+        int energyCost = GetCardEnergyCost(card);
+        int attackAmount = GetCardAttackAmount(card);
+
+        cardUIScript.SetCardDetails(card, energyCost, attackAmount);
+
+        Button cardButton = cardUI.GetComponent<Button>();
+        cardButtons.Add(cardButton);
+
+        cardButton.onClick.AddListener(() => SelectCard(card));
+    }
+}
+
+private int GetCardEnergyCost(string card)
+{
+    // Example logic to retrieve energy cost (replace with actual card data retrieval)
+    switch (card)
+    {
+        case "Attack Card": return 1;
+        case "Heal Card": return 2;
+        default: return 1;
+    }
+}
+
+private int GetCardAttackAmount(string card)
+{
+    // Example logic to retrieve attack amount (replace with actual card data retrieval)
+    switch (card)
+    {
+        case "Attack Card": return 5;
+        case "Heal Card": return 0;
+        default: return 1;
+    }
+}
 
     private void SelectCard(string card)
     {
