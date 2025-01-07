@@ -8,7 +8,7 @@ public class NarrativeManager : MonoBehaviour
 {
     public GameObject blackScreen;          // Reference to the black screen panel
     public TextMeshProUGUI narrativeText;   // Reference to the narrative text component
-    public GameObject hudUI;               // Reference to the HUD UI (health, inventory, etc.)
+    public GameObject hudUI;               // Reference to the HUD UI (health, inventory, etc.)           // Reference to the player UI (health, energy, etc.)
     private bool narrativeStarted = false;  // To track if narrative has started
 
     // Dictionary to store different narratives for each scene

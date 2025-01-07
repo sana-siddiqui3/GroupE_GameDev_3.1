@@ -1527,7 +1527,6 @@ MonoBehaviour:
   - {fileID: 1110217117}
   player: {fileID: 1507990344}
   startingPosition: {fileID: 1645114618}
-  difficulty: 1
 --- !u!4 &96769754
 Transform:
   m_ObjectHideFlags: 0
@@ -16780,7 +16779,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4279242769
-  m_fontColor: {r: 0.066037714, g: 0.061365236, b: 0.061365236, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -22948,6 +22947,8 @@ MonoBehaviour:
   objectiveText: {fileID: 705371790}
   healthDisplay: {fileID: 1203669611}
   keyDisplay: {fileID: 0}
+  notificationText: {fileID: 1271713907}
+  notificationDuration: 2
   difficulty: 0
 --- !u!4 &1653918687
 Transform:
@@ -23675,6 +23676,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackScreen: {fileID: 397572338}
   narrativeText: {fileID: 1623063889}
+  hudUI: {fileID: 2063704321}
 --- !u!1 &1684560476
 GameObject:
   m_ObjectHideFlags: 0

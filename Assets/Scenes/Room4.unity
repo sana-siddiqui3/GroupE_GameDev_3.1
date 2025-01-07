@@ -9504,6 +9504,8 @@ MonoBehaviour:
   objectiveText: {fileID: 816749032}
   healthDisplay: {fileID: 1779028198}
   keyDisplay: {fileID: 0}
+  notificationText: {fileID: 1912910180}
+  notificationDuration: 2
   difficulty: 0
 --- !u!4 &1021489090
 Transform:
@@ -16229,6 +16231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackScreen: {fileID: 1773566314}
   narrativeText: {fileID: 1816968440}
+  hudUI: {fileID: 1672176482}
 --- !u!1 &1722485412
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,7 +23,10 @@ public class OpenKeyChest : MonoBehaviour
             if (!isOpen && enemyTrigger.isEnemyDefeated)
             {
                 isOpen = true;
+                chestMessageText.text = "";
                 GiveKeyItem();
+                
+
             }
             else if (!enemyTrigger.isEnemyDefeated)
             {
@@ -37,7 +40,6 @@ public class OpenKeyChest : MonoBehaviour
         if (!empty)
         {
             PlayerData.instance.AddItem("Key", Resources.Load<Sprite>("Key"), "A shiny key to unlock doors.");
-            chestMessageText.text = "Added key.";
             empty = true;
         }
         else
@@ -54,6 +56,7 @@ public class OpenKeyChest : MonoBehaviour
             playerInRange = true;
             chestMessageText.text = "Press 'E' to open chest";
         }
+
     }
 
     private void OnTriggerExit(Collider other)
