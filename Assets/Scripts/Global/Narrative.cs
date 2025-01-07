@@ -8,6 +8,7 @@ public class NarrativeManager : MonoBehaviour
 {
     public GameObject blackScreen;          // Reference to the black screen panel
     public TextMeshProUGUI narrativeText;   // Reference to the narrative text component
+    public GameObject hudUI;               // Reference to the HUD UI (health, inventory, etc.)
     private bool narrativeStarted = false;  // To track if narrative has started
 
     // Dictionary to store different narratives for each scene
@@ -26,6 +27,11 @@ public class NarrativeManager : MonoBehaviour
     void Start()
     {
         blackScreen.SetActive(false); // Initially hide the black screen
+        if (hudUI != null)
+        {
+            hudUI.SetActive(true); // Ensure HUD is visible at the start
+        }
+
         if (!narrativeStarted)
         {
             string currentScene = SceneManager.GetActiveScene().name;
@@ -48,6 +54,12 @@ public class NarrativeManager : MonoBehaviour
 
     private IEnumerator DisplayNarrative(string narrative)
     {
+        // Hide the HUD UI when showing the narrative
+        if (hudUI != null)
+        {
+            hudUI.SetActive(false);
+        }
+
         // Show the black screen and the text
         blackScreen.SetActive(true);
         narrativeText.gameObject.SetActive(true);
@@ -94,7 +106,7 @@ public class NarrativeManager : MonoBehaviour
                 waitingForInput = false;
                 enterPressed = true; // Set flag when Enter is pressed
             }
-            // Check if 5 seconds have passed
+            // Check if 3 seconds have passed
             else if (waitTime >= 3f)
             {
                 waitingForInput = false;
@@ -110,6 +122,13 @@ public class NarrativeManager : MonoBehaviour
         // After typing is complete or key is pressed, hide the narrative and start the level
         narrativeText.gameObject.SetActive(false);
         blackScreen.SetActive(false); // Hide black screen
+
+        // Show the HUD UI again after the narrative
+        if (hudUI != null)
+        {
+            hudUI.SetActive(true);
+        }
+
         StartLevel();
     }
 

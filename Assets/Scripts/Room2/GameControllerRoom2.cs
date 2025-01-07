@@ -376,7 +376,6 @@ public class GameControllerRoom2 : MonoBehaviour
         LogDeckAndDiscardState();
         changeTurn();
     }
-
     private void ResetTurn()
     {
         selectedCards.Clear();
