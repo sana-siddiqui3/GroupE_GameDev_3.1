@@ -1,41 +1,115 @@
-# Prototype Walkthrough for Dungeon Quest Adventure
+# Dungeon Quest Adventure
 
-Welcome to the prototype walkthrough for **Dungeon Quest Adventure**! This guide will walk you through the basic gameplay mechanics, from moving the player to interacting with objects and engaging in combat.
+**Dungeon Quest Adventure** is an immersive dungeon crawler combining strategic card gameplay, challenging puzzles, and thrilling battles with enemies and bosses. This README will guide you through the game’s mechanics, levels, and controls.
 
-## Installation
+---
 
-1. Download the game files.
-2. Open the project in Unity.
-3. Click the **Play** button in the Unity Editor to start the game.
+## Controls
+- **Enter**: Interact with doors, NPCs, and other objects.
+- **W/A/S/D** or **Arrow Keys**: Move your character.
+- **Space**: Jump.
+- **TAB**: Open the inventory.
+- **ESC**: Pause or resume the game, see instructions, or quit and go to main menu .
+- **Mouse Click**: Use potions in the inventory.
 
-## Walkthrough
+---
 
-### 1. Start the Game
-- Launch the game and begin your adventure in the dungeon.
+## Game Overview
 
-### 2. Move the Player
-- Use the arrow keys (`↑`, `↓`, `←`, `→`) or `W, A, S, D` to navigate through the dungeon.
+### Gameplay Highlights
+1. **Card Battle System**:
+   - Inspired by "Slay the Spire."
+   - Players have **3 energy per turn**.
+   - Each card has a unique effect and energy cost.
+   - Strategically play your cards to defeat enemies.
 
-### 3. Collect Cards
-- As you explore, you will find two cards. 
-- Move close to each card and press **E** to collect them. You will see the cards added in the inventroy on the top left.
+2. **Glass Bridge Puzzle**:
+   - Jump across tiles; only one is safe per step.
+   - Falling costs **A % of your health**.
+   - Completing the puzzle rewards you with health potions, poison, and new cards.
 
-### 4. Check the Companion
-- After collecting the cards, look for a companion character in the dungeon. 
-- Approach the companion and press **Enter** to interact with them. This action will recruit the companion to your team who can give you tips to progress through the game.
+3. **Inventory System**:
+   - Accessible via **TAB**.
+   - Store and use potions and other items.
 
-### 5. Engage the Enemy
-- Continue exploring until you encounter an enemy. 
-- Press **Enter** to start the battle with the enemy. The game will automatically switch to the battle screen.
-- Use the **Attack** button on the battle screen to fight the enemy.
-- Use the **Heal** button on the battle screen to increaase your life. 
+4. **Exploration and Rewards**:
+   - Each level presents unique challenges, enemies, and rewards.
+   - Making strategic decisions impacts your progression.
 
-### 6. Open Chests
-- After defeating the enemy, look for two treasure chests nearby.
-- Move to each chest and press **E** to open them. Inside, you will find keys that will be logs in the top right.
+---
 
-### 7. Unlock the Door
-- Once you have collected the keys, navigate to a locked door in the dungeon.
-- Approach the door and press **E** to unlock it using the keys you found in the chests.
-- The door will open, allowing you to proceed further into the dungeon and continue your adventure!
+## Levels
+
+### **Level 1: Dungeon Entrance**
+1. Defeat the enemy guarding the entrance.
+2. Collect keys dropped by the enemy.
+3. Use the keys and **press Enter** to unlock the door.
+
+### **Level 2: Haunted Corridor**
+1. Fight ghosts patrolling the area.
+2. Choose your path:
+   - **Risky Path**: Solve the glass bridge puzzle for:
+     - Health potions.
+     - Poison.
+     - Upgraded cards.
+   - **Safe Path**: Skip the puzzle and proceed without rewards.
+
+### **Level 3: Cursed Chamber**
+1. Search room and find the **Purification Potion** to lift the curse blocking the door.
+2. If the zombies catch you enter a battle or if you completed the glass bridge puzzle, use the poison to bypass.
+3. Recieve a health posion if you defeat the zombies .
+4. Be cautious while searching; bad cards might congest your deck unless you have the cleaning potion from Level 1.
+
+### **Level 4: Guardian's Lair**
+1. If you completed the glass bridge puzzle, use and havent used the poison yet use it to bypass the guards and proceed to the boss.
+2. If not, fight the guards to gain access to the final boss.
+3. Defeat the final boss and escape.
+
+---
+
+**Card Types and Effects:**
+1. **+1 Energy**: Provides an additional energy; costs 0 to play.
+2. **Attack All**: Damages all enemies; costs 1 energy.
+3. **Sheild**: Sheilds you from enemy attack
+4. **Attack & Block**: Simultaneously deals damage and blocks; costs 1 energy.
+5. **Triple Attack**: Extremely high damage (3x normal); costs 3 energy.
+6. **Regular Damage**: Moderate damage; costs 2 energy.
+7. **Low Attack**: Deals minimal damage; costs 1 energy.
+8. **Attack**: Basic damage.
+9. **Heal**: Restores health.
+
+---
+
+## Assets
+- **All assets are self-made** except for the following:
+- **Skeleton Models**: [Dungeon Skeletons Demo](https://assetstore.unity.com/packages/3d/characters/creatures/dungeon-skeletons-demo-71087).
+- **Player, Zombies, Guards, and Final Boss Models**: Created using [Adobe Mixamo](https://www.mixamo.com/#/).
+
+---
+
+## Features
+- **Accesibility Controls**: Use menu or pause screen to adjust sensitivity levels.
+- **Difficuly Modes**: Change difficulty modes in main menu
+- **Immersive Levels**: Explore detailed dungeons with increasing difficulty.
+- **Strategic Combat**: Turn-based card mechanics add depth to battles.
+- **Challenging Puzzles**: The glass bridge adds a risk-reward element.
+- **Rich Rewards**: Collect items to enhance your gameplay experience.
+
+
+---
+
+## Tips for Success
+- Plan your card usage carefully to maximize damage and survival.
+- Take the risky path in Level 2 for powerful rewards, but ensure you're prepared for the challenge.
+- Use potions strategically to maintain health and manage tough battles.
+- Complete optional objectives for better rewards and an easier journey to the final boss.
+
+---
+
+## Final Notes
+Embark on your adventure and prove yourself a true dungeon hero. Will you conquer the dungeon and restore peace to the realm? Good luck, adventurer!
+
+
+
+
 
