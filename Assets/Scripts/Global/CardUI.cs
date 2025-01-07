@@ -56,6 +56,8 @@ public class CardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 return $"This card will restore {attackAmount} energy.";
             case "AttackBlock Card":
                 return $"This card will attack {attackAmount} damage and heal {attackAmount} health.";
+            case "AttackAll Card":
+                return $"This card will attack all enemies for {attackAmount} damage.";
             case "TripleAttack Card":
                 return $"This card will attack {attackAmount} damage.";
             case "BadAttack Card":

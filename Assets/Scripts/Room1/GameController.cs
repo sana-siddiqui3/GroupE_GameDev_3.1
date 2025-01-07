@@ -159,7 +159,7 @@ public class GameController : MonoBehaviour
         CardUI cardUIScript = cardUI.GetComponent<CardUI>();
 
         // Set the card details (name, energy cost, attack amount)
-        int energyCost = 2; // Example: Each card costs 2 energy (you can set this dynamically)
+        int energyCost = GetCardEnergyCost(card); // Example: Each card costs 2 energy (you can set this dynamically)
         int attackAmount = GetCardAmount(card); // Get the attack amount based on the card and difficulty
 
         cardUIScript.SetCardDetails(card, energyCost, attackAmount); // Set the card details
@@ -178,7 +178,7 @@ private int GetCardEnergyCost(string card)
     {
         case "Attack Card": return 1;
         case "Heal Card": return 1;
-        case "Energy Card": return 1;
+        case "Energy Card": return 0;
         case "Shield Card": return 1;
         case "AttackBlock Card": return 1;
         case "TripleAttack Card": return 1;
