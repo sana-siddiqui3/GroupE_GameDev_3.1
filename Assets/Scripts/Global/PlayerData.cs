@@ -49,9 +49,6 @@ public class PlayerData : MonoBehaviour
     // Example: Add predefined items without showing notifications
     AddItem("Attack Card", Resources.Load<Sprite>("Attack"), "A basic attack card.", false);
     AddItem("Heal Card", Resources.Load<Sprite>("Heal"), "A basic healing card.", false);
-    AddItem("Poison Potion", Resources.Load<Sprite>("PoisonPotion"), "A potion that inflicts poison.", false);
-    AddItem("Poison Potion", Resources.Load<Sprite>("PoisonPotion"), "A potion that inflicts poison.", false);
-    AddItem("Poison Potion", Resources.Load<Sprite>("PoisonPotion"), "A potion that inflicts poison.", false);
     AddItem("Energy Card", Resources.Load<Sprite>("Energy"), "A card that restores energy.", false);
     AddItem("Shield Card", Resources.Load<Sprite>("Shield"), "A basic shield card.", false);
     AddItem("AttackBlock Card", Resources.Load<Sprite>("AttackBlock"), "A card that attacks & blocks.", false);
@@ -59,9 +56,6 @@ public class PlayerData : MonoBehaviour
     AddItem("AttackAll Card", Resources.Load<Sprite>("AttackAll"), "A card that attacks all enemies.", false);
     AddItem("BadAttack Card", Resources.Load<Sprite>("BadAttack"), "An inefficient attack card.", false);
     AddItem("LowAttack Card", Resources.Load<Sprite>("LowAttack"), "A low damage attack card.", false);
-    AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "A Health Potion. Restores 20 health.", false);
-    // AddItem("Purity Potion", Resources.Load<Sprite>("PurityPotion"), "A potion to purify the corrupted heart crystal.", false);
-    // AddItem("Heart Crystal", Resources.Load<Sprite>("Heart"), "A heart crystal.", false);
 }
 
     // Method to add an item to the inventory

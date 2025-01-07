@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HeartCrystal : MonoBehaviour
 {
-    public float interactionDistance = 3f; // Distance at which the player can interact with the crystal
+    public float interactionDistance = 6f; // Distance at which the player can interact with the crystal
     private Transform player;
 
     private void Start()

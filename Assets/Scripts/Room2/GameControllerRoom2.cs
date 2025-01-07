@@ -27,6 +27,7 @@ public class GameControllerRoom2 : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI resultText = null;
     [SerializeField] private TextMeshProUGUI energyText = null;
+    public TextMeshProUGUI notificationText;
 
     private bool isPlayerTurn = true;
     private bool isGameOver = false;
@@ -295,7 +296,7 @@ private int GetCardEnergyCost(string card)
             }
             else
             {
-                Debug.Log("Not enough energy to play this card / Enemy not selected.");
+                NotifyPlayer("Not enough energy to play this card / Enemy not selected.");
             }
         }
     }
@@ -327,45 +328,55 @@ private int GetCardEnergyCost(string card)
         }
     }
 
+    private void NotifyPlayer(string message)
+    {
+        notificationText.text = message; // Set the message
+        notificationText.gameObject.SetActive(true); // Show the notification
+
+        // Hide the notification after a short delay
+        Invoke(nameof(HideNotification), 2f);
+    }
+
+    private void HideNotification()
+    {
+        notificationText.gameObject.SetActive(false);
+    }
+
     private void ApplyCardEffect(string card)
     {
         float multiplier1 = 1.0f;
         float multiplier2 = 1.0f;
         float multiplier3 = 1.0f;
+
         switch (PlayerPrefs.GetInt("Difficulty", 1)) // Default difficulty: 1 (Normal)
         {
             case 0: // Easy
-                multiplier1 = 1.5f; // Increase card effects
-                multiplier2 = 2f; // Increase card effects
+                multiplier1 = 1.5f; 
+                multiplier2 = 2f; 
                 multiplier3 = 2f;
                 break;
             case 1: // Normal
-                multiplier1 = 1.0f; // Default
-                multiplier2 = 1.0f; // Default
+                multiplier1 = 1.0f;
+                multiplier2 = 1.0f;
                 multiplier3 = 1.0f;
                 break;
             case 2: // Hard
-                multiplier1 = 0.5f; // Decrease card effects
-                multiplier2 = 0.4f; // Decrease card effects
+                multiplier1 = 0.5f; 
+                multiplier2 = 0.4f; 
                 multiplier3 = 0f; 
                 break;
         }
 
         if (card == "Attack Card")
         {
-            // Only attack if a valid target is selected
             if (currentTarget != null)
             {
-                Attack(currentTarget, 10 * multiplier1); 
+                Attack(currentTarget, 10 * multiplier1);
             }
-            else
-            {
-                Debug.Log("No target selected. Cannot attack.");
-            }
+            
         }
         else if (card == "Heal Card")
         {
-            // Always heal the player
             Heal(Player, 10 * multiplier1);
         }
         else if (card == "Energy Card")
@@ -384,10 +395,7 @@ private int GetCardEnergyCost(string card)
                 Attack(currentTarget, 5 * multiplier2);
                 Heal(Player, 5 * multiplier2);
             }
-            else
-            {
-                Debug.Log("No target selected. Cannot attack.");
-            }
+            
         }
         else if (card == "TripleAttack Card")
         {
@@ -395,28 +403,20 @@ private int GetCardEnergyCost(string card)
             {
                 Attack(currentTarget, 30 * multiplier1);
             }
-            else
-            {
-                Debug.Log("No target selected. Cannot attack.");
-            }
+         
         }
         else if (card == "AttackAll Card")
         {
             Attack(Enemy, 10 * multiplier1);
             Attack(Enemy2, 10 * multiplier1);
-            
         }
-
         else if (card == "BadAttack Card")
         {
             if (currentTarget != null)
             {
                 Attack(currentTarget, 5 * multiplier2);
             }
-            else
-            {
-                Debug.Log("No target selected. Cannot attack.");
-            }
+           
         }
         else if (card == "LowAttack Card")
         {
@@ -424,12 +424,7 @@ private int GetCardEnergyCost(string card)
             {
                 Attack(currentTarget, 2 * multiplier3);
             }
-            else
-            {
-                Debug.Log("No target selected. Cannot attack.");
-            }
         }
-
 
         DisplayCardsInFightUI(); // Refresh the card UI after the action
     }

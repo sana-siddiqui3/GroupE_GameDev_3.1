@@ -50,7 +50,7 @@ public class RandomChest : MonoBehaviour
             Item randomItem = items[Random.Range(0, items.Count)];
 
             // Add the random item to the player's inventory
-            PlayerData.instance.AddItem(randomItem.Name, randomItem.Icon, randomItem.Description);
+            PlayerData.instance.AddItem(randomItem.Name, randomItem.Icon, randomItem.Description, false);
             
             // Display a message to the player
             chestMessageText.text = "Added " + randomItem.Name + ".";

@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using TMPro;
 
 namespace Assets.Scripts
 {
@@ -7,6 +9,7 @@ namespace Assets.Scripts
         private bool playerInRange = false;
         private bool hasBeenRewarded = false;  // Flag to ensure player is rewarded only once
         private PlayerData inventory;
+        public TextMeshProUGUI inventoryNotificationText;
 
         void Start()
         {
@@ -58,16 +61,29 @@ namespace Assets.Scripts
             // Check if PlayerData instance is valid before adding items
             if (inventory != null)
             {
-                inventory.AddItem("Poison Potion", Resources.Load<Sprite>("PoisonPotion"), "A potion that inflicts poison.");
-                inventory.AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "A potion that restores health.");
-                inventory.AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "A potion that restores health.");
-                inventory.AddItem("AttackBlock Card", Resources.Load<Sprite>("AttackBlock"), "A card that attacks & blocks.");
-                Debug.Log("Items have been added to the player's inventory.");
+                // Add items to inventory
+                inventory.AddItem("Poison Potion", Resources.Load<Sprite>("PoisonPotion"), "A potion that allows you to skip a battle of choice.", false);
+                inventory.AddItem("Health Potion", Resources.Load<Sprite>("HealthPotion"), "A potion that restores health.", false);
+                inventory.AddItem("AttackBlock Card", Resources.Load<Sprite>("AttackBlock"), "A card that attacks & blocks.", false);
+
+                // Show a notification
+                string itemsAddedMessage = "Added to inventory:\n";
+                itemsAddedMessage += "• Poison Potion\n";
+                itemsAddedMessage += "• Health Potion\n";
+                itemsAddedMessage += "• AttackBlock Card\n";
+
+                inventoryNotificationText.text = itemsAddedMessage;
+
+                // Optionally hide the notification after a delay
+                StartCoroutine(HideInventoryNotification());
             }
-            else
-            {
-                Debug.LogError("PlayerData instance is invalid. Items could not be added.");
-            }
+
+        }
+
+        private IEnumerator HideInventoryNotification()
+        {
+            yield return new WaitForSeconds(3f); // Show the message for 3 seconds
+            inventoryNotificationText.text = ""; // Clear the text
         }
     }
 }

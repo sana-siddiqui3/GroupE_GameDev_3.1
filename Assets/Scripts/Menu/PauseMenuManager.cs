@@ -107,6 +107,7 @@ public class PauseMenu : MonoBehaviour
     public void QuitGame()
     {
         Resume();
+        PlayerData.instance.ResetPlayerData();
         SceneManager.LoadScene("MainMenu");
     }
 }
