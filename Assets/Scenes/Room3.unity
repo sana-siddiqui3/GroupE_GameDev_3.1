@@ -17297,13 +17297,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Move: WASD/Arrows\nInteract/Pick Up: E\nInventory: TAB\nPause/Resume:
-    ESC\nClick - use potion in inventory\n\nCard game:\nyou have 3 energy in each
-    turn\nPlaying cards takes energy\ncard logi (easy, medium, hard):\nattack - 15,
-    10, 5\nHeal - 15,10, 5\nEnergy - +1 energy\nSheild - 10, 5 , 2\nAttack block
-    - heals and attacks\nTriple Attack - *3 of attack\nbad attack - takes 2 energy
-    for a \n\t\t  regular attack\nlow attack - 4, 2, 0\nattack all - attacks all
-    enemy\n\n"
+  m_text: "Game controls:\nMove: WASD/Arrows\nPick up: E\nInteract: Enter\nInventory:
+    TAB\nPause/Resume: ESC\nSpace: jump\nClick - Use potion in inventory\n\nCard
+    game:\nYou have 3 energy in each turn\nEach card will have an affect and \nuse
+    an amount of energy\nStrategically play your cards to \ndefeat enemys \n\nBridge
+    Game:\nOne of the 2 tiles will be allow\nyou to pass through\nJump on the tiles
+    but if you fall \nrisk loosing a % of your health\nGetting to the other side
+    will \nresult in great rewards to \nhelp on your quest."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5ba934557332f4c68b43a8374bcc3c66, type: 2}
   m_sharedMaterial: {fileID: 5989894303618023258, guid: 5ba934557332f4c68b43a8374bcc3c66, type: 2}
@@ -17330,8 +17330,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 13
+  m_fontSizeBase: 13
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
