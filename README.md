@@ -107,7 +107,7 @@
 ---
 
 ## Final Notes
-Embark on your adventure and prove yourself a true dungeon hero. Will you conquer the dungeon and restore peace to the realm? Good luck, adventurer!
+Embark on your adventure and escape the haunted prison. Will you conquer the dungeon and gain freedom? Good luck, adventurer!
 
 
 
