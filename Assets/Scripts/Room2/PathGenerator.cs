@@ -1,14 +1,12 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // Required for scene management
-using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PathGenerator : MonoBehaviour
 {
     public GameObject[] rows; // List of rows (each row has two child tiles)
     public GameObject player; // Reference to the player object
     public Transform startingPosition; // Starting position (beginning of the bridge)
-    public int difficulty = 1; // Difficulty level: 1 (easy), 2 (medium), 3 (hard)
-    private int triesRemaining = 4; // Track remaining tries
+    private int difficulty; // Difficulty level: 0 (easy), 1 (medium), 2 (hard)
     private float initialFallPenalty; // Amount to reduce health by after the first fall
     private float currentFallPenalty; // Fixed penalty to use after the first fall
 
@@ -16,16 +14,18 @@ public class PathGenerator : MonoBehaviour
 
     void Start()
     {
+        // Retrieve difficulty setting from PlayerPrefs
+        difficulty = PlayerPrefs.GetInt("Difficulty", 1); // Default: 1 (medium)
+        Debug.Log($"Difficulty loaded: {difficulty}");
+
         // Get the CharacterController (if attached)
         characterController = player.GetComponent<CharacterController>();
 
+        // Adjust fall penalty based on difficulty
+        AdjustFallPenalty();
+
         // Call to randomize the bridge
         ResetBridge();
-    }
-
-    void Update()
-    {
-        // Any other update logic if needed
     }
 
     // Adjusts the fall penalty based on difficulty level
@@ -33,13 +33,13 @@ public class PathGenerator : MonoBehaviour
     {
         switch (difficulty)
         {
-            case 1: // Easy
+            case 0: // Easy
                 initialFallPenalty = 0.10f; // 10% of health
                 break;
-            case 2: // Medium
+            case 1: // Medium
                 initialFallPenalty = 0.25f; // 25% of health
                 break;
-            case 3: // Hard
+            case 2: // Hard
                 initialFallPenalty = 0.33f; // 33% of health
                 break;
             default:
@@ -71,48 +71,38 @@ public class PathGenerator : MonoBehaviour
                 }
             }
         }
-
-        // Apply the initial penalty adjustment at the start
-        AdjustFallPenalty();
     }
 
     public void PlayerFell()
     {
-        if (triesRemaining > 0)
+        // If the player is falling for the first time, calculate the penalty
+        if (currentFallPenalty == 0)
         {
-            // If the player is falling for the first time, calculate the penalty
-            if (currentFallPenalty == 0)
-            {
-                // Apply the fall penalty based on health and difficulty
-                currentFallPenalty = PlayerData.instance.playerHealth * initialFallPenalty;
-            }
+            // Apply the fall penalty based on health and difficulty
+            currentFallPenalty = PlayerData.instance.playerHealth * initialFallPenalty;
+        }
 
-            // Apply the fixed penalty after the first fall
-            PlayerData.instance.playerHealth = Mathf.Max(0, Mathf.RoundToInt(PlayerData.instance.playerHealth - currentFallPenalty));
+        // Apply the fixed penalty after the first fall
+        PlayerData.instance.playerHealth = Mathf.Max(0, Mathf.RoundToInt(PlayerData.instance.playerHealth - currentFallPenalty));
 
-            triesRemaining--;
-            Debug.Log($"Player fell! Health: {PlayerData.instance.playerHealth}, Tries: {triesRemaining}");
+        Debug.Log($"Player fell! Health: {PlayerData.instance.playerHealth}, Difficulty: {difficulty}");
 
-            PlayerData.instance.UpdateHealthDisplay();
+        PlayerData.instance.UpdateHealthDisplay();
 
-            if (PlayerData.instance.playerHealth <= 0)
-            {
-                GameOver();
-            }
-            else
-            {
-                ResetPlayerPosition();
-            }
+        if (PlayerData.instance.playerHealth <= 0)
+        {
+            GameOver();
         }
         else
         {
-            GameOver();
+            ResetPlayerPosition();
         }
     }
 
     private void GameOver()
     {
         Debug.Log("Game Over!");
+        PlayerData.instance.ResetPlayerData();
         SceneManager.LoadScene("MainMenu");
     }
 
